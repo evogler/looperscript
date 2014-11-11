@@ -1,4 +1,4 @@
-(ns cljs.looperscript.sounds)
+(ns cljs.looperscript.audio)
 
 (def ctx (js/AudioContext.))
 (def pending-sounds (atom #{}))
