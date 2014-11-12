@@ -45,12 +45,7 @@
   (reset! pending-sounds #{}))
 
 
-(defn note->freq [n]
-  (* 261.625565
-     (Math/pow 2 (/ n 12))))
 
-(defn ratio->freq [[ _ n d]]
-    (* 261.625565 (/ n d)))
 
 (defn play-tone [freq start-time dur vol]
   (let [osc (.createOscillator ctx)

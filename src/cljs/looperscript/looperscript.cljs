@@ -2,7 +2,7 @@
 "UPCOMING STEPS:
   -fix pending-notes / stop issue
   -multiple parts
-  -basic pitches
+  -pitched samples?
   -compensate for sample attack delays
 TECH STEPS:
   -check out more of web audio, especially LFO
@@ -11,11 +11,10 @@ TECH STEPS:
   -explore limits of mobile webapp background consistency
 FURTHER STEPS:
   -real-time loop updates
-  -instaparse! >
+  -instaparse! >>
   -build language
   -synth controls
-  -visual interfaces (esp. on/off grid)
-  "
+  -visual interfaces (esp. on/off grid)"
   (:require-macros [hiccups.core :as h])
   (:require [domina :as dom]
             [domina.xpath :as xp]
@@ -25,40 +24,24 @@ FURTHER STEPS:
             [cljs.reader :refer [read-string]]
             [cljs.looperscript.audio :as audio]
             [cljs.looperscript.ui :as ui]
-            ))
+            [cljs.looperscript.interpret :as interp]))
 
 (js* "var L = cljs.looperscript.looperscript;")
 
 (defn log [x] (.log js/console x))
 
-;;  <label for="sound-text">sounds: [dbhkrs]</label>
-;;  <textarea class="text-area" id="sound-text" autocomplete="on">k 0</textarea><br />
-
-
-
-
-
-
-
-
 ;;;;;;;;;;
 
-
-
 (def ctx audio/ctx)
-
 (def rhythm (atom nill))
 (def sounds (atom nill))
 (def volumes (atom nill))
 (def note-queue (atom []))
 (def playing-interval (atom nill))
-
 (def queue-time-interval-seconds 1)
 (def queue-time-extra 0.5)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 (defn num-or-ratio [s]
   (if-let [[_ n d] (re-find #"([^/]+)/([^/]+)" s)]

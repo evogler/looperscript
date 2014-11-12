@@ -10,14 +10,25 @@
                  [domina "1.0.3-SNAPSHOT"]
                  [hiccups "0.3.0"]
                  [org.clojars.magomimmo/shoreleave-remote-ring "0.3.1-SNAPSHOT"]
-                 [org.clojars.magomimmo/shoreleave-remote "0.3.1-SNAPSHOT"]]
+                 [org.clojars.magomimmo/shoreleave-remote "0.3.1-SNAPSHOT"]
+                 [com.lucasbradstreet/instaparse-cljs "1.3.4.2"
+                       :exclusions [org.clojure/clojure]]]
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-ring "0.8.13"]
-            [lein-externs "0.1.3"]]
+            [lein-externs "0.1.3"]
+;;            [lein-git-deps "0.0.1-SNAPSHOT"]
+            ]
+;;  :git-dependencies [["https://github.com/lbradstreet/instaparse-cljs.git"]]
+
   :ring {:handler looperscript.remotes/app}
   :cljsbuild {:builds
-              [{:source-paths ["src/cljs"]
-                :compiler {:output-to "resources/public/js/looperscript.js"
-                           :optimizations :whitespace
-                           :pretty-print true
-                           :externs ["externs/externs.js"]}}]})
+              {:fat {:source-paths ["src/cljs"]
+                     :compiler {:output-to "resources/public/js/looperscript.js"
+                                :optimizations :whitespace
+                                :pretty-print true
+                                :externs ["externs/externs.js"]}}
+               :thin {:source-paths ["src/cljs"]
+                     :compiler {:output-to "resources/public/js/looperscript.js"
+                                :optimizations :advanced
+                                :pretty-print false
+                                :externs ["externs/externs.js"]}}}})

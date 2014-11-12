@@ -6,7 +6,9 @@ var TopLevel = {
 "createBufferSource" : function () {},
 "createGain" : function () {},
 "createOscillator" : function () {},
+"currentTime" : function () {},
 "decodeAudioData" : function () {},
+"document" : function () {},
 "log" : function () {},
 "open" : function () {},
 "response" : function () {},
@@ -14,5 +16,6 @@ var TopLevel = {
 "setInterval" : function () {},
 "start" : function () {},
 "stop" : function () {},
+"write" : function () {},
 "XMLHttpRequest" : function () {}
 }
