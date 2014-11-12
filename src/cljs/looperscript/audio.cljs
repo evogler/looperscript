@@ -44,9 +44,6 @@
     (.stop s))
   (reset! pending-sounds #{}))
 
-
-
-
 (defn play-tone [freq start-time dur vol]
   (let [osc (.createOscillator ctx)
         gain (.createGain ctx)]

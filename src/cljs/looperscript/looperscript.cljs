@@ -1,19 +1,21 @@
 (ns cljs.looperscript.looperscript
 "UPCOMING STEPS:
   -fix pending-notes / stop issue
-  -multiple parts
+  -multiple parts!
   -pitched samples?
   -compensate for sample attack delays
+  -try real-time bpm slider
+  -random #1 / random #2 !!!
 TECH STEPS:
   -check out more of web audio, especially LFO
   -iOS compatibility
   -mp3 caching
   -explore limits of mobile webapp background consistency
 FURTHER STEPS:
+  -daytime / nighttime mode
   -real-time loop updates
-  -instaparse! >>
-  -build language
-  -synth controls
+  -synth controls (pan?)
+  -templating for beginners
   -visual interfaces (esp. on/off grid)"
   (:require-macros [hiccups.core :as h])
   (:require [domina :as dom]
@@ -23,12 +25,19 @@ FURTHER STEPS:
             [shoreleave.remotes.http-rpc :refer [remote-callback]]
             [cljs.reader :refer [read-string]]
             [cljs.looperscript.audio :as audio]
-            [cljs.looperscript.ui :as ui]
-            [cljs.looperscript.interpret :as interp]))
+            ;; [cljs.looperscript.ui :as ui]
+            [cljs.looperscript.interpret :as parse]))
 
-(js* "var L = cljs.looperscript.looperscript;")
+(js* "var L = cljs.looperscript.looperscript")
 
-(defn log [x] (.log js/console x))
+#_(defn log [x]
+  (.log js/console x))
+
+(defn log [& args]
+  (->> (apply str (conj (vec args) \newline))
+      (dom/append! (dom/by-id "console"))))
+
+
 
 ;;;;;;;;;;
 
@@ -41,81 +50,75 @@ FURTHER STEPS:
 (def queue-time-interval-seconds 1)
 (def queue-time-extra 0.5)
 
+(def default-loop-text
+  "part 1
+rhythm 30/240 2 3 1 2 1
+sounds k 0 s 3.14
+volumes 1 0.3 0.3")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn num-or-ratio [s]
-  (if-let [[_ n d] (re-find #"([^/]+)/([^/]+)" s)]
-    [:ratio (read-string n) (read-string d)]
-    (read-string s)))
+(defn now []
+  (aget audio/ctx "currentTime"))
 
-(defn string->numbers [s]
-  (->> s
-       (re-seq #"(-?[0-9./]+)")
-       (map first)
-       (map num-or-ratio)))
+(defn put-text-in-get [s]
+  (let [preface (-> js/document .-location .-pathname)]
+   (.pushState js/history (js/Object.) "" (str preface s))))
 
-(defn process-rhythm-ratios [v]
-  (loop [accum []
-         rem (string->numbers v)
-         num 1 den 1]
-    (if (empty? rem) accum
-        (let [n (first rem)]
-          (if (vector? n)
-            (let [[_ nu de] n]
-              (recur accum (rest rem) (* nu num) (* de den)))
-            (recur (conj accum (* (/ num den) n)) (rest rem) num den))))))
+(defn text->link []
+  (let [text (-> "looper-text"
+                 dom/by-id dom/value
+                 js/escape)]
+    (put-text-in-get (str "?loop=" text))))
 
-(defn update-rhythm! []
-  (let [rhythm-text (dom/value (dom/by-id "rhythm-text"))
-        new-rhythm (process-rhythm-ratios rhythm-text)]
-    (if (< 0 (count new-rhythm))
-      (reset! rhythm new-rhythm))))
+(defn get-text-from-get []
+  (->> js/document .-location .-search
+       js/unescape))
+
+(defn set-loop-text [s]
+  (-> "looper-text" dom/by-id
+      (dom/set-value! s)))
+
+(defn load-link->text []
+  ;; \s\S includes newlines, unlike "."
+  (let [get-text (re-find #"^\?loop=([\s\S]*)" (get-text-from-get))
+        loop-text (if get-text
+                    (last get-text)
+                    default-loop-text)]
+    (set-loop-text loop-text)))
+
+(load-link->text)
 
 (defn note->freq [n]
   (* 261.625565
      (Math/pow 2 (/ n 12))))
 
-(defn ratio->freq [[ _ n d]]
-  (* 261.625565 (/ n d)))
+(defn ratio->freq [r]
+  (* 261.625565 r))
 
-(defn token->ratio [s]
-  (if-let [r (re-seq #"([0-9.-]+)/([0-9.-]+)" s)]
-    (let [[_ n d] (first r)]
-      [:ratio (read-string n) (read-string d)])))
+(def part-defaults
+  {:sounds [[:drum-code "h"]]
+   :rhythm [1]
+   :volumes [1]
+   })
 
-(defn token->number [s]
-  (if-let [n (re-seq #"[0-9.-]+" s)]
-    (read-string (first n))))
-
-(defn process-sound-token [s]
-  (some #(% s)
-        [audio/drum-codes
-         token->ratio
-         token->number]))
-
-(defn string->sounds [s]
-  (->> s
-       (re-seq #"[kshdbr]|[0-9./-]+")
-       (map process-sound-token)))
-
-(defn update-sounds! []
-  (let [sound-text (-> "sound-text" dom/by-id dom/value)
-        new-sounds (string->sounds sound-text)]
-    (if (< 0 (count new-sounds))
-      (reset! sounds new-sounds))))
-
-
-
-(defn update-volumes! []
-  (let [volume-text (-> "volume-text" dom/by-id dom/value)
-        new-volumes (string->numbers volume-text)]
-    (if (< 0 (count new-volumes))
-      (reset! volumes new-volumes))))
 
 (defn update-parts! []
-  (update-rhythm!)
-  (update-sounds!)
-  (update-volumes!))
+  (let [parts-text (-> "looper-text" dom/by-id dom/value)
+        start-time (now)
+        part (-> parts-text
+                 parse/looper-parse
+                 (#(do (.log js/console (str %)) %))
+                 parse/looper-transform
+                 (#(do (.log js/console (str %)) %))
+                 first)
+        parse-time (- (now) start-time)]
+    (log part)
+    (log (str "Parse time: " parse-time))
+    (doseq [[a k] [[sounds :sounds]
+                   [rhythm :rhythm]
+                   [volumes :volumes]]]
+      (reset! a (get part k (get part-defaults k))))))
 
 (defn next-note-fn []
   (let [cycle-len (if @rhythm (count @rhythm)
@@ -147,6 +150,12 @@ FURTHER STEPS:
   (kill-playing-interval)
   (audio/kill-sounds))
 
+(defn maybe-random2 [x]
+  (if (and (vector? x)
+           (= (first x) :random2))
+    (rand-nth (rest x))
+    x))
+
 (defn play []
   (stop)
   (update-parts!)
@@ -157,17 +166,25 @@ FURTHER STEPS:
           (let [now (aget ctx "currentTime")
                 end-time (+ now queue-time-extra
                             queue-time-interval-seconds)]
-            (log [:time now :time-pos @time-pos :end-time end-time])
+            #_(log [:time now :time-pos @time-pos :end-time end-time])
             (while (< @time-pos end-time)
               (let [n (next-note)
                     dur (:dur n)
                     sound (:sound n)
+                    vol (:vol n)
+                    [dur sound vol] (map maybe-random2 [dur sound vol])
                     sound (cond (number? sound)
                                 (note->freq sound)
-                                (vector? sound)
-                                (ratio->freq sound)
+
+                                (and (vector? sound) (= (first sound) :ratio))
+                                (-> sound second ratio->freq)
+
+                                (and (vector? sound) (= (first sound) :drum-code))
+                                (-> sound second audio/drum-codes)
+
                                 :else sound)
-                    vol (:vol n)]
+
+                    ]
                 (if (number? sound)
                   (audio/play-tone sound @time-pos dur vol)
                   (audio/play-sound sound @time-pos vol))
@@ -180,8 +197,20 @@ FURTHER STEPS:
 
 (ev/listen! (dom/by-id "play") :click (fn [e] (play)))
 (ev/listen! (dom/by-id "stop") :click (fn [e] (stop)))
-(ev/listen! (dom/by-id "rhythm-text") :update (fn [e] (update-rhythm!)))
+(ev/listen! (dom/by-id "link") :click (fn [e] (text->link)))
+
+
 
 (audio/load-some-drums)
 
-                                        ; end comment
+#_(->>
+ [:s [:part "1" [:aspect [:aspect-keyword "volumes"] [:data [:number "1"] [:number "0.3"] [:number "0.3"]]]]]
+ parse/looper-transform
+ str
+ (.log js/console)
+ )
+
+(.log js/console
+      (str
+       (parse/parse-data [1 2 3]))
+      )

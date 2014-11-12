@@ -1,16 +1,6 @@
 (ns cljs.looperscript.interpret
-  (:require [domina :as dom]
-            [domina.xpath :as xp]
-            [hiccups.runtime :as hiccupsrt]
-            [domina.events :as ev]
-            [shoreleave.remotes.http-rpc :refer [remote-callback]]
-            [cljs.reader :refer [read-string]]
-            [cljs.looperscript.audio :as audio]
-            [cljs.looperscript.ui :as ui]
-            [instaparse.core :as insta]
-            ))
-
-
+  (:require [cljs.reader :refer [read-string]]
+            [instaparse.core :as insta]))
 
 (defn string->number [s]
   (read-string
@@ -31,39 +21,54 @@
                   :else x))
           n ops))
 
-(defn parse-data [v]
-  (loop [accum [] rem v ops []]
-    (if (empty? rem) accum
-        (let [x (first rem)]
-          (cond (and (vector? x) (= (first x) :fraction))
-                (recur accum
-                       (rest rem)
-                       (conj ops [:* (second x)]))
+(defn choose-random1s [v]
+  (map (fn [x]
+         (if (and (vector? x) (= (first x) :random1))
+           (rand-nth (rest x))
+           x)) v))
 
-                (and (vector? x) (= (first x) :plus))
-                (recur accum
-                       (rest rem)
-                       (conj ops [:+ (second x)]))
+(defn parse-data
+  ([v] (parse-data v []))
+  ([v pre-ops]
+     (loop [accum [] rem v ops pre-ops]
+       (if (empty? rem) accum
+           (let [x (first rem)]
+             (cond (and (vector? x) (= (first x) :fraction))
+                   (recur accum
+                          (rest rem)
+                          (conj ops [:* (second x)]))
 
-                (and (vector? x) (= (first x) :ratio))
-                (recur (conj accum (apply-ops (second x) ops))
-                       (rest rem)
-                       ops)
+                   (and (vector? x) (= (first x) :plus))
+                   (recur accum
+                          (rest rem)
+                          (conj ops [:+ (second x)]))
 
-                (number? x)
-                (recur (conj accum (apply-ops x ops))
-                       (rest rem)
-                       ops)
+                   ;; (and (vector? x) (= (first x) :ratio))
+                   ;; (recur (conj accum (apply-ops (second x) ops))
+                   ;;        (rest rem)
+                   ;;        ops)
 
-                :else
-                (recur (conj accum x)
-                       (rest rem)
-                       ops))))))
+                   (number? x)
+                   (recur (conj accum (apply-ops x ops))
+                          (rest rem)
+                          ops)
+
+                   (and (vector? x) (= (first x) :random2))
+                   (recur
+                    (conj accum (into [:random2] (map #(apply-ops % ops) (rest x)) ))
+                    (rest rem)
+                    ops)
+
+                   :else
+                   (recur (conj accum x)
+                          (rest rem)
+                          ops)))))))
 
 (def looper-parse
     (insta/parser
      "s = <version?> <sp?> part*
-      vec = <'['> (data-element | vec | sp) + <']'>
+      vec = <'['> vec-code* (data-element | vec | sp) + <']'>
+      vec-code = ('random1' | 'random2')
       version = <'version'> sp #'[0-9.]+'
       part = part-title <sp> aspect*
       <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
@@ -81,10 +86,12 @@
 (defn looper-transform [parse-tree]
  (insta/transform
   {:number string->number
-   :data #(parse-data %&)
+   :data #(parse-data (choose-random1s %&))
    :ratio (fn [n d] [:ratio (/ n d)])
    :fraction (fn [n d] [:fraction (/ n d)])
    :aspect-keyword keyword
+   :vec vector
+   :vec-code keyword
    :part (fn [part-name & aspects]
            (reduce
             (fn [m [_ k v]]
@@ -92,8 +99,3 @@
             {:name part-name} aspects))
    :s vector}
   parse-tree))
-
-
-(-> "part 1 sounds 0 2 4 rhythm 2 3"
-    looper-parse looper-transform
-    (#(js/alert %)))
