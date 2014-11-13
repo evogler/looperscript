@@ -3,6 +3,14 @@
 (def ctx (js/AudioContext.))
 (def pending-sounds (atom #{}))
 (def drums ["kick" "snare" "hat" "sidestick" "ride-bell" "ride"])
+(def sample-lags
+  {"kick" 0.026 ; could be later
+   "snare" 0.0293
+   "hat"  0.0267
+   "sidestick" 0.0245
+   "ride-bell" 0.0395
+   "ride" 0.0443})
+
 (def drum-codes
   {"k" "kick" "s" "snare" "h" "hat"
    "d" "sidestick" "b" "ride-bell" "r" "ride"})
