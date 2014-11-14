@@ -52,7 +52,7 @@
     (.stop s))
   (reset! pending-sounds #{}))
 
-(defn play-tone [freq start-time dur vol]
+(defn play-tone [freq start-time dur vol pan]
   (let [osc (.createOscillator ctx)
         gain (.createGain ctx)]
     (aset osc "type" "sawtooth")
@@ -60,5 +60,29 @@
     (aset (aget gain "gain") "value" (* 0.1 vol))
     (.connect osc gain)
     (.connect gain (aget ctx "destination"))
+    (.start osc start-time)
+    (.stop osc (+ start-time dur))))
+
+(defn play-filtered-tone [freq start-time dur vol pan filt-freq]
+  (let [osc (.createOscillator ctx)
+        gain (.createGain ctx)
+        q 0.25
+        filter (.createBiquadFilter ctx)
+         panner (.createPanner ctx)
+        ]
+    (aset osc "type" "sawtooth")
+    (aset (aget osc "frequency") "value" freq)
+    (aset (aget gain "gain") "value" (* 0.1 vol))
+
+    (aset (aget filter "frequency") "value" filt-freq)
+    (aset (aget filter "Q") "value" q)
+
+    (aset panner "panningModel" "equalpower")
+    (.setPosition panner pan 0 0)
+
+    (.connect osc gain)
+    (.connect gain filter)
+    (.connect filter panner)
+    (.connect panner (aget ctx "destination"))
     (.start osc start-time)
     (.stop osc (+ start-time dur))))

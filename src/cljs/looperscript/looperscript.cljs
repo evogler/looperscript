@@ -2,7 +2,6 @@
 "UPCOMING STEPS:
   -fix pending-notes / stop issue
   -pitched samples?
-  -compensate for sample attack delays
   -try real-time bpm slider
 TECH STEPS:
   -check out more of web audio, especially LFO
@@ -32,8 +31,9 @@ FURTHER STEPS:
 (js* "var L = cljs.looperscript.looperscript")
 
 (defn log [& args]
-  (->> (apply str (conj (vec args) \newline))
-      (dom/append! (dom/by-id "console"))))
+  (let [s (apply str (conj (vec args) \newline))]
+    (dom/append! (dom/by-id "console") s)
+    (.log js/console s)))
 
 ;;;;;;;;;;
 
@@ -57,9 +57,12 @@ FURTHER STEPS:
 
 ;; XXX: use these!
 (def part-defaults
-  {:sounds [[:drum-code "h"]]
-   :rhythm [1]
-   :volumes [1]})
+  {:sound [[:drum-code "r"]]
+   :time [1]
+   :volume [1]
+   :filter [nil]
+   :pan [0]
+   })
 
 (defn update-parts! []
   (let [parts-text (-> "looper-text" dom/by-id dom/value)
@@ -68,23 +71,24 @@ FURTHER STEPS:
                       parse/looper-parse
                       parse/looper-transform)
         parse-time (- (now) start-time)]
-    (log (str "Parse time: " parse-time))
+    (log "Parse time: " parse-time)
     (reset! parts new-parts)))
 
+(defn maybe-random2 [x]
+  (if (and (vector? x)
+           (= (first x) :random2))
+    (rand-nth (rest x))
+    x))
+
 (defn next-note-fn [part start-time]
-  (let [[rhythm sounds volumes] (map #(get part %) [:rhythm :sounds :volumes])
-        cycle-len (if rhythm (count rhythm)
-                      (+ 3 (rand-int 8)))
-        sound-cycle (if sounds sounds
-                        (for [i (range cycle-len)]
-                          (rand-nth (keys @audio/buffers))))
-        dur-cycle (if rhythm rhythm
-                      (for [i (range cycle-len)]
-                        (rand-nth [1 2 3])))
-        vol-cycle (if volumes volumes [1])
-        dur-len (count dur-cycle)
-        vol-len (count vol-cycle)
-        sound-len (count sound-cycle)
+  (let [elements [:time :sound :volume :filter :pan]
+        _ (doseq [e elements])
+        element-vecs (zipmap elements
+                             (map #(or (get part %)
+                                       (get part-defaults %))
+                                  elements))
+        lengths (zipmap elements
+                        (map #(count (element-vecs %)) elements))
         pos (atom 0)
         time-pos (atom start-time)]
     (fn
@@ -92,16 +96,15 @@ FURTHER STEPS:
          (if (= command :time-pos)
            @time-pos))
       ([]
-          (let [dur (nth dur-cycle (mod @pos dur-len))
-                sound (nth sound-cycle (mod @pos sound-len))
-                vol (nth vol-cycle (mod @pos vol-len))
-                [dur sound vol] (map maybe-random2 [dur sound vol])
-                res {:dur dur
-                     :sound sound
-                     :vol vol
-                     :start-time @time-pos}]
+         (let [res (zipmap elements (map
+                                     #(-> (nth (get element-vecs %)
+                                               (mod @pos (get lengths %)))
+                                          maybe-random2)
+                                     elements))
+               res (-> res
+                       (assoc :start-time @time-pos))]
             (swap! pos inc)
-            (swap! time-pos + dur)
+            (swap! time-pos + (res :time))
             res)))))
 
 (defn kill-playing-interval []
@@ -113,12 +116,6 @@ FURTHER STEPS:
   (kill-playing-interval)
   (audio/kill-sounds))
 
-(defn maybe-random2 [x]
-  (if (and (vector? x)
-           (= (first x) :random2))
-    (rand-nth (rest x))
-    x))
-
 (defn schedule-note [n]
   (let [sound (:sound n)
         sound (cond (number? sound)
@@ -128,15 +125,20 @@ FURTHER STEPS:
                     (and (vector? sound) (= (first sound) :drum-code))
                     (-> sound second audio/drum-codes)
                     :else sound)
-        dur (:dur n)
-        vol (:vol n)
+        dur (:time n)
+        vol (:volume n)
+        filter (:filter n)
         start-time (:start-time n)
+        pan (:pan n)
+        _ (log pan)
         start-time (if-let [l (get audio/sample-lags sound)]
                      (- start-time l)
                      start-time)
         ]
     (if (number? sound)
-      (audio/play-tone sound start-time dur vol)
+      (if filter
+        (audio/play-filtered-tone sound start-time dur vol pan filter)
+        (audio/play-tone sound start-time dur pan vol))
       (audio/play-sound sound start-time vol))))
 
 (defn play []
@@ -165,7 +167,3 @@ FURTHER STEPS:
 (ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))
 
 (audio/load-some-drums)
-
-(log (get audio/sample-lags 2
-
-          ))

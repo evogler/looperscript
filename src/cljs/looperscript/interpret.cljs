@@ -73,7 +73,7 @@
       part = part-title <sp> aspect*
       <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
       aspect = aspect-keyword data
-      aspect-keyword = ('rhythm' | 'sounds' | 'volumes')
+      aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan')
       data = data-element+
       <data-element> = (ratio | fraction | plus | number | sp | vec | drum-code)
       drum-code = #'[bcdhkrs]'
