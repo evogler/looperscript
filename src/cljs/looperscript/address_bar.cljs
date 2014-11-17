@@ -2,13 +2,16 @@
   (:require [domina :as dom]))
 
 (def default-loop-text
-  "Part 1
-rhythm 30/240 2 3 1 2 1
-sounds k 0 s 3.14
-volumes 1 0.3 0.3")
+"part 1
+time 30/240 2 3 1 2 1
+sound k 0 s 3.14
+  volume 1 0.3 0.3")
 
 (defn put-text-in-get [s]
-  (let [preface (-> js/document .-location .-pathname)]
+  (let [preface (-> (aget js/document "location")
+                    (aget "pathname"))
+        ;; (-> js/document .-location .-pathname)
+        ]
    (.pushState js/history (js/Object.) "" (str preface s))))
 
 (defn text->link []
@@ -20,7 +23,9 @@ volumes 1 0.3 0.3")
     (put-text-in-get (str "?loop=" text))))
 
 (defn get-text-from-get []
-  (let [t (->> js/document .-location .-search
+  (let [t (->> ;; js/document .-location .-search
+           (-> (aget js/document "location")
+               (aget "search"))
                (re-find #"^\?loop=([\s\S]*)")  ; \s\S includes newlines, unlike "."
                last)]
     (if t (-> t js/unescape

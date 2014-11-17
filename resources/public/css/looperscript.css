@@ -1,10 +1,17 @@
 body, textarea {
-    background-color: black;
     color: white;
+    background-color: black;
 }
 
 textarea {
+    background-color: #222222;
     height: 250px;
-    width: 350px;
+    width: 500px;
+    border: #999999
+
+}
+
+#console {
+
 
 }

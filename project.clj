@@ -24,11 +24,13 @@
   :cljsbuild {:builds
               {:fat {:source-paths ["src/cljs"]
                      :compiler {:output-to "resources/public/js/looperscript.js"
+                                :output-dir "resources/public/js"
                                 :optimizations :whitespace
                                 :pretty-print true
+ ;                               :source-map "resources/public/js/looperscript.js.map"
                                 :externs ["externs/externs.js"]}}
                :thin {:source-paths ["src/cljs"]
                      :compiler {:output-to "resources/public/js/looperscript.js"
                                 :optimizations :advanced
-                                :pretty-print false
+                                :pretty-print true #_false
                                 :externs ["externs/externs.js"]}}}})

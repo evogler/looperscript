@@ -1,7 +1,7 @@
 (ns cljs.looperscript.audio)
 
 (def ctx (js/AudioContext.))
-(def pending-sounds (atom #{}))
+#_(def pending-sounds (atom #{}))
 (def drums ["kick" "snare" "hat" "sidestick" "ride-bell" "ride"])
 (def sample-lags
   {"kick" 0.026 ; could be later
@@ -10,7 +10,6 @@
    "sidestick" 0.0245
    "ride-bell" 0.0395
    "ride" 0.0443})
-
 (def drum-codes
   {"k" "kick" "s" "snare" "h" "hat"
    "d" "sidestick" "b" "ride-bell" "r" "ride"})
@@ -37,20 +36,16 @@
   (doseq [d drums]
     (load-file d)))
 
-(defn play-sound [fname start-time vol]
+(defn play-sound [fname start-time vol rate]
   (let [buf-s (.createBufferSource ctx)
         gain (.createGain ctx)]
     (aset buf-s "buffer" (get @buffers fname))
+    (aset (aget buf-s "playbackRate") "value" rate)
     (aset (aget gain "gain") "value" vol)
     (.connect buf-s gain)
     (.connect gain (aget ctx "destination"))
     (.start buf-s start-time)
-    #_(swap! pending-sounds conj buf-s)))
-
-(defn kill-sounds []
-  (doseq [s @pending-sounds]
-    (.stop s))
-  (reset! pending-sounds #{}))
+    buf-s))
 
 (defn play-tone [freq start-time dur vol pan]
   (let [osc (.createOscillator ctx)
@@ -61,7 +56,9 @@
     (.connect osc gain)
     (.connect gain (aget ctx "destination"))
     (.start osc start-time)
-    (.stop osc (+ start-time dur))))
+    (.stop osc (+ start-time dur))
+    osc))
+
 
 (defn play-filtered-tone [freq start-time dur vol pan filt-freq]
   (let [osc (.createOscillator ctx)
@@ -85,4 +82,5 @@
     (.connect filter panner)
     (.connect panner (aget ctx "destination"))
     (.start osc start-time)
-    (.stop osc (+ start-time dur))))
+    (.stop osc (+ start-time dur))
+    osc))
