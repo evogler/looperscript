@@ -197,8 +197,16 @@
               (scale-nth scale (+ d p)))]
     res))
 
+(defn mild-shuffle [v]
+  (let [[degree col] v]
+    (->> col
+         (map-indexed (fn [idx n] [(+ idx (rand-int (dec degree))) n]))
+         sort
+         (map second))))
+
 (def vec-fns
   {:shuffle (partial apply shuffle)
+   :mild-shuffle mild-shuffle
    :rand rand-nth*
    :take take*
    :rand-range rand-range
@@ -248,7 +256,7 @@
       vec = ('#' | '@')? <('[' | '(')> vec-code? (data-element | vec | sp)+ <(']' | ')')>
       vec-code = ('rand' | 'shuffle' | 'range' | 'rand-range' | 'rand-exp-range' | 'take' |
                   'in' | 'repeatedly' | 'x' | 'weight' | 'walk' | 'cycle' | 'log' | 'pattern' |
-                  'weight2' | 'rand-hold')
+                  'weight2' | 'rand-hold' | 'mild-shuffle')
       part = part-title <sp> aspect*
       <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
       aspect = aspect-keyword data
