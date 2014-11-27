@@ -25,5 +25,6 @@ var TopLevel = {
 "start" : function () {},
 "stop" : function () {},
 "unescape" : function () {},
+"webkitAudioContext" : function () {},
 "XMLHttpRequest" : function () {}
 }

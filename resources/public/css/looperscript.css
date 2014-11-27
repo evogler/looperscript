@@ -1,9 +1,9 @@
-body, textarea {
+body, .text-area {
     color: white;
     background-color: black;
 }
 
-textarea {
+.text-area {
     background-color: #222222;
     height: 250px;
     width: 500px;

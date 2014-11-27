@@ -2,10 +2,11 @@
   (:require [domina :as dom]))
 
 (def default-loop-text
-"part 1
-time 30/240 2 3 1 2 1
-sound k 0 s 3.14
-  volume 1 0.3 0.3")
+"bpm 237/.5
+part click sound h time 2 volume .5 1
+part form sound b rate .3 .6 .6 .6 time 8/1 8
+part beat sound d
+time 2 3 2 3 2 2 3" )
 
 (defn put-text-in-get [s]
   (let [preface (-> (aget js/document "location")
@@ -16,7 +17,9 @@ sound k 0 s 3.14
 
 (defn text->link []
   (let [text (-> "looper-text"
-                 dom/by-id dom/value
+                 dom/by-id
+                 dom/value
+                 ;; (aget "textContent")
                  js/btoa
                  js/escape
                  )]
@@ -33,6 +36,7 @@ sound k 0 s 3.14
 
 (defn set-loop-text [s]
   (-> "looper-text" dom/by-id
+      ;; (aset "textContent" s)
       (dom/set-value! s)))
 
 (defn load-link->text [default]

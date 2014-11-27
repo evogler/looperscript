@@ -1,6 +1,13 @@
 (ns cljs.looperscript.audio)
 
-(def ctx (js/AudioContext.))
+(defn log [& args]
+  (.log js/console (apply str args)))
+
+; (if (js* "typeof AudioContext === function"))
+(def ctx (js/webkitAudioContext.))
+(if (nil? ctx) (def ctx (js/AudioContext.)))
+
+
 #_(def pending-sounds (atom #{}))
 (def drums ["kick" "snare" "hat" "sidestick" "ride-bell" "ride"])
 (def sample-lags
@@ -47,10 +54,10 @@
     (.start buf-s start-time)
     buf-s))
 
-(defn play-tone [freq start-time dur vol pan]
+(defn play-tone [freq start-time dur vol pan synth overtones]
   (let [osc (.createOscillator ctx)
         gain (.createGain ctx)]
-    (aset osc "type" "sawtooth")
+    (aset osc "type" synth)
     (aset (aget osc "frequency") "value" freq)
     (aset (aget gain "gain") "value" (* 0.1 vol))
     (.connect osc gain)
@@ -60,15 +67,13 @@
     osc))
 
 
-(defn play-filtered-tone [freq start-time dur vol pan filt-freq]
-  (let [osc (.createOscillator ctx)
+(defn play-filtered-tone [freq start-time dur vol pan filt-freq synth overtones]
+  (let [oscs (for [i (range (count overtones))] (.createOscillator ctx))
         gain (.createGain ctx)
         q 0.25
         filter (.createBiquadFilter ctx)
-         panner (.createPanner ctx)
-        ]
-    (aset osc "type" "sawtooth")
-    (aset (aget osc "frequency") "value" freq)
+         panner (.createPanner ctx)]
+
     (aset (aget gain "gain") "value" (* 0.1 vol))
 
     (aset (aget filter "frequency") "value" filt-freq)
@@ -77,10 +82,14 @@
     (aset panner "panningModel" "equalpower")
     (.setPosition panner pan 0 0)
 
-    (.connect osc gain)
     (.connect gain filter)
     (.connect filter panner)
     (.connect panner (aget ctx "destination"))
-    (.start osc start-time)
-    (.stop osc (+ start-time dur))
-    osc))
+
+    (doseq [[osc o] (map vector oscs overtones)]
+      (aset osc "type" synth)
+      (aset (aget osc "frequency") "value" (* o freq))
+      (.connect osc gain)
+      (.start osc start-time)
+      (.stop osc (+ start-time dur)))
+    oscs))

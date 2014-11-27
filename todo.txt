@@ -1,30 +1,42 @@
+OVERHAUL:
+  -modules:
+    -parser / transformer
+    -vec-functions
+    -tree-traverser
+    -note-scheduler
+    -looperscript ui stuff
+    -Q: where to put event hook for live syntax / graphics?
+  -vec-functions have proper parameters?
+  -lazy-evaluation fully realized
+  -pipeline for optional nodes
+  -tree-traverser can turn vector or fn-result vector into queue
+  -transpose-ops apply to fn results
 UPCOMING STEPS:
+  -figure out vectors & splicing better
+    -next-note-fn should iterate when given vector
+  -peek ahead at next note's time to properly calculate note durs re. time+
   -mute
+  -reparse input in background (which means encorporate core.async?)
   -parser versions
-  -standardize functions (i.e. improve maybe-random2)
   -pause?
   -abstract node pipeline for playing notes
   -proper handling of bpm changes
   -proof-of-concept for user input
 LANGUAGE FEATURES:
-  -basic spec for lazy eval
-  -code for stitching results into vector
-  -rests / offset / phase change / some way to not start at the beginning!
-  -squish/stretch!
-  -4v5
-  -repeat (gotta figure out lazy)
+  -note option for hz
+  -legato/staccato!
   -think through expansive aproach to language
-  -comments!
-  -just interval aliasing (e.g. 4 = 5:4)
+  -sections defined within part, and then each aspect is defined per section
+  -triggers (when time hits !, pitch moves)
   -parts with separate rhythm controlling steps
   -integrate nested rhythmic layers
+  -onoff? odds?
+  -chords (ala looper1's ",") (+ figure out logical questions)
   -arbitrary nos of multiple cycles to alter aspect (e.g. not just <p> and <tr>)
   -develop proper language for randoms, cycles, repeats, etc
     -random x3 x3 -> AAA BBB CCC vs ABC ABC ABC?
-    -weighted random
     -parts based on other random parts (e.g. random note harmonized in tenths)
       -with octave reducing
-    -shuffle (/ mild shuffle)
     -random but avoid what something else is doing
     -random for transpose, tuplet, etc...
   -variables / quotes / aliasing (hopefully less hacky than {$a:} from looper 1
@@ -33,9 +45,18 @@ LANGUAGE FEATURES:
   -chord changes?
     -chords? voice leading?
     -pitches as intervals of chords
-  -meta-level working on whole parts
   -modes for entering simultaneous aspects (eg. "time & sound")
-
+  -logical operators (AND / OR 2 rhythms)
+  -continuous-note mode
+SECTION-LEVEL LANGUAGE IDEAS:
+  -divide source file into
+    -global params & configuration (default)
+    -aspects (floating definitions of parts)
+    -parts (already defined, set of aspects with defaults available)
+    -section
+      -groups of parts?
+      -maybe sections is length plus each part and where to start in the part?
+      -default program behavior is just go forever if sections aren't defined?
 TECH STEPS:
   -functioning REPL!
   -mp3 caching!
@@ -43,8 +64,9 @@ TECH STEPS:
   -appache gzip .JS
   -check out more of web audio, especially LFO
   -iOS compatibility
-  -see if webkit.audiocontext is easy to accept
   -explore limits of mobile webapp background consistency
+  -user upload samples
+  -reuse nodes when applicable?
 INTERFACE:
   -tutorial mode!!!!!!
   -make console less of an eyesore
@@ -52,8 +74,8 @@ INTERFACE:
   -daytime / nighttime mode
   -basic syntax highlighting (possibly via content-editable)
   -real-time syntax highlighting!!!
-
   -options panel?
+  -keypress commands for things like mute
 FURTHER STEPS:
   -real-time loop updates
   -user samples / more samples
@@ -71,3 +93,5 @@ FURTHER STEPS:
   -MIDI and/or screen keyboard play-along (with intonation)
   -record playback to loop form (to capture randoms)
   -record to WAV/MP3
+  -output to staff notation (maybe in browser, in real-time?)
+  -split into more modular libraries, to use looper also with overtone

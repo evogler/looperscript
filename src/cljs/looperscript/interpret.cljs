@@ -52,6 +52,7 @@
                           (rest rem)
                           (conj ops [:* (second x)]))
 
+
                    (and (vector? x) (= (first x) :plus))
                    (recur accum
                           (rest rem)
@@ -87,28 +88,37 @@
 (defn mark-for-splice [col]
   (with-meta (vec col) {:splice true}))
 
-(defn shuffle* [v]
-  (-> v
-      shuffle
-      mark-for-splice))
 
 (defn splice-fn [f]
   (fn [v]
-    (mark-for-splice (apply f v))
-    #_(-> v
-        ((partial apply f))
-        mark-for-splice)))
+    (mark-for-splice (apply f v))))
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; looper functions ;;
+;;;;;;;;;;;;;;;;;;;;;;
+
+(defn shuffle* [v]
+  (-> v first
+      shuffle))
 
 (defn range* [v]
   (-> v
-      ((partial apply range))
-      mark-for-splice))
+      ((partial apply range))))
 
 (defn rand-range [v]
   (let [[floor ceil] v]
     (-> (rand)
         (* (- ceil floor))
         (+ floor))))
+
+(defn rand-nth* [v]
+  (rand-nth (first v)))
+
+(defn take* [v]
+  (let [n (first v)
+        v (second v)]
+    #_(log :take* :n n :v v :res (take n v))
+    (take n v)))
 
 (defn rand-exp-range [v]
   (let [[floor ceil exp] v]
@@ -122,39 +132,131 @@
         (repeat n (/ d n)))
       mark-for-splice))
 
+;; XXX: Minor lameness: rand-weighted-zip zips so rand-weighted can unzip.
+(defn rand-weighted [v]
+  (let [[vs ws] (apply map vector (partition 2 v))
+        cum-ws (reductions + 0 ws)
+        sum (last cum-ws)
+        r (* (rand) sum)]
+    (some #(if (< (nth cum-ws %) r) (nth vs %))
+          (range (dec (count vs)) -1 -1))))
+
+(defn rand-weighted-zip [v]
+  (let [[vs ws] (take 2 v)]
+    (rand-weighted (interleave vs ws))))
+
+(defn rand-hold [v]
+  (let [[odds-of-change options] (take 2 v)
+        current-choice (atom (if (fn? options)
+                               (options)
+                               (rand-nth options)))]
+    (fn []
+      (if (< odds-of-change (rand))
+        @current-choice
+        (reset! current-choice
+                (if (fn? options)
+                  (options)
+                  (rand-nth (remove #(= @current-choice %) options))))))))
+
+(defn rand-walk [v]
+  (let [rand-int-range (fn [a b] (+ a (rand-int (inc (- b a)))))
+        max-step (first v)
+        v (second v)
+        max-v (dec (count v))
+        pos (atom (rand-int (count v)))]
+    (fn []
+      (nth v (reset! pos
+                (rand-int-range (max 0 (- @pos max-step))
+                                (min max-v (+ @pos max-step))))))))
+
+(defn in [v]
+  (let [t (first v)
+        v (second v)
+        factor (/ t (reduce + v))]
+    (map #(* factor %) v)))
+
+(defn repeat* [v]
+  (let [n (first v)
+        v (second v)]
+    (repeat n v)))
+
+(defn cycle* [v]
+  (let [v (first v)
+        pos (atom -1)
+        v-len (count v)]
+    (fn [] (nth v (swap! pos #(mod (inc %) v-len))))))
+
+(defn scale-nth [scale degree]
+  (+ (* 12 (Math/floor (/ degree (count scale))))
+     (nth scale (mod degree (count scale)))))
+
+(defn scale-pattern [v]
+  (let [[scale pattern degrees] v
+        res (for [d degrees
+                  p pattern]
+              (scale-nth scale (+ d p)))]
+    res))
+
 (def vec-fns
-  {:shuffle (splice-fn shuffle)
-;   :random1 rand-nth*
+  {:shuffle (partial apply shuffle)
+   :rand rand-nth*
+   :take take*
    :rand-range rand-range
    :rand-exp-range rand-exp-range
-   :range range*})
+   :rand-hold rand-hold
+   :weight rand-weighted
+   :weight2 rand-weighted-zip
+   :walk rand-walk
+   :in in
+   :x repeat*
+   :repeatedly (partial apply repeatedly)
+   :range range*
+   :cycle cycle*
+   :pattern scale-pattern
+   :splice mark-for-splice
+;   :log log*
+   })
 
 (defn process-vec [& v]
-  (log :process-vec v)
-  (->> v
-       splice
-       (#(if-let [f (get vec-fns (first %))]
-           (f (rest %)) %))
-       #_splice))
+  (cond
+   ;; [rand ...
+   (get vec-fns (first v))
+   ((get vec-fns (first v)) (rest v))
+   ;; #[rand ...
+   (and (= (first v) "#") (get vec-fns (second v)))
+   #((get vec-fns (second v)) (rest (rest v)))
+   ;; @[rand]
+   (and (= (first v) "@") (get vec-fns (second v)))
+   (mark-for-splice ((get vec-fns (second v)) (rest (rest v))))
+   ;; @[1 2 3
+   (= (first v) "@")
+   (mark-for-splice (rest v))
+   ;; [1 2 3 ...
+   :else
+   v))
+
 
 ;; note: the lesson with shuffle and range was that I probably need to just write my own
 ;; tree walker.
 
-(def -looper-parse
-    (insta/parser
-     "s = <sp*> params <sp*> part*
+(def grammar
+ "s = <sp*> params <sp*> part*
       params = param*
       <param> = (bpm | version) <sp*>
-      bpm = <'bpm'> <sp?> (number | fraction)
+      bpm = <'bpm'> <sp?> (number | fraction | vec)
       version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
-      vec = <'['> vec-code? (data-element | vec | sp)+ <']'>
-      vec-code = ('random1' | 'random2' | 'shuffle' | 'range' | 'rand-range' | 'rand-exp-range')
+      vec = ('#' | '@')? <('[' | '(')> vec-code? (data-element | vec | sp)+ <(']' | ')')>
+      vec-code = ('rand' | 'shuffle' | 'range' | 'rand-range' | 'rand-exp-range' | 'take' |
+                  'in' | 'repeatedly' | 'x' | 'weight' | 'walk' | 'cycle' | 'log' | 'pattern' |
+                  'weight2' | 'rand-hold')
       part = part-title <sp> aspect*
       <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
       aspect = aspect-keyword data
-      aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate')
+      aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |                              'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
       data = data-element+
-      <data-element> = (ratio | fraction | plus | number | sp | vec | drum-code | data-shorthand)
+      <data-element> = (ratio | fraction | plus | number | sp | vec | drum-code |
+                        data-shorthand | synth-code)
+       <synth-code> = ('sawtooth' | 'sine' | 'square' | 'triangle')
       <data-shorthand> = v
       v = number <'v'> number
       drum-code = #'[bcdhkrs]'
@@ -162,7 +264,11 @@
       fraction = number <'/'> number
       ratio = number <':'> number
       number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
-      <sp> = <#'[\\s,]+'>"))
+      <sp> = <#'[\\s,]+'>")
+
+
+(def -looper-parse
+    (insta/parser grammar))
 
 (defn looper-parse [s]
   (-looper-parse s)
@@ -206,5 +312,5 @@
             (fn [m [_ k v]]
               (assoc m k v))
             {:name part-name} aspects))
-   :s vector}
-  parse-tree))
+    :s vector}
+   parse-tree))

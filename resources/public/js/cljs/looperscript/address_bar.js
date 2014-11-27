@@ -3,7 +3,7 @@ goog.provide('cljs.looperscript.address_bar');
 goog.require('cljs.core');
 goog.require('domina');
 goog.require('domina');
-cljs.looperscript.address_bar.default_loop_text = "part 1\ntime 30/240 2 3 1 2 1\nsound k 0 s 3.14\n  volume 1 0.3 0.3";
+cljs.looperscript.address_bar.default_loop_text = "bpm 237/.5\npart click sound h time 2 volume .5 1\npart form sound b rate .3 .6 .6 .6 time 8/1 8\npart beat sound d\ntime 2 3 2 3 2 2 3";
 cljs.looperscript.address_bar.put_text_in_get = (function put_text_in_get(s){var preface = ((document["location"])["pathname"]);return history.pushState((new Object()),"",(''+cljs.core.str.cljs$core$IFn$_invoke$arity$1(preface)+cljs.core.str.cljs$core$IFn$_invoke$arity$1(s)));
 });
 cljs.looperscript.address_bar.text__GT_link = (function text__GT_link(){var text = escape(btoa(domina.value.call(null,domina.by_id.call(null,"looper-text"))));return cljs.looperscript.address_bar.put_text_in_get.call(null,("?loop="+cljs.core.str.cljs$core$IFn$_invoke$arity$1(text)));
