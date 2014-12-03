@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths ["src/clj" "src/cljs"]
   :dependencies [[org.clojure/clojure "1.6.0"]
+                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  [compojure "1.2.1"]
                  [org.clojure/clojurescript "0.0-2371"]
                  [domina "1.0.3-SNAPSHOT"]
@@ -27,7 +28,7 @@
                                 :output-dir "resources/public/js"
                                 :optimizations :whitespace
                                 :pretty-print true
- ;                               :source-map "resources/public/js/looperscript.js.map"
+                                ;; :source-map "resources/public/js/looperscript.js.map"
                                 :externs ["externs/externs.js"]}}
                :thin {:source-paths ["src/cljs"]
                      :compiler {:output-to "resources/public/js/looperscript.js"

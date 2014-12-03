@@ -130,7 +130,7 @@
 (defn handle-v-keyword [& v]
   (-> (let [[n d] v]
         (repeat n (/ d n)))
-      mark-for-splice))
+      #_mark-for-splice))
 
 ;; XXX: Minor lameness: rand-weighted-zip zips so rand-weighted can unzip.
 (defn rand-weighted [v]
@@ -197,12 +197,28 @@
               (scale-nth scale (+ d p)))]
     res))
 
+(defn scale-range [[floor ceil scale]]
+    (let [a (dec (int (/ floor 12)))
+          b (inc (inc (/ ceil 12)))]
+      (->> (for [o (range a b)
+                 s scale]
+             (+ (* 12 o) s))
+           (filter #(<= floor % ceil)))))
+
+(defn scale-range-sweep [[floor ceil scale]]
+  (let [sr (vec (scale-range [floor ceil scale]))]
+    (into sr (-> sr reverse rest drop-last))))
+
 (defn mild-shuffle [v]
   (let [[degree col] v]
     (->> col
          (map-indexed (fn [idx n] [(+ idx (rand-int (dec degree))) n]))
          sort
          (map second))))
+
+(defn log* [v]
+  (log v)
+  v)
 
 (def vec-fns
   {:shuffle (partial apply shuffle)
@@ -221,8 +237,11 @@
    :range range*
    :cycle cycle*
    :pattern scale-pattern
+   :scale-range scale-range
+   :scale-range-sweep scale-range-sweep
    :splice mark-for-splice
-;   :log log*
+   :flatten flatten
+   :log log*
    })
 
 (defn process-vec [& v]
@@ -256,7 +275,8 @@
       vec = ('#' | '@')? <('[' | '(')> vec-code? (data-element | vec | sp)+ <(']' | ')')>
       vec-code = ('rand' | 'shuffle' | 'range' | 'rand-range' | 'rand-exp-range' | 'take' |
                   'in' | 'repeatedly' | 'x' | 'weight' | 'walk' | 'cycle' | 'log' | 'pattern' |
-                  'weight2' | 'rand-hold' | 'mild-shuffle')
+                  'weight2' | 'rand-hold' | 'mild-shuffle' | 'flatten' | 'log' |
+                  'scale-range' | 'scale-range-sweep')
       part = part-title <sp> aspect*
       <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
       aspect = aspect-keyword data

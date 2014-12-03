@@ -1,6 +1,7 @@
 (ns cljs.looperscript.looperscript
 
   ;; (:require-macros [hiccups.core :as h])
+  (:require-macros [cljs.core.async.macros :as a])
   (:require [cljs.looperscript.address-bar :as get]
             [domina :as dom]
             ;; [domina.xpath :as xp]
@@ -9,8 +10,11 @@
             [instaparse.core :as insta]
             ;; [shoreleave.remotes.http-rpc :refer [remote-callback]]
             [cljs.reader :refer [read-string]]
+            ;; [cljs.core.async :as a]
             [cljs.looperscript.audio :as audio]
-            [cljs.looperscript.interpret :as parse]))
+            [cljs.looperscript.interpret :as parse]
+            [cljs.looperscript.iterator :as iter]))
+
 
 (js* "var L = cljs.looperscript.looperscript")
 
@@ -25,26 +29,13 @@
 
 ;;;;;;;;;;
 
+
 (def ctx audio/ctx)
-(def note-queue (atom []))
 (def playing-interval (atom nil))
 (def queue-time-interval 1) ; seconds
 (def queue-time-extra 1.5)
-;(def parts (atom {}))
 (def params (atom {}))
 (def sounding-notes (atom {}))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn now []
-  (aget audio/ctx "currentTime"))
-
-(defn note->freq [n]
-  (* 261.625565
-     (Math/pow 2 (/ n 12))))
-
-(defn ratio->freq [r]
-  (* 261.625565 r))
-
 (def part-defaults
   {:sound [[:drum-code "r"]]
    :synth ["sine"]
@@ -58,6 +49,17 @@
    :time+ [0]
    :mute [1]
    :skip [1]})
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn now [] (aget audio/ctx "currentTime"))
+
+(defn note->freq [n] (* 261.625565 (Math/pow 2 (/ n 12))))
+
+(defn ratio->freq [r] (* 261.625565 r))
+
+(defn dethunk [x]
+  (if (fn? x) (x) x))
 
 (defn get-looper-text []
   (-> "looper-text"
@@ -82,42 +84,6 @@
         (reset! params new-params)
         parts))))
 
-(defn dethunk [x]
-  (if (fn? x) (x) x))
-
-(defn next-note-fn [part start-time]
-  (let [elements [:time :sound :volume :filter :pan :rate :synth :overtones
-                  :time+ :mute :skip]
-        _ (doseq [e elements])
-        element-vecs (zipmap elements
-                             (map #(or (get part %) (get part-defaults %))
-                                  elements))
-        lengths (zipmap elements (map #(count (element-vecs %)) elements))
-        pos (atom 0)
-        time-pos (atom (+ start-time
-                          (* (if-let [bpm (:bpm @params)] bpm 1)
-                             (first (get part :offset [0])))))]
-    (fn ([command]
-          (if (= command :time-pos)
-           @time-pos))
-      ([]
-         (loop [] ;; XXX: always skipping freezes program!!!
-           (let [res (zipmap elements
-                             (map #(-> (nth (get element-vecs %)
-                                            (mod @pos (get lengths %)))
-                                       dethunk)
-                                  elements))
-                 res (-> res
-                         (assoc :start-time @time-pos)
-                         (update-in [:time] * (if-let [bpm (:bpm @params)] bpm 1))
-                         (update-in [:time+] * (if-let [bpm (:bpm @params)] bpm 1)))]
-             (swap! pos inc)
-             (if (>= 0 (res :skip))
-               (recur)
-               (do
-                 (swap! time-pos + (res :time))
-                 res))))))))
-
 (defn kill-playing-interval []
   (when @playing-interval
     (js/clearInterval @playing-interval)
@@ -132,12 +98,39 @@
   (kill-playing-interval)
   (kill-sounds))
 
-(def sounding-counter (atom 0))
+(def add-note-to-sounding-notes
+  (let [sounding-counter (atom 0)]
+    (fn [n node]
+      (let [id (swap! sounding-counter inc)]
+        (swap! sounding-notes assoc id node)
+        (aset node "onended" (fn [] (swap! sounding-notes dissoc id)))))))
 
-(defn add-note-to-sounding-notes [n node]
-  (let [id (swap! sounding-counter inc)]
-    (swap! sounding-notes assoc id node)
-    (aset node "onended" (fn [] (swap! sounding-notes dissoc id)))))
+(defn next-note-fn [part start-time]
+  (let [elements [:time :sound :volume :filter :pan :rate :synth :overtones
+                  :time+ :mute :skip]
+        iterators (zipmap elements
+                          (map #(iter/iterator
+                                 (or (get part %) (get part-defaults %)))
+                               elements))
+        time-pos (atom (+ start-time
+                          (* (if-let [bpm (:bpm @params)] bpm 1)
+                             (first (get part :offset [0])))))]
+    (fn
+      ([command]
+         (if (= command :time-pos)
+           @time-pos))
+      ([]
+        (loop []
+          (let [res (-> (zipmap elements (map #((get iterators %)) elements))
+                        (assoc :start-time @time-pos)
+                        (assoc :overtones [1])
+                        (update-in [:time] * (if-let [bpm (:bpm @params)] bpm 1))
+                        (update-in [:time+] * (if-let [bpm (:bpm @params)] bpm 1)))]
+            (if (>= 0 (res :skip))
+              (recur)
+              (do (swap! time-pos + (res :time))
+                  #_(log :end-of-nnfn res)
+                  res))))))))
 
 (defn schedule-note [n]
   (let [sound (:sound n)
@@ -164,7 +157,6 @@
                  (audio/play-filtered-tone sound start-time dur vol pan filter synth overtones)
                  (audio/play-tone          sound start-time dur vol pan synth overtones))
                (audio/play-sound sound start-time vol rate))]
-    #_(log (count node))
     (doseq [i (if (coll? node) node [node])]
       (add-note-to-sounding-notes [n (rand)] i))))
 
@@ -204,3 +196,5 @@
 (ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))
 
 (audio/load-some-drums)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

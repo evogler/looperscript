@@ -12,6 +12,7 @@ OVERHAUL:
   -tree-traverser can turn vector or fn-result vector into queue
   -transpose-ops apply to fn results
 UPCOMING STEPS:
+  -fraction etc ops apply to function results!!
   -figure out vectors & splicing better
     -next-note-fn should iterate when given vector
   -peek ahead at next note's time to properly calculate note durs re. time+
