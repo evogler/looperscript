@@ -42,7 +42,6 @@
 
 (defn parse-data
   ([v] (parse-data v []))
-
   ([v pre-ops]
      (loop [accum [] rem v ops pre-ops]
        (if (empty? rem) accum
@@ -62,12 +61,6 @@
                    (recur (conj accum (apply-ops x ops))
                           (rest rem)
                           ops)
-
-                   (and (vector? x) (= (first x) :random2))
-                   (recur
-                    (conj accum (into [:random2] (map #(apply-ops % ops) (rest x)) ))
-                    (rest rem)
-                    ops)
 
                    :else
                    (recur (conj accum x)
@@ -282,18 +275,18 @@
       aspect = aspect-keyword data
       aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |                              'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
       data = data-element+
-      <data-element> = (ratio | fraction | plus | number | sp | vec | drum-code |
+      <data-element> = (ratio | modifier | number | sp | vec | drum-code |
                         data-shorthand | synth-code)
-       <synth-code> = ('sawtooth' | 'sine' | 'square' | 'triangle')
+      <synth-code> = ('sawtooth' | 'sine' | 'square' | 'triangle')
       <data-shorthand> = v
       v = number <'v'> number
       drum-code = #'[bcdhkrs]'
-      plus = <'+'> sp* (number | ratio)
+      modifier = (plus | fraction)
+      plus = <'+'> sp* (number | ratio | vec)
       fraction = number <'/'> number
       ratio = number <':'> number
       number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
       <sp> = <#'[\\s,]+'>")
-
 
 (def -looper-parse
     (insta/parser grammar))
@@ -311,27 +304,17 @@
   ;;   )
   )
 
-
-
 (defn looper-transform [parse-tree]
   (insta/transform
    {:number string->number
-    :data
-    #(-> %&
-;         choose-random1s
-         splice
-         parse-data)
+    :data #(-> %& splice #_parse-data)
     :ratio (fn [n d] (ratio->note (/ n d)))
     :fraction (fn [n d] [:fraction (/ n d)])
     :aspect-keyword keyword
     :bpm (fn [x] [:bpm (/ 60 (if (vector? x) (last x) x))])
-    :params
-;;    (fn [& args] args)
-;;    ([:version "0.2.1"] [:bpm 460])
-    (fn [& p] (reduce (fn [m [k v]]
+    :params (fn [& p] (reduce (fn [m [k v]]
                                (assoc m k v))
-                           {}
-                           p))
+                           {} p))
     :v handle-v-keyword
     :vec process-vec
     :vec-code keyword

@@ -1,7 +1,7 @@
 (ns cljs.looperscript.looperscript
 
   ;; (:require-macros [hiccups.core :as h])
-  (:require-macros [cljs.core.async.macros :as a])
+  ;; (:require-macros [cljs.core.async.macros :as a])
   (:require [cljs.looperscript.address-bar :as get]
             [domina :as dom]
             ;; [domina.xpath :as xp]
@@ -13,22 +13,12 @@
             ;; [cljs.core.async :as a]
             [cljs.looperscript.audio :as audio]
             [cljs.looperscript.interpret :as parse]
-            [cljs.looperscript.iterator :as iter]))
-
+            [cljs.looperscript.iterator :as iter]
+            [cljs.looperscript.logging :refer [log log->]]))
 
 (js* "var L = cljs.looperscript.looperscript")
 
-(defn log [& args]
-  (let [s (apply str (conj (vec args) \newline))]
-    (dom/append! (dom/by-id "console") (str s "<p />"))
-    (.log js/console s)))
-
-(defn log-> [& args]
-  (do (apply log args)
-      (first args)))
-
 ;;;;;;;;;;
-
 
 (def ctx audio/ctx)
 (def playing-interval (atom nil))
