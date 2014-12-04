@@ -281,7 +281,8 @@
       <data-shorthand> = v
       v = number <'v'> number
       drum-code = #'[bcdhkrs]'
-      modifier = (plus | fraction)
+      modifier = (plus | fraction | mod-code)
+      mod-code = 'just'
       plus = <'+'> sp* (number | ratio | vec)
       fraction = number <'/'> number
       ratio = number <':'> number
@@ -323,5 +324,6 @@
             (fn [m [_ k v]]
               (assoc m k v))
             {:name part-name} aspects))
+    :mod-code (comp vector keyword)
     :s vector}
    parse-tree))

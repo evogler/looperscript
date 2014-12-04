@@ -32,12 +32,37 @@
 (defn modifier? [x]
   (and (vector? x) (= (first x) :modifier)))
 
+;; namespace for modifiers?
+;; modifiers should have binary switch options, e.g. typing justify twice shouldn't justify
+;; the result of the first justify
+
+(defn justify [n]
+  (let [p (mod n 12)
+        oct (- n p)
+        [num den] (get {0 [1 1]
+                        1 [16 15]
+                        2 [9 8]
+                        3 [6 5]
+                        4 [5 4]
+                        5 [4 3]
+                        6 [45 32]
+                        7 [3 2]
+                        8 [8 5]
+                        9 [5 3]
+                        10 [16 9]
+                        11 [15 8]}
+                       p)]
+    (if-not num n
+            (+ oct (* 12 (/ (Math/log (/ num den))
+                            (Math/log 2)))))))
+
 (defn apply-modifiers [mods x]
   (reduce
    (fn [n m]
-     (condp = (first m)
+     (condp = (keyword (first m)) ; XXX: make parser do this
        :fraction (* n (second m))
-       :plus (+ n (second m))))
+       :plus (+ n (second m))
+       :just (justify n)))
    x mods))
 
 (defn iterator [v]
