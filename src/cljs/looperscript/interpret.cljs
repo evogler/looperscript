@@ -13,7 +13,7 @@
 
 (defn string->number [s]
   (read-string
-   (if-let [n (re-find #"-(^\.[0-9]+)" s)]
+   (if-let [n (re-find #"-0*(\.[0-9]+)" s)]
      (str "-0" (second n))
      (if-let [n (re-find #"(^\.[0-9]+)" s)]
        (str "0" (second n))

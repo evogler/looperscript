@@ -9,8 +9,6 @@ OVERHAUL:
   -vec-functions have proper parameters?
   -lazy-evaluation fully realized
   -pipeline for optional nodes
-  -tree-traverser can turn vector or fn-result vector into queue
-  -transpose-ops apply to fn results
 UPCOMING STEPS:
   -standardize mode concept. (e.g.'s: tuning, hz)
     -push/pop modes?

@@ -44,7 +44,8 @@
 
 (defn now [] (aget audio/ctx "currentTime"))
 
-(defn note->freq [n] (* 261.625565 (Math/pow 2 (/ n 12))))
+(defn note->freq [n]
+  (* 261.625565 (Math/pow 2 (/ n 12))))
 
 (defn ratio->freq [r] (* 261.625565 r))
 
@@ -64,10 +65,10 @@
         parts (parse/-looper-parse parts-text)]
     (if (insta/failure? parts)
       parts
-      (let [; _ (log :tree parts \newline)
+      (let [ _ (log :tree parts \newline)
             parse-time (- (now) start-time)
             parts (parse/looper-transform parts)
-            ; _ (log :transformed parts \newline)
+             _ (log :transformed parts \newline)
             transform-time (- (now) start-time)
             [new-params parts] ((juxt first rest) parts)]
         (log "Parse time: (" parse-time ") " transform-time)
@@ -124,15 +125,17 @@
 
 (defn schedule-note [n]
   (let [sound (:sound n)
+        _ (log :sched1 sound (+ 1 sound))
         sound (cond (number? sound)
                     (note->freq sound)
                     (and (vector? sound) (= (first sound) :ratio))
                     (-> sound second ratio->freq)
-                    (and (vector? soddddund) (= (first sound) :hz))
+                    (and (vector? sound) (= (first sound) :hz))
                     (-> sound second)
                     (and (vector? sound) (= (first sound) :drum-code))
                     (-> sound second audio/drum-codes)
                     :else sound)
+        _ (log :sched2 sound (+ sound 1))
         dur (- (:time n) (:time+ n))
         vol (:volume n)
         filter (:filter n)
@@ -167,6 +170,13 @@
       (let [time-pos (+ 0.05 (now))  ; leave time for samples to start early
             next-note-fns (for [p parts]
                             (next-note-fn p time-pos))
+            ;; experiment-start-time (now)
+            ;; _ (do
+            ;;     (log :next-note-fns-experiment)
+            ;;     (doseq [n next-note-fns
+            ;;             i (range 1000)]
+            ;;       (n))
+            ;;     (log :result (- (now) experiment-start-time)))
             queue-notes (fn []
                           (let [end-time (+ (now) queue-time-extra queue-time-interval)]
                             (doseq [n-n-fn next-note-fns]
