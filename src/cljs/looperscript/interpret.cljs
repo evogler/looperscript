@@ -23,49 +23,9 @@
            (str "-" (last n))
            s))))))
 
-(defn apply-ops [n ops]
-  (reduce (fn [x [op v]]
-            (cond (= op :*) (* x v)
-                  (= op :+) (+ x v)
-                  :else x))
-          n ops))
-
-(defn choose-random1s [v]
-  (map (fn [x]
-         (if (and (vector? x) (= (first x) :random1))
-           (rand-nth (rest x))
-           x)) v))
-
 (defn ratio->note [r]
   (-> (/ (Math/log r) (Math/log 2))
       (* 12)))
-
-(defn parse-data
-  ([v] (parse-data v []))
-  ([v pre-ops]
-     (loop [accum [] rem v ops pre-ops]
-       (if (empty? rem) accum
-           (let [x (first rem)]
-             (cond (and (vector? x) (= (first x) :fraction))
-                   (recur accum
-                          (rest rem)
-                          (conj ops [:* (second x)]))
-
-
-                   (and (vector? x) (= (first x) :plus))
-                   (recur accum
-                          (rest rem)
-                          (conj ops [:+ (second x)]))
-
-                   (number? x)
-                   (recur (conj accum (apply-ops x ops))
-                          (rest rem)
-                          ops)
-
-                   :else
-                   (recur (conj accum x)
-                          (rest rem)
-                          ops)))))))
 
 (defn splice [v]
   (-> (loop [accum [] rem v]
@@ -179,6 +139,9 @@
         v-len (count v)]
     (fn [] (nth v (swap! pos #(mod (inc %) v-len))))))
 
+(defn nth* [[idx v]]
+  (nth v idx))
+
 (defn scale-nth [scale degree]
   (+ (* 12 (Math/floor (/ degree (count scale))))
      (nth scale (mod degree (count scale)))))
@@ -213,6 +176,25 @@
   (log v)
   v)
 
+(defn memo [[id fn]]
+  (let [memo-f (memoize (fn [cnt] (fn)))
+        counts (atom {})]
+    (fn [])
+    )
+  )
+
+(defn bass-fret [[string fret]]
+  (+ -17 fret (* -5 (dec string))))
+
+(def user-vars (atom {}))
+
+(defn set-user-var [k v]
+  (swap! user-vars assoc k v))
+
+(defn user [[k default]]
+  (fn []
+    (get @user-vars k default)))
+
 (def vec-fns
   {:shuffle (partial apply shuffle)
    :mild-shuffle mild-shuffle
@@ -235,16 +217,29 @@
    :splice mark-for-splice
    :flatten flatten
    :log log*
-   })
+   :user user
+   :bass-fret bass-fret
+   :nth nth*})
+
+(declare process-vec)
+
+(defn maybe-process-vec [x]
+  (cond (vector? x)
+        (process-vec x)
+        (fn? x)
+        (x)
+        :else
+        x))
 
 (defn process-vec [& v]
+  (log v)
   (cond
    ;; [rand ...
    (get vec-fns (first v))
    ((get vec-fns (first v)) (rest v))
    ;; #[rand ...
    (and (= (first v) "#") (get vec-fns (second v)))
-   #((get vec-fns (second v)) (rest (rest v)))
+   #((get vec-fns (second v)) (map maybe-process-vec (rest (rest v))))
    ;; @[rand]
    (and (= (first v) "@") (get vec-fns (second v)))
    (mark-for-splice ((get vec-fns (second v)) (rest (rest v))))
@@ -265,17 +260,17 @@
       <param> = (bpm | version) <sp*>
       bpm = <'bpm'> <sp?> (number | fraction | vec)
       version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
-      vec = ('#' | '@')? <('[' | '(')> vec-code? (data-element | vec | sp)+ <(']' | ')')>
+      vec = ('#' | '@' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp)+ <(']' | ')')>
       vec-code = ('rand' | 'shuffle' | 'range' | 'rand-range' | 'rand-exp-range' | 'take' |
                   'in' | 'repeatedly' | 'x' | 'weight' | 'walk' | 'cycle' | 'log' | 'pattern' |
                   'weight2' | 'rand-hold' | 'mild-shuffle' | 'flatten' | 'log' |
-                  'scale-range' | 'scale-range-sweep')
+                  'scale-range' | 'scale-range-sweep' | 'user' | 'bass-fret' | 'nth')
       part = part-title <sp> aspect*
       <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
       aspect = aspect-keyword data
       aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |                              'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
       data = data-element+
-      <data-element> = (ratio | modifier | number | sp | vec | drum-code |
+      <data-element> = (ratio | hz | modifier | number | sp | vec | drum-code |
                         data-shorthand | synth-code)
       <synth-code> = ('sawtooth' | 'sine' | 'square' | 'triangle')
       <data-shorthand> = v
@@ -285,6 +280,7 @@
       mod-code = 'just'
       plus = <'+'> sp* (number | ratio | vec)
       fraction = number <'/'> number
+      hz = (number | vec) sp* 'hz'
       ratio = number <':'> number
       number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
       <sp> = <#'[\\s,]+'>")
@@ -308,7 +304,7 @@
 (defn looper-transform [parse-tree]
   (insta/transform
    {:number string->number
-    :data #(-> %& splice #_parse-data)
+    :data #(-> %& splice)
     :ratio (fn [n d] (ratio->note (/ n d)))
     :fraction (fn [n d] [:fraction (/ n d)])
     :aspect-keyword keyword

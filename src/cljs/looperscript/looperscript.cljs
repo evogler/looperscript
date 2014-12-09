@@ -64,10 +64,10 @@
         parts (parse/-looper-parse parts-text)]
     (if (insta/failure? parts)
       parts
-      (let [ _ (log :tree parts \newline)
+      (let [; _ (log :tree parts \newline)
             parse-time (- (now) start-time)
             parts (parse/looper-transform parts)
-             _ (log :transformed parts \newline)
+            ; _ (log :transformed parts \newline)
             transform-time (- (now) start-time)
             [new-params parts] ((juxt first rest) parts)]
         (log "Parse time: (" parse-time ") " transform-time)
@@ -128,6 +128,8 @@
                     (note->freq sound)
                     (and (vector? sound) (= (first sound) :ratio))
                     (-> sound second ratio->freq)
+                    (and (vector? soddddund) (= (first sound) :hz))
+                    (-> sound second)
                     (and (vector? sound) (= (first sound) :drum-code))
                     (-> sound second audio/drum-codes)
                     :else sound)

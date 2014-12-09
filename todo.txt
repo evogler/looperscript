@@ -12,9 +12,8 @@ OVERHAUL:
   -tree-traverser can turn vector or fn-result vector into queue
   -transpose-ops apply to fn results
 UPCOMING STEPS:
-  -fraction etc ops apply to function results!!
-  -figure out vectors & splicing better
-    -next-note-fn should iterate when given vector
+  -standardize mode concept. (e.g.'s: tuning, hz)
+    -push/pop modes?
   -peek ahead at next note's time to properly calculate note durs re. time+
   -mute
   -reparse input in background (which means encorporate core.async?)
@@ -24,7 +23,8 @@ UPCOMING STEPS:
   -proper handling of bpm changes
   -proof-of-concept for user input
 LANGUAGE FEATURES:
-  -note option for hz
+  -try-repeatedly (try x times or until pred is matched (or score is maximized))
+    -especially for use with coprime
   -legato/staccato!
   -think through expansive aproach to language
   -sections defined within part, and then each aspect is defined per section
@@ -40,7 +40,7 @@ LANGUAGE FEATURES:
       -with octave reducing
     -random but avoid what something else is doing
     -random for transpose, tuplet, etc...
-  -variables / quotes / aliasing (hopefully less hacky than {$a:} from looper 1
+  -variables / quotes / aliasing (hopefully less hacky than {$a:} from looper
     -same definition for multiple parts with differences notated
     -dataflow / spreadsheetish approach?
   -chord changes?

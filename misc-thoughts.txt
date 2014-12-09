@@ -1,0 +1,35 @@
+FUNCTION SCENARIOS:
+(repeatedly 6 #(rand (3 4 5)))
+-repeatedly called once; rand called 6 times total
+
+(repeat 6 (rand (3 4 5)))
+-rand called once; repeat called once.
+
+#(repeatedly 6 #(rand (3 4 5)))
+-repeatedly called each time; rand called 6 times within each repeatedly
+
+#(repeat 6 #(rand (3 4 5)))
+-maybe: rand called once within each repeat?
+-maybe: repeat returns uncalled rand function?
+
+#(repeat 6 (rand (3 4 5)))
+-maybe: rand fixed after very first call?
+-maybe: everything within #() called every time? (more clojure-esque)
+
+If, ala the latter options in the last two examples, anything anywhere within a #() is re-evaluated every time, then how to specifiy that something is to be evaluated only once ever?
+-#(repeat 6 !(rand (3 4 5))) perhaps?
+It seems like it has to be a character added before the parenthesis, to be symmetrical
+with #().
+-Alternately, using let: (let [x (rand (3 4 5))] #(repeat 6 x))?
+
+Q: Do you ever need more than 3 levels?
+-#(repeatedly 3
+              #(repeatedly 3
+                           #(repeatedly 3 (rand [3 4 5]))))
+I think that works fine. But what about:
+-#(repeatedly !(rand (1 2 #(rand 3 4))) #(rand (4 5 6))) ?
+Should the inner #(rand 3 4) be dethunked?
+No, because (rand 3 4) withouth the # would work fine.
+
+Does it matter if there's an inner ! ?
+-#(repeatedly !(rand (1 2 !(rand 3 4))) #(rand (4 5 6))) ?
