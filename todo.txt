@@ -10,6 +10,7 @@ OVERHAUL:
   -lazy-evaluation fully realized
   -pipeline for optional nodes
 UPCOMING STEPS:
+  -proper params. as well as bpm, setting for latency.
   -standardize mode concept. (e.g.'s: tuning, hz)
     -push/pop modes?
   -peek ahead at next note's time to properly calculate note durs re. time+
@@ -38,6 +39,7 @@ LANGUAGE FEATURES:
       -with octave reducing
     -random but avoid what something else is doing
     -random for transpose, tuplet, etc...
+  -let.
   -variables / quotes / aliasing (hopefully less hacky than {$a:} from looper
     -same definition for multiple parts with differences notated
     -dataflow / spreadsheetish approach?

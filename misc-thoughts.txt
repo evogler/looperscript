@@ -33,3 +33,58 @@ No, because (rand 3 4) withouth the # would work fine.
 
 Does it matter if there's an inner ! ?
 -#(repeatedly !(rand (1 2 !(rand 3 4))) #(rand (4 5 6))) ?
+
+
+
+MULTI-ASPECTS:
+Sooo..... here's my first thought about the basic scenario:
+Instead of   time 3 3 2  sound 0 7 12
+we'd have    time&sound 3 0  3 7  2 12
+or           sound & time 0 3  7 3  12 2
+or           sound, time 0,3 7,3 12,2
+or           [sound time] [0 3] [7 3] [12 2]
+or           sound & time {0 3} {7 3} {12 2}
+or           sound & time 0 3, 7 3, 12 2
+or (lol)     sound & time {:sound 0 :time 3} {:sound 7 :time 3} {:sound 12 :time 2}
+
+Maybe it's as simple as declaring every other number coming out will be sound or time?
+(And commas are used just for readability?) In this trivial case, that works fine.
+The real issue is, I want to be able to synchronize multiple aspects with the same
+function. I.e., choose each note randomly from ten fully formed notes.
+Or from several fully formed phrases!!
+Something like: sound&time #(rand [[0 3, 7 3, 12 2] [-1 1, 0 1, -6 1]])
+Gosh, does that last bit actually make sense?
+rand chooses one of the vectors, and that vector gets divied up by sound&time.
+
+What if I wanted to generate the phrases programatically?
+(repeatedly 4 #(repeatedly (rand-int 3 7) #([(rand-int -12 12) (rand [1 2 3 4])])))
+
+Actually, I think something like that might work! The tricky part would just be back to
+the vectors and functions situation. (Oy, no escaping that stuff).
+
+Would it matter if you wound up feeding the following into rand?:
+[[[0 3] [7 3] [12 2]] [[-1 1] [0 1] [-6 1]]]
+So that rand might choose [[-1 1] [0 1] [-6 1]], with each note in vectors,
+instead of just [-1 1 0 1 -6 1]?
+In theory no, right? If the iterator gets the vectory one, it'll just parse through it, same
+as anything else.
+
+At this point, I could just add other options vector processing (interleave and/or zip,
+maybe a 1 degree flatten) if needed.
+Which would allow that last function be written maybe as:
+(repeatedly 3 #(interleave (repeatedly 4 #(rand-int -12 12)) (repeatedly 4 #(rand [1 2 3 4]))))
+
+(Except that the phrase-length would have to get refered to more than once, so we're back
+to that issue. But otherwise, it works fine...)
+(Okay, just to satisfy myself, if I did introduce "let", it would look like this:)
+#(let [phrase-len (rand-int 3 7)]
+   (interleave (repeatedly phrase-len #(rand-int -12 12))
+               (repeteadly phrase-len #(rand [1 2 34 ]))))
+Gosh, am I going to have to introduce closures then? I guess there'll just have to be a map
+of symbols and values that traverses its way into the tree. Well, guess I'll have to
+give it a shot soon.
+
+Btw, would I have wanted a vector function earlier?
+(repeatedly 4
+  #(repeatedly (rand-int 3 7)
+    #(vector (rand-int -12 12) (rand [1 2 3 4]))))

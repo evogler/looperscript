@@ -22,8 +22,8 @@
 
 (def ctx audio/ctx)
 (def playing-interval (atom nil))
-(def queue-time-interval 1) ; seconds
-(def queue-time-extra 1.5)
+(def queue-time-interval 0.1) ; seconds
+(def queue-time-extra 0.1)
 (def params (atom {}))
 (def sounding-notes (atom {}))
 (def part-defaults
@@ -62,7 +62,7 @@
 (defn get-parts []
   (let [parts-text (get-looper-text)
         start-time (now)
-        parts (parse/-looper-parse parts-text)]
+        parts (parse/looper-parse parts-text)]
     (if (insta/failure? parts)
       parts
       (let [ _ (log :tree parts \newline)
@@ -125,7 +125,6 @@
 
 (defn schedule-note [n]
   (let [sound (:sound n)
-        _ (log :sched1 sound (+ 1 sound))
         sound (cond (number? sound)
                     (note->freq sound)
                     (and (vector? sound) (= (first sound) :ratio))
@@ -135,7 +134,6 @@
                     (and (vector? sound) (= (first sound) :drum-code))
                     (-> sound second audio/drum-codes)
                     :else sound)
-        _ (log :sched2 sound (+ sound 1))
         dur (- (:time n) (:time+ n))
         vol (:volume n)
         filter (:filter n)
@@ -170,13 +168,6 @@
       (let [time-pos (+ 0.05 (now))  ; leave time for samples to start early
             next-note-fns (for [p parts]
                             (next-note-fn p time-pos))
-            ;; experiment-start-time (now)
-            ;; _ (do
-            ;;     (log :next-note-fns-experiment)
-            ;;     (doseq [n next-note-fns
-            ;;             i (range 1000)]
-            ;;       (n))
-            ;;     (log :result (- (now) experiment-start-time)))
             queue-notes (fn []
                           (let [end-time (+ (now) queue-time-extra queue-time-interval)]
                             (doseq [n-n-fn next-note-fns]
