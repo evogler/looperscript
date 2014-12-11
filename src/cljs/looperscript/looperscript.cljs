@@ -26,7 +26,7 @@
 (def queue-time-extra 0.1)
 (def params (atom {}))
 (def sounding-notes (atom {}))
-(def part-defaults
+(def aspect-defaults
   {:sound [[:drum-code "r"]]
    :synth ["sine"]
    :time [1]
@@ -96,32 +96,38 @@
         (swap! sounding-notes assoc id node)
         (aset node "onended" (fn [] (swap! sounding-notes dissoc id)))))))
 
+(def aspects [:time :sound :volume :filter :pan :rate :synth :overtones :time+ :mute :skip])
+
+(defn make-iterators [part]
+  (let [part-keys (->> (keys part) (remove #(= % :name)))
+        specified-aspects (reduce into #{} part-keys)
+        non-specified-aspects (remove #(contains? specified-aspects %) aspects)]
+    (-> (zipmap part-keys (map #(iter/iterator (get part %)) part-keys))
+        (into (zipmap (map vector non-specified-aspects)
+                      (map #(iter/iterator (get aspect-defaults %)) non-specified-aspects))))))
+
 (defn next-note-fn [part start-time]
-  (let [elements [:time :sound :volume :filter :pan :rate :synth :overtones
-                  :time+ :mute :skip]
-        iterators (zipmap elements
-                          (map #(iter/iterator
-                                 (or (get part %) (get part-defaults %)))
-                               elements))
+  (let [iterators (make-iterators part)
         time-pos (atom (+ start-time
                           (* (if-let [bpm (:bpm @params)] bpm 1)
                              (first (get part :offset [0])))))]
     (fn
-      ([command]
-         (if (= command :time-pos)
-           @time-pos))
-      ([]
-        (loop []
-          (let [res (-> (zipmap elements (map #((get iterators %)) elements))
-                        (assoc :start-time @time-pos)
-                        (assoc :overtones [1])
-                        (update-in [:time] * (if-let [bpm (:bpm @params)] bpm 1))
-                        (update-in [:time+] * (if-let [bpm (:bpm @params)] bpm 1)))]
-            (if (>= 0 (res :skip))
-              (recur)
-              (do (swap! time-pos + (res :time))
-                  #_(log :end-of-nnfn res)
-                  res))))))))
+      ([command] (if (= command :time-pos) @time-pos))
+      ([] (loop []
+            (let [res-v (for [[k iter] iterators
+                              aspect k]
+                          [aspect (iter)])
+                  res (into {} res-v)
+                  res (-> res
+                          (assoc :start-time @time-pos)
+                          (assoc :overtones [1])
+                          (update-in [:time] * (if-let [bpm (:bpm @params)] bpm 1))
+                          (update-in [:time+] * (if-let [bpm (:bpm @params)] bpm 1)))]
+              (if (>= 0 (res :skip))
+                (recur)
+                (do (swap! time-pos + (res :time))
+                    #_(log :end-of-nnfn res)
+                    res))))))))
 
 (defn schedule-note [n]
   (let [sound (:sound n)
