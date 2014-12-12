@@ -267,7 +267,8 @@
                   'scale-range' | 'scale-range-sweep' | 'user' | 'bass-fret' | 'nth')
       part = part-title <sp> aspect*
       <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
-      aspect = aspect-keyword data
+      aspect = aspect-header data
+      aspect-header = aspect-keyword (sp* <'&'> sp* aspect-keyword)*
       aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |                              'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
       data = data-element+
       <data-element> = (ratio | hz | modifier | number | sp | vec | drum-code |
@@ -285,21 +286,7 @@
       number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
       <sp> = <#'[\\s,]+'>")
 
-(def -looper-parse
-    (insta/parser grammar))
-
-(defn looper-parse [s]
-  (-looper-parse s)
-  ;; (throw (js/Error. "Blah blah blah"))
-  ;; (let [res (-looper-parse s)]
-  ;;   (.log js/console res)
-  ;;   (if (insta/failure? res)
-  ;;     (throw (js/Error. "poo"))
-
-  ;;     res
-  ;;     )
-  ;;   )
-  )
+(def looper-parse (insta/parser grammar))
 
 (defn looper-transform [parse-tree]
   (insta/transform
@@ -315,6 +302,7 @@
     :v handle-v-keyword
     :vec process-vec
     :vec-code keyword
+    :aspect-header vector
     :part (fn [part-name & aspects]
            (reduce
             (fn [m [_ k v]]
@@ -324,4 +312,8 @@
     :s vector}
    parse-tree))
 
+<<<<<<< HEAD
 ;; master!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+=======
+;; multi-aspects !!!
+>>>>>>> multi-aspects
