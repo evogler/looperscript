@@ -29,7 +29,6 @@ LANGUAGE FEATURES:
   -triggers (when time hits !, pitch moves)
   -parts with separate rhythm controlling steps
   -integrate nested rhythmic layers
-  -onoff? odds?
   -chords (ala looper1's ",") (+ figure out logical questions)
   -arbitrary nos of multiple cycles to alter aspect (e.g. not just <p> and <tr>)
   -develop proper language for randoms, cycles, repeats, etc
@@ -38,15 +37,17 @@ LANGUAGE FEATURES:
       -with octave reducing
     -random but avoid what something else is doing
     -random for transpose, tuplet, etc...
+  -let
   -variables / quotes / aliasing (hopefully less hacky than {$a:} from looper
     -same definition for multiple parts with differences notated
     -dataflow / spreadsheetish approach?
   -chord changes?
     -chords? voice leading?
     -pitches as intervals of chords
-  -modes for entering simultaneous aspects (eg. "time & sound")
   -logical operators (AND / OR 2 rhythms)
   -continuous-note mode
+  -adsr
+    -envelopes within aspect of single note
 SECTION-LEVEL LANGUAGE IDEAS:
   -divide source file into
     -global params & configuration (default)
