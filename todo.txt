@@ -20,7 +20,6 @@ UPCOMING STEPS:
   -pause?
   -abstract node pipeline for playing notes
   -proper handling of bpm changes
-  -proof-of-concept for user input
 LANGUAGE FEATURES:
   -try-repeatedly (try x times or until pred is matched (or score is maximized))
     -especially for use with coprime
@@ -38,11 +37,7 @@ LANGUAGE FEATURES:
       -with octave reducing
     -random but avoid what something else is doing
     -random for transpose, tuplet, etc...
-<<<<<<< HEAD
   -let
-=======
-  -let.
->>>>>>> multi-aspects
   -variables / quotes / aliasing (hopefully less hacky than {$a:} from looper
     -same definition for multiple parts with differences notated
     -dataflow / spreadsheetish approach?
