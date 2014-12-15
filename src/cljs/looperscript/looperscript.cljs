@@ -53,10 +53,8 @@
   (if (fn? x) (x) x))
 
 (defn get-looper-text []
-  (-> "looper-text"
-      dom/by-id
-      dom/value
-      ;; (aget "textContent")
+  (-> (.getValue js/editor)
+
       parse/remove-comments))
 
 (defn get-parts []
