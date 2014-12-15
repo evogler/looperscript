@@ -97,9 +97,17 @@ var RubyHighlightRules = function() {
                     defaultToken: "string"
                 }]
             },
-             {token : "constant.numeric",
-              regex: /-?[0-9]+\.?[0-9]*|-?[0-9]*\.?[0-9]+/
+
+             {// 4v5
+                 token : "constant.numeric",
+                 regex : /[0-9]+v[0-9]+/
              },
+
+             {// number
+              token : "constant.numeric",
+              regex: /-?[0-9]+\.?[0-9]*|-?[0-9]*\.?[0-9]+(?!v)/
+             },
+
 
              {
                 token : "string.start",

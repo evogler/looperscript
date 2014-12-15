@@ -9,16 +9,15 @@ cljs.looperscript.interp_rhythms.whole_QMARK_ = (function whole_QMARK_(n){return
 });
 cljs.looperscript.interp_rhythms.ints_nth = cljs.core.memoize.call(null,(function (rhythm,n){var cums = cljs.looperscript.interp_rhythms.cumulative.call(null,rhythm);var rhythm_len = cljs.core.last.call(null,cums);var cnt = cljs.core.count.call(null,rhythm);var chorus = ((n / cnt) | (0));var chorus_start = (rhythm_len * chorus);var pos_in_chorus = cljs.core.mod.call(null,n,cnt);return (cljs.core.nth.call(null,cums,pos_in_chorus) + chorus_start);
 }));
-cljs.looperscript.interp_rhythms.rhythms_interp = (function rhythms_interp(rs,n){var r = cljs.core.last.call(null,rs);var vec__32297 = ((!(cljs.core.map_QMARK_.call(null,r)))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [r,(0)], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.get.call(null,r,new cljs.core.Keyword(null,"r","r",-471384190)),cljs.core.get.call(null,r,new cljs.core.Keyword(null,"offset","offset",296498311))], null));var r__$1 = cljs.core.nth.call(null,vec__32297,(0),null);var offset = cljs.core.nth.call(null,vec__32297,(1),null);var n__$1 = (n + offset);var rem_rs = cljs.core.drop_last.call(null,rs);var whole = cljs.looperscript.interp_rhythms.whole_QMARK_.call(null,n__$1);var res = ((cljs.core._EQ_.call(null,cljs.core.count.call(null,rs),(1)))?((whole)?cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,n__$1):cljs.looperscript.interp_rhythms.blend.call(null,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,(n__$1 | (0))),cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,((n__$1 | (0)) + (1))),cljs.core.mod.call(null,n__$1,(1)))):((whole)?rhythms_interp.call(null,rem_rs,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,n__$1)):cljs.looperscript.interp_rhythms.blend.call(null,rhythms_interp.call(null,rem_rs,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,(n__$1 | (0)))),rhythms_interp.call(null,rem_rs,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,((n__$1 | (0)) + (1)))),cljs.core.mod.call(null,n__$1,(1)))));return res;
+cljs.looperscript.interp_rhythms.rhythms_interp = (function rhythms_interp(rs,n){var r = cljs.core.last.call(null,rs);var vec__42819 = ((!(cljs.core.map_QMARK_.call(null,r)))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [r,(0)], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.get.call(null,r,new cljs.core.Keyword(null,"r","r",-471384190)),cljs.core.get.call(null,r,new cljs.core.Keyword(null,"offset","offset",296498311))], null));var r__$1 = cljs.core.nth.call(null,vec__42819,(0),null);var offset = cljs.core.nth.call(null,vec__42819,(1),null);var n__$1 = (n + offset);var rem_rs = cljs.core.drop_last.call(null,rs);var whole = cljs.looperscript.interp_rhythms.whole_QMARK_.call(null,n__$1);var res = ((cljs.core._EQ_.call(null,cljs.core.count.call(null,rs),(1)))?((whole)?cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,n__$1):cljs.looperscript.interp_rhythms.blend.call(null,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,(n__$1 | (0))),cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,((n__$1 | (0)) + (1))),cljs.core.mod.call(null,n__$1,(1)))):((whole)?rhythms_interp.call(null,rem_rs,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,n__$1)):cljs.looperscript.interp_rhythms.blend.call(null,rhythms_interp.call(null,rem_rs,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,(n__$1 | (0)))),rhythms_interp.call(null,rem_rs,cljs.looperscript.interp_rhythms.ints_nth.call(null,r__$1,((n__$1 | (0)) + (1)))),cljs.core.mod.call(null,n__$1,(1)))));return res;
 });
-cljs.looperscript.interp_rhythms.rhythms_interp.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [(1),(2)], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [(1),(2)], null)], null),(3));
 cljs.looperscript.interp_rhythms.upper_bound = (function upper_bound(f,n){var i = (1);while(true){
 if((f.call(null,i) > n))
 {return i;
 } else
 {{
-var G__32298 = (i * (2));
-i = G__32298;
+var G__42820 = (i * (2));
+i = G__42820;
 continue;
 }
 }
@@ -29,11 +28,11 @@ cljs.looperscript.interp_rhythms.binary_search = (function binary_search(f,n){va
 if(((1) >= (u_bound - l_bound)))
 {return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [l_bound,u_bound], null);
 } else
-{var new_i = cljs.looperscript.interp_rhythms.blend.call(null,l_bound,u_bound,0.5);var new_n = f.call(null,new_i);var vec__32300 = (((new_n > n))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [l_bound,new_i], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new_i,u_bound], null));var l_bound__$1 = cljs.core.nth.call(null,vec__32300,(0),null);var u_bound__$1 = cljs.core.nth.call(null,vec__32300,(1),null);{
-var G__32301 = l_bound__$1;
-var G__32302 = u_bound__$1;
-l_bound = G__32301;
-u_bound = G__32302;
+{var new_i = cljs.looperscript.interp_rhythms.blend.call(null,l_bound,u_bound,0.5);var new_n = f.call(null,new_i);var vec__42822 = (((new_n > n))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [l_bound,new_i], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new_i,u_bound], null));var l_bound__$1 = cljs.core.nth.call(null,vec__42822,(0),null);var u_bound__$1 = cljs.core.nth.call(null,vec__42822,(1),null);{
+var G__42823 = l_bound__$1;
+var G__42824 = u_bound__$1;
+l_bound = G__42823;
+u_bound = G__42824;
 continue;
 }
 }

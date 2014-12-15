@@ -17,7 +17,7 @@ instaparse.reduction.node_builders = new cljs.core.PersistentArrayMap(null, 2, [
 }),new cljs.core.Keyword(null,"hiccup","hiccup",1218876238),(function (tag,item){return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [tag,item], null);
 })], null);
 instaparse.reduction.standard_non_terminal_reduction = new cljs.core.Keyword(null,"hiccup","hiccup",1218876238);
-instaparse.reduction.apply_reduction = (function apply_reduction(f,result){var G__34732 = (((new cljs.core.Keyword(null,"reduction-type","reduction-type",-488293450).cljs$core$IFn$_invoke$arity$1(f) instanceof cljs.core.Keyword))?new cljs.core.Keyword(null,"reduction-type","reduction-type",-488293450).cljs$core$IFn$_invoke$arity$1(f).fqn:null);switch (G__34732) {
+instaparse.reduction.apply_reduction = (function apply_reduction(f,result){var G__45255 = (((new cljs.core.Keyword(null,"reduction-type","reduction-type",-488293450).cljs$core$IFn$_invoke$arity$1(f) instanceof cljs.core.Keyword))?new cljs.core.Keyword(null,"reduction-type","reduction-type",-488293450).cljs$core$IFn$_invoke$arity$1(f).fqn:null);switch (G__45255) {
 case "enlive":
 var content = instaparse.auto_flatten_seq.conj_flat.call(null,instaparse.auto_flatten_seq.EMPTY,result);return new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"tag","tag",-1290361223),new cljs.core.Keyword(null,"key","key",-1516042587).cljs$core$IFn$_invoke$arity$1(f),new cljs.core.Keyword(null,"content","content",15833224),(((cljs.core.count.call(null,content) === (0)))?null:content)], null);
 
@@ -41,16 +41,16 @@ var apply_standard_reductions__1 = (function (grammar){return apply_standard_red
 });
 var apply_standard_reductions__2 = (function (reduction_type,grammar){var temp__4124__auto__ = instaparse.reduction.reduction_types.call(null,reduction_type);if(cljs.core.truth_(temp__4124__auto__))
 {var reduction = temp__4124__auto__;return cljs.core.into.call(null,cljs.core.PersistentArrayMap.EMPTY,(function (){var iter__4379__auto__ = ((function (reduction,temp__4124__auto__){
-return (function iter__34742(s__34743){return (new cljs.core.LazySeq(null,((function (reduction,temp__4124__auto__){
-return (function (){var s__34743__$1 = s__34743;while(true){
-var temp__4126__auto__ = cljs.core.seq.call(null,s__34743__$1);if(temp__4126__auto__)
-{var s__34743__$2 = temp__4126__auto__;if(cljs.core.chunked_seq_QMARK_.call(null,s__34743__$2))
-{var c__4377__auto__ = cljs.core.chunk_first.call(null,s__34743__$2);var size__4378__auto__ = cljs.core.count.call(null,c__4377__auto__);var b__34745 = cljs.core.chunk_buffer.call(null,size__4378__auto__);if((function (){var i__34744 = (0);while(true){
-if((i__34744 < size__4378__auto__))
-{var vec__34748 = cljs.core._nth.call(null,c__4377__auto__,i__34744);var k = cljs.core.nth.call(null,vec__34748,(0),null);var v = cljs.core.nth.call(null,vec__34748,(1),null);cljs.core.chunk_append.call(null,b__34745,(cljs.core.truth_(new cljs.core.Keyword(null,"red","red",-969428204).cljs$core$IFn$_invoke$arity$1(v))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,v], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,cljs.core.assoc.call(null,v,new cljs.core.Keyword(null,"red","red",-969428204),reduction.call(null,k))], null)));
+return (function iter__45265(s__45266){return (new cljs.core.LazySeq(null,((function (reduction,temp__4124__auto__){
+return (function (){var s__45266__$1 = s__45266;while(true){
+var temp__4126__auto__ = cljs.core.seq.call(null,s__45266__$1);if(temp__4126__auto__)
+{var s__45266__$2 = temp__4126__auto__;if(cljs.core.chunked_seq_QMARK_.call(null,s__45266__$2))
+{var c__4377__auto__ = cljs.core.chunk_first.call(null,s__45266__$2);var size__4378__auto__ = cljs.core.count.call(null,c__4377__auto__);var b__45268 = cljs.core.chunk_buffer.call(null,size__4378__auto__);if((function (){var i__45267 = (0);while(true){
+if((i__45267 < size__4378__auto__))
+{var vec__45271 = cljs.core._nth.call(null,c__4377__auto__,i__45267);var k = cljs.core.nth.call(null,vec__45271,(0),null);var v = cljs.core.nth.call(null,vec__45271,(1),null);cljs.core.chunk_append.call(null,b__45268,(cljs.core.truth_(new cljs.core.Keyword(null,"red","red",-969428204).cljs$core$IFn$_invoke$arity$1(v))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,v], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,cljs.core.assoc.call(null,v,new cljs.core.Keyword(null,"red","red",-969428204),reduction.call(null,k))], null)));
 {
-var G__34750 = (i__34744 + (1));
-i__34744 = G__34750;
+var G__45273 = (i__45267 + (1));
+i__45267 = G__45273;
 continue;
 }
 } else
@@ -59,12 +59,12 @@ continue;
 break;
 }
 })())
-{return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__34745),iter__34742.call(null,cljs.core.chunk_rest.call(null,s__34743__$2)));
+{return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__45268),iter__45265.call(null,cljs.core.chunk_rest.call(null,s__45266__$2)));
 } else
-{return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__34745),null);
+{return cljs.core.chunk_cons.call(null,cljs.core.chunk.call(null,b__45268),null);
 }
 } else
-{var vec__34749 = cljs.core.first.call(null,s__34743__$2);var k = cljs.core.nth.call(null,vec__34749,(0),null);var v = cljs.core.nth.call(null,vec__34749,(1),null);return cljs.core.cons.call(null,(cljs.core.truth_(new cljs.core.Keyword(null,"red","red",-969428204).cljs$core$IFn$_invoke$arity$1(v))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,v], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,cljs.core.assoc.call(null,v,new cljs.core.Keyword(null,"red","red",-969428204),reduction.call(null,k))], null)),iter__34742.call(null,cljs.core.rest.call(null,s__34743__$2)));
+{var vec__45272 = cljs.core.first.call(null,s__45266__$2);var k = cljs.core.nth.call(null,vec__45272,(0),null);var v = cljs.core.nth.call(null,vec__45272,(1),null);return cljs.core.cons.call(null,(cljs.core.truth_(new cljs.core.Keyword(null,"red","red",-969428204).cljs$core$IFn$_invoke$arity$1(v))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,v], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [k,cljs.core.assoc.call(null,v,new cljs.core.Keyword(null,"red","red",-969428204),reduction.call(null,k))], null)),iter__45265.call(null,cljs.core.rest.call(null,s__45266__$2)));
 }
 } else
 {return null;

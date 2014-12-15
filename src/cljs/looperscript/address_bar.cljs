@@ -16,10 +16,8 @@ time 2 3 2 3 2 2 3" )
    (.pushState js/history (js/Object.) "" (str preface s))))
 
 (defn text->link []
-  (let [text (-> "looper-text"
-                 dom/by-id
-                 dom/value
-                 ;; (aget "textContent")
+  (let [text (-> (.getValue js/editor)
+
                  js/btoa
                  js/escape
                  )]
@@ -35,9 +33,11 @@ time 2 3 2 3 2 2 3" )
               js/atob))))
 
 (defn set-loop-text [s]
-  (-> "looper-text" dom/by-id
-      ;; (aset "textContent" s)
-      (dom/set-value! s)))
+  (.setValue js/editor s)
+  ;; (-> "looper-text" dom/by-id
+  ;;     ;; (aset "textContent" s)
+  ;;     (dom/set-value! s))
+  )
 
 (defn load-link->text [default]
   (let [get-text (get-text-from-get)
