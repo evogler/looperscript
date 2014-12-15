@@ -32,6 +32,9 @@
 (defn modifier? [x]
   (and (vector? x) (= (first x) :modifier)))
 
+(defn modifier-fn? [x]
+  (and (vector? x) (= (first x) :modifier-fn)))
+
 ;; namespace for modifiers?
 ;; modifiers should have binary switch options, e.g. typing justify twice shouldn't justify
 ;; the result of the first justify
@@ -59,11 +62,14 @@
 (defn apply-modifiers [mods x]
   (reduce
    (fn [n m]
-     (condp = (keyword (first m)) ; XXX: make parser do this
-       :fraction (* n (second m))
-       :plus (+ n (second m))
-       :just (justify n)))
-   x mods))
+     (if (fn? m)
+       (m n)
+       (condp = (keyword (first m)) ; XXX: make parser do this
+         :fraction (* n (second m))
+         :plus (+ n (second m))
+         :just (justify n))))
+    x mods)
+  )
 
 (defn iterator [v]
   (let [stack (atom [])
@@ -74,8 +80,15 @@
           (do (reset! modifiers [])
               (vec-push! stack v)))
         (let [x (get-next-stack-val stack)]
-          (if (modifier? x)
+          (cond
+           (modifier-fn? x)
+           (do (swap! modifiers conj (second x))
+               (recur))
+
+           (modifier? x)
             ; map dethunk could be [(first (second x)) (dethunk (second (second  x)))]:
-            (do (swap! modifiers conj (map dethunk (second x)))
+           (do (swap! modifiers conj (map dethunk (second x)))
                 (recur))
-            (apply-modifiers @modifiers x)))))))
+
+           :else
+           (apply-modifiers @modifiers x)))))))

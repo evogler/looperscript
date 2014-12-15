@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>looperscript</title>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="css/looperscript.css">
+    <link rel="stylesheet" type="text/css" href="/media/webaudio/sample/css/looperscript.css">
+
+</head>
+
+<body>
+  <center>
+  <textarea class="text-area" id="looper-text"></textarea><br />
+
+  <button id="play">play</button>
+  <button id="stop">stop</button>
+  <button id="link">link</button>
+  <br />
+  <textarea class="text-area" id="console"></textarea>
+
+  <script src='/media/webaudio/sample/js/looperscript.js'></script>
+  <script src='js/looperscript.js'></script>
+</body>
+</html>

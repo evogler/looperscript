@@ -1,4 +1,4 @@
-OVERHAUL:
+REFACTOR:
   -modules:
     -parser / transformer
     -vec-functions
@@ -14,7 +14,6 @@ UPCOMING STEPS:
   -standardize mode concept. (e.g.'s: tuning, hz)
     -push/pop modes?
   -peek ahead at next note's time to properly calculate note durs re. time+
-  -mute
   -reparse input in background (which means encorporate core.async?)
   -parser versions
   -pause?
@@ -24,33 +23,34 @@ LANGUAGE FEATURES:
   -try-repeatedly (try x times or until pred is matched (or score is maximized))
     -especially for use with coprime
   -legato/staccato!
-  -think through expansive aproach to language
   -sections defined within part, and then each aspect is defined per section
   -triggers (when time hits !, pitch moves)
   -parts with separate rhythm controlling steps
   -integrate nested rhythmic layers
   -chords (ala looper1's ",") (+ figure out logical questions)
   -arbitrary nos of multiple cycles to alter aspect (e.g. not just <p> and <tr>)
-  -develop proper language for randoms, cycles, repeats, etc
-    -random x3 x3 -> AAA BBB CCC vs ABC ABC ABC?
-    -parts based on other random parts (e.g. random note harmonized in tenths)
-      -with octave reducing
-    -random but avoid what something else is doing
-    -random for transpose, tuplet, etc...
+  -random but avoid what the note something else is currently playing
+  -random for modes
+  -specify filtering of multi-aspects for modes?
   -let
   -variables / quotes / aliasing (hopefully less hacky than {$a:} from looper
     -same definition for multiple parts with differences notated
     -dataflow / spreadsheetish approach?
   -chord changes?
     -chords? voice leading?
-    -pitches as intervals of chords
+    -pitches as intervals of chords!!! (this could be a whole language!)
+    -chords specified on lattice
   -logical operators (AND / OR 2 rhythms)
+  -parts overlapping / covering eachother up (e.g. a fill interrupts a groove)
   -continuous-note mode
   -adsr
     -envelopes within aspect of single note
+  -map any tuning system to integers (or possibly to non-integers as well!!)
+  -express note as product of partials
+  -gradual changes over time (e.g. ramps)
 SECTION-LEVEL LANGUAGE IDEAS:
   -divide source file into
-    -global params & configuration (default)
+    -global param & configuration (default)
     -aspects (floating definitions of parts)
     -parts (already defined, set of aspects with defaults available)
     -section
@@ -67,6 +67,8 @@ TECH STEPS:
   -explore limits of mobile webapp background consistency
   -user upload samples
   -reuse nodes when applicable?
+  -webGL
+  -Ace code editor!!!
 INTERFACE:
   -tutorial mode!!!!!!
   -make console less of an eyesore

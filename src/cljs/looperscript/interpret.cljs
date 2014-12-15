@@ -1,6 +1,7 @@
 (ns cljs.looperscript.interpret
   (:require [cljs.reader :refer [read-string]]
-            [instaparse.core :as insta]))
+            [instaparse.core :as insta]
+            [cljs.looperscript.interp-rhythms :refer [rhythms-interp]]))
 
 (defn log [& args]
   (.log js/console (apply str args)))
@@ -58,6 +59,10 @@
   (-> (rand)
       (* (- ceil floor))
       (+ floor)))
+
+(defn rand-int*
+  ([b] (rand-int (inc b)))
+  ([a b] (+ a (rand-int (inc (- b a))))))
 
 (def rand-nth* rand-nth)
 
@@ -123,10 +128,9 @@
      (nth scale (mod degree (count scale)))))
 
 (defn scale-pattern [scale pattern degrees]
-  (let [res (for [d degrees
-                  p pattern]
-              (scale-nth scale (+ d p)))]
-    res))
+  (for [d degrees
+        p pattern]
+    (scale-nth scale (+ d p))))
 
 (defn scale-range [floor ceil scale]
   (let [a (dec (int (/ floor 12)))
@@ -137,7 +141,7 @@
          (filter #(<= floor % ceil)))))
 
 (defn scale-range-sweep [floor ceil scale]
-  (let [sr (vec (scale-range [floor ceil scale]))]
+  (let [sr (vec (scale-range floor ceil scale))]
     (into sr (-> sr reverse rest drop-last))))
 
 (defn mild-shuffle [degree col]
@@ -166,11 +170,18 @@
   (fn []
     (get @user-vars k default)))
 
+(defn test-mod [n]
+  [:modifier-fn (fn [x] (* x n))])
+
+(defn rhythms-interp* [v]
+  #(rhythms-interp v %))
+
 (def vec-fns
-  {:shuffle (partial apply shuffle)
+  {:shuffle shuffle
    :mild-shuffle mild-shuffle
    :rand rand-nth*
    :take take*
+   :rand-int rand-int*
    :rand-range rand-range
    :rand-exp-range rand-exp-range
    :rand-hold rand-hold
@@ -190,36 +201,11 @@
    :log log*
    :user user
    :bass-fret bass-fret
-   :nth nth*})
-
-;; (declare process-vec)
-
-;; (defn maybe-process-vec [x]
-;;   (cond (vector? x)
-;;         (process-vec x)
-;;         (fn? x)
-;;         (x)
-;;         :else
-;;         x))
-
-;; (defn process-vec [& v]
-;;   (log v)
-;;   (cond
-;;    ;; [rand ...
-;;    (get vec-fns (first v))
-;;    ((get vec-fns (first v)) (rest v))
-;;    ;; #[rand ...
-;;    (and (= (first v) "#") (get vec-fns (second v)))
-;;    #((get vec-fns (second v)) (map maybe-process-vec (rest (rest v))))
-;;    ;; @[rand]
-;;    (and (= (first v) "@") (get vec-fns (second v)))
-;;    (mark-for-splice ((get vec-fns (second v)) (rest (rest v))))
-;;    ;; @[1 2 3
-;;    (= (first v) "@")
-;;    (mark-for-splice (rest v))
-;;    ;; [1 2 3 ...
-;;    :else
-;;    v))
+   :nth nth*
+   :vector vector
+   :interleave interleave
+   :over rhythms-interp*
+   })
 
 (declare -process-vec)
 
@@ -230,14 +216,11 @@
         x))
 
 (defn -process-vec [v]
-  (let [_ (log :-process-vec v)
-        [a b] v
+  (let [[a b] v
         r (vec (rest v))
         r2 (vec (drop 2 v))
-        _ (log :v v :R2 r2)
         [afn bfn] (map #(get vec-fns %) [a b])
         delve #(splice (map maybe-process-vec %))]
-    ;; (println v)
     (cond
      ;; [rand ...
      afn
@@ -245,9 +228,7 @@
 
      ;; #[rand ...
      (and (= a "#") bfn)
-     (fn []
-       (log :YOURFUNCTIONWASCALLED bfn r2)
-       (apply bfn (delve r2)))
+     #(apply bfn (delve r2))
 
      ;; @[rand]
      (and (= a "@") bfn)
@@ -261,7 +242,7 @@
      (sequential? v)
      (delve v)
      :else
-     (do (log :simple v) v))))
+     v)))
 
 (defn pre-process-to-eval-!s [v]
   (let [[a b] v
@@ -277,19 +258,15 @@
      (mapv #(if (sequential? %) (pre-process-to-eval-!s %) %) v)
 
      :else
-     v))
-  )
+     v)))
 
 (defn process-vec [args]
   (if-not (sequential? args) args
           (-> args
-              ((fn [x] (do (log :processing x) x)))
               pre-process-to-eval-!s
-              ((fn [x] (do (log :processing x) x)))
               -process-vec)))
 
 (defn map-fn-on-hashmap-vals [f m]
-  (log :mapfnonf m)
   (->> m
        vec
        (map (fn [[k v]] [k (f v)]))
@@ -306,9 +283,10 @@
   version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
   vec = ('#' | '@' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp)+ <(']' | ')')>
   vec-code = ('rand' | 'shuffle' | 'range' | 'rand-range' | 'rand-exp-range' | 'take' |
-  'in' | 'repeatedly' | 'x' | 'weight' | 'walk' | 'cycle' | 'log' | 'pattern' |
-  'weight2' | 'rand-hold' | 'mild-shuffle' | 'flatten' | 'log' |
-  'scale-range' | 'scale-range-sweep' | 'user' | 'bass-fret' | 'nth')
+    'in' | 'repeatedly' | 'x' | 'weight' | 'walk' | 'cycle' | 'log' | 'pattern' |
+    'weight2' | 'rand-hold' | 'mild-shuffle' | 'flatten' | 'log' |
+    'scale-range' | 'scale-range-sweep' | 'user' | 'bass-fret' | 'nth' | 'vector' |
+    'rand-int' | 'interleave' | 'over')
   part = part-title <sp> aspect*
   <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
   aspect = aspect-header data
@@ -356,5 +334,3 @@
          :mod-code (comp vector keyword)
          :s vector})
        (map #(map-fn-on-hashmap-vals process-vec %))))
-
-;; multi-aspects !!!

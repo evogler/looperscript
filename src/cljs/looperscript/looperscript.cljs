@@ -22,8 +22,8 @@
 
 (def ctx audio/ctx)
 (def playing-interval (atom nil))
-(def queue-time-interval 0.1) ; seconds
-(def queue-time-extra 0.1)
+(def queue-time-interval 1) ; seconds
+(def queue-time-extra 1.5)
 (def params (atom {}))
 (def sounding-notes (atom {}))
 (def aspect-defaults
