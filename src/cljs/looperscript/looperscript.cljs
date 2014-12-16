@@ -108,7 +108,7 @@
   (let [iterators (make-iterators part)
         time-pos (atom (+ start-time
                           (* (if-let [bpm (:bpm @params)] bpm 1)
-                             (first (get part :offset [0])))))]
+                             (first (get part [:offset] [0])))))]
     (fn
       ([command] (if (= command :time-pos) @time-pos))
       ([] (loop []

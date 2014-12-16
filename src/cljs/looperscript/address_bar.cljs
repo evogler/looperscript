@@ -34,9 +34,8 @@ time 2 3 2 3 2 2 3" )
 
 (defn set-loop-text [s]
   (.setValue js/editor s)
-  ;; (-> "looper-text" dom/by-id
-  ;;     ;; (aset "textContent" s)
-  ;;     (dom/set-value! s))
+  (.moveCursorTo js/editor 0 0)
+  (.clearSelection js/editor)
   )
 
 (defn load-link->text [default]

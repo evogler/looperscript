@@ -34,7 +34,7 @@ No, because (rand 3 4) withouth the # would work fine.
 Does it matter if there's an inner ! ?
 -#(repeatedly !(rand (1 2 !(rand 3 4))) #(rand (4 5 6))) ?
 
-
+***************************************************************************
 
 MULTI-ASPECTS:
 Sooo..... here's my first thought about the basic scenario:
@@ -54,7 +54,7 @@ function. I.e., choose each note randomly from ten fully formed notes.
 Or from several fully formed phrases!!
 Something like: sound&time #(rand [[0 3, 7 3, 12 2] [-1 1, 0 1, -6 1]])
 Gosh, does that last bit actually make sense?
-rand chooses one of the vectors, and that vector gets divied up by sound&time.
+rand chooses one of the vectors, and that vector gets divied up by sound&time
 
 What if I wanted to generate the phrases programatically?
 (repeatedly 4 #(repeatedly (rand-int 3 7) #([(rand-int -12 12) (rand [1 2 3 4])])))
@@ -88,3 +88,60 @@ Btw, would I have wanted a vector function earlier?
 (repeatedly 4
   #(repeatedly (rand-int 3 7)
     #(vector (rand-int -12 12) (rand [1 2 3 4]))))
+
+***************************************************************************
+
+NESTED RHYTHMS:
+
+I know I can come up with at least something for this. I'd like the syntax to be
+as good as possible. Here are some questions:
+-Could all the over functions be contained within a single time function (modifier-style)?
+ That way, when we get around to time sub-aspects arbitrary aspects, you won't need to have
+ multiple lists for every...
+-Does it make sense to try to offer intermittent overs? E.g., do an over for 4 bars,
+ then back to normal for 2... I don't want to do what I did in the old looper, just
+ specificy some larger number of bars and grind through all of them.
+ In some sense, this gets to the question of how to approach going beyond single
+ loops. In the above example, would you want to return to the 4 bar over with the phase
+ you were at when you left? If so, are they almost just separate sections?
+
+Maybe over with multiple arities? (over [1 2 3] [1 1 2 1 2]) returns the complete vector,
+ whereas (over [1 2 3]) returns a modifier?
+There is the drawback that you need an extra set of brackets if you want multiple layers.
+Maybe just two different functions? (over [1 2 3] [.5 .5 1]) acts as a modifier,
+ (over2 [1 2 3] [.5 .5 1]) returns the vector?
+I think that's simple enough.
+So obviously the "over2" function is simple. The question is how does the modifier
+work? Do I accept the mild ugliness of tracking the cumulative value of inputs and
+returning the delta of outpus, only the have the cumulative time value recalculated?
+Maybe the question comes down to whether solving the problem more elegantly would
+lead to anything reusable.
+Suppose I made a kind of modifier that gets post-accumulation values. Would I use
+that for anything else?
+Firstly, I'm pretty sure it would only apply to times. I suppose it could be relevant
+to other aspects' time sub-aspects.
+I think for my first draft, I'm going to write the over modifier using the ugly
+method, since it's self-contained. I think it'll be easy to change if I see a
+better way when I add time sub-aspects.
+... Holy cow, that was easy! Somehow my intuition was that it should be tougher
+than this. But I guess rhythms-interp is already doing the heavy lifting...
+
+Well, okay, one issue is that time modifiers don't get passed into the over
+modifier. So if I say 1/2 (over [3 3 4 2 4])
+
+Okay, maybe a bigger problem (which I've already been having, actually):
+Apparently no operations work within a vector? Not even 4v5, let alone the tuplet
+modifier.
+
+I can get around the 4v5 issue with a flatten. Is there a more elegant solution?
+Maybe a way that functions can indicate that they're taking a rhythm as parameter,
+so the parameter can get transformed into its final form.
+
+Ohhh, also, a more elaborate version of over might require a more first-class identity
+for the other layers. If I wanted to have functions involved in the under layers.
+Like time 2 1 1 time-under #(rand [8v8] [10v8]).
+Ya, that's gotta still be on the to-do list.
+
+***************************************************************************
+
+REAL-TIME RELOADING, BACKGROUND PARSER, ETC:

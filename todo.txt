@@ -1,3 +1,5 @@
+TODAY, TUESDAY, DECEMBER 16!:
+  -reparse, transform, and catch up in background!
 REFACTOR:
   -modules:
     -parser / transformer
@@ -19,6 +21,8 @@ UPCOMING STEPS:
   -pause?
   -abstract node pipeline for playing notes
   -proper handling of bpm changes
+  -handle complex rhythms inside vectors...
+  -reverse order of modifier application?
 LANGUAGE FEATURES:
   -try-repeatedly (try x times or until pred is matched (or score is maximized))
     -especially for use with coprime
@@ -26,7 +30,7 @@ LANGUAGE FEATURES:
   -sections defined within part, and then each aspect is defined per section
   -triggers (when time hits !, pitch moves)
   -parts with separate rhythm controlling steps
-  -integrate nested rhythmic layers
+  -first-class rhythmic layers to allow functions in lower layers.
   -chords (ala looper1's ",") (+ figure out logical questions)
   -arbitrary nos of multiple cycles to alter aspect (e.g. not just <p> and <tr>)
   -random but avoid what the note something else is currently playing

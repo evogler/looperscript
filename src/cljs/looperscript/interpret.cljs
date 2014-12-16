@@ -173,8 +173,16 @@
 (defn test-mod [n]
   [:modifier-fn (fn [x] (* x n))])
 
-(defn rhythms-interp* [v]
-  #(rhythms-interp v %))
+(defn over-mod [& layers]
+  (log :over-mod layers)
+  (let [last-res (atom 0)
+        cum-time-in (atom 0)]
+    [:modifier-fn
+     (fn [time-in]
+       (let [new-res (rhythms-interp layers (swap! cum-time-in + time-in))
+             res-diff (- new-res @last-res)]
+         (reset! last-res new-res)
+         res-diff))]))
 
 (def vec-fns
   {:shuffle shuffle
@@ -204,7 +212,7 @@
    :nth nth*
    :vector vector
    :interleave interleave
-   :over rhythms-interp*
+   :over over-mod
    })
 
 (declare -process-vec)
@@ -318,7 +326,10 @@
          :ratio (fn [n d] (ratio->note (/ n d)))
          :fraction (fn [n d] [:fraction (/ n d)])
          :aspect-keyword keyword
-         :bpm (fn [x] [:bpm (/ 60 (if (vector? x) (last x) x))])
+         :bpm (fn [x] [:bpm (/ 60 (cond
+                                  (and (vector? x) (= (first x) :fraction)) (second x)
+                                  (vector? x) (process-vec x)
+                                  :else x))])
          :params (fn [& p] (reduce (fn [m [k v]]
                                     (assoc m k v))
                                   {} p))
