@@ -207,8 +207,17 @@
                     (dethunk (x)) x))]
     (apply + (map dethunk args))))
 
-(defn nil-fn-test [& args]
-  [])
+;; XXX: figure out how this should be done. Where should variable-map live? This
+;; seems like a dependency injection-type of problem.
+(def variable-map (atom {}))
+
+(defn reset-variables! [] (reset! variable-map {}))
+
+(defn define-variable [s x]
+  (swap! variable-map assoc s x))
+
+(defn get-variable [s]
+  (get @variable-map s))
 
 (def vec-fns
   {:shuffle shuffle
@@ -242,8 +251,8 @@
    :over over-mod
    :grow grow
    :add add-dethunk-test
-   :nil-fn nil-fn-test
-   })
+   :def define-variable
+   :get get-variable})
 
 (declare -process-vec)
 
@@ -304,28 +313,22 @@
               pre-process-to-eval-!s
               -process-vec)))
 
-(defn map-fn-on-hashmap-vals [f m]
-  (->> m
-       vec
-       (map (fn [[k v]] [k (f v)]))
-       (into {})))
-
-;; note: the lesson with shuffle and range was that I probably need to just write my own
-;; tree walker.
-
 (def grammar
   (str
-  "s = <sp*> params <sp*> part*
+  "s = <sp*> params init? <sp*> parts
   params = param*
+  parts = part*
   <param> = (bpm | version) <sp*>
   bpm = <'bpm'> <sp?> (number | fraction | vec)
   version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
-  vec = ('#' | '@' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp | vec-code)* <(']' | ')')>
+  vec = ('#' | '@' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp |
+                                                    string | vec-code)* <(']' | ')')>
   vec-code = ("
   (clojure.string/join " | " (mapv (comp #(apply str "'" % "'")
                                          (partial apply str) rest str) (keys vec-fns)))
   ")
   part = part-title <sp> aspect*
+  init = <'init'> (<sp*> vec)*
   <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
   aspect = aspect-header data
   aspect-header = aspect-keyword (sp* <'&'> sp* aspect-keyword)*
@@ -343,6 +346,7 @@
   fraction = number <'/'> number
   hz = (number | vec) sp* 'hz'
   ratio = number <':'> number
+  string = <'\"'> #'([^\"]*)' <'\"'>
   number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
       <sp> = <#'[\\s,]+'>"))
 
@@ -360,18 +364,26 @@
                                   (and (vector? x) (= (first x) :fraction)) (second x)
                                   (vector? x) (process-vec x)
                                   :else x))])
-         :params (fn [& p] (reduce (fn [m [k v]]
-                                    (assoc m k v))
-                                  {} p))
+         :params (fn [& p] {:params (reduce (fn [m [k v]]
+                                             (assoc m k v))
+                                           {} p)})
          :v handle-v-keyword
-         :vec vector
+         :vec (fn [& args] (process-vec (vec args)))
          :vec-code keyword
          :aspect-header vector
+         :string str
          :part (fn [part-name & aspects]
                  (reduce
                   (fn [m [_ k v]]
                     (assoc m k v))
                   {:name part-name} aspects))
+         :parts (fn [& args] {:parts
+                             (reduce (fn [m p]
+                                       (assoc m (:name p) p))
+                                     {} args)})
+         :init (fn [& args] {:init (vec args)})
          :mod-code (comp vector keyword)
-         :s vector})
-       (map #(map-fn-on-hashmap-vals process-vec %))))
+         :s (fn [& args]
+              (reduce
+               (fn [m x] (into m x))
+               {} args))})))

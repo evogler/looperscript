@@ -72,17 +72,18 @@
       parse/remove-comments))
 
 (defn get-parts []
-  (let [parts-text (get-looper-text)
+  (let [text (get-looper-text)
         start-time (now)
-        parts (parse/looper-parse parts-text)]
-    (if (insta/failure? parts)
-      parts
-      (let [ _ (log :tree parts \newline)
+        parse-tree (parse/looper-parse text)]
+    (if (insta/failure? parse-tree)
+      parse-tree
+      (let [ _ (log :tree parse-tree \newline)
             parse-time (- (now) start-time)
-            parts (parse/looper-transform parts)
-             _ (log :transformed parts \newline)
+            transformed-tree (parse/looper-transform parse-tree)
+             _ (log :transformed transformed-tree \newline)
             transform-time (- (now) start-time)
-            [new-params parts] ((juxt first rest) parts)]
+            new-params (:params transformed-tree)
+            parts (:parts transformed-tree)]
         (log "Parse time: (" parse-time ") " transform-time)
         (reset! params new-params)
         parts))))
@@ -169,34 +170,40 @@
             (if (< (:start-time next-note) end-time)
               (recur))))))))
 
+
+
 (defn reset-clock!
   ([] (reset-clock! nil))
   ([time] (reset! current-start-time time)))
 
 ;; TODO: kill notes
-(defn update []
-  (let [parts (get-parts)]
-    (if (insta/failure? parts)
-      (log (str (vec parts)))
-      (let [new-nnfns (vec (for [p parts] (next-note-fn p @current-start-time)))]
-        (doseq [nnfn new-nnfns]
-        (loop []
-          (if (and @last-queue-time
-                   @playing
-                   (< queue-time-interval) (- (now) @last-queue-time))
-            (queue-notes))
-          (when (> (now) (nnfn :time-pos))
-            (nnfn)
-            (recur))))
-        (reset! current-next-note-fns new-nnfns)))))
+;; XXX: probably should rename if not refactor pretty seriously
+(defn update
+  ([] (update (get-parts)))
+  ([parts]
+     (if (insta/failure? parts)
+       (log (str (vec parts)))
+       (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p @current-start-time)))]
+         ;; make each next-note-fn catch up to current time
+         (doseq [nnfn new-nnfns]
+           (loop []
+             (if (and @last-queue-time
+                      @playing
+                      (< queue-time-interval) (- (now) @last-queue-time))
+               (queue-notes))
+             (when (> (now) (nnfn :time-pos))
+               (nnfn)
+               (recur))))
+         (reset! current-next-note-fns new-nnfns)))))
 
 (defn play []
   (reset! playing true)
-  (if (nil? @current-start-time) (reset-clock! (+ (now) 0.25)))
-  (update)
-  (queue-notes)
-  (reset! playing-interval
-          (js/setInterval queue-notes (* queue-time-interval 1000))))
+  (let [parts (get-parts)]
+    (if (nil? @current-start-time) (reset-clock! (+ (now) 0.25)))
+    (update parts)
+    (queue-notes)
+    (reset! playing-interval
+            (js/setInterval queue-notes (* queue-time-interval 1000)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -239,7 +246,7 @@
                                   "mac" mac-key)
                 "exec" f)))
 
-(bind-key "update" "Ctrl-u" "Command-U" update)
+(bind-key "update" "Ctrl-u" "Command-U" (fn [& args] (update)))
 (bind-key "stop" "Ctrl-Shift-S" "Command-Shift-S" stop)
 
 (audio/load-some-drums)

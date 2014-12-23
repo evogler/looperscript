@@ -483,3 +483,36 @@ When the iterator encounters a "send-trig" message instead of a number, it regis
 the trigger somewhere and immediately moves on until it finds a number or whatever it
 was looking for.
   sound r (until-trig tr [h])
+
+Actually, I could probably write both of those just as functions. send-trig could just
+return nil.
+
+Oh, here's a question: how long does a trigger last? Or if it's instantaneous, do you
+have a dataflow-type order issue? In this case:
+  sound r (until-trig tr [h])
+  time 5v4 (send-trig tr) 7v4 (send-trig tr)
+how would you keep them in sync? Check each iterator for triggers first? Put a hold on the
+awaiting one to see if something else in that beat sends the trigger? I guess these
+things are possible, but I still feel like it might be well handled by dataflow.
+
+***************************************************************************
+
+DECLARATIONS
+
+I'm going to try to just implement a simple command where I can run one time stuff.
+Initially I think I'll just make it a place to run functions only once at the beginning,
+with the possibliity of declaring variables magically from within functions.
+
+Although... what happens if I try to update a file in real time but don't restart it?
+Well, I think I just have to re-run those functions, and see what I get. If they're
+not stochastic, they'll return the same data.
+
+So it's just going to be
+
+bpm 234  ; of course this theoretically would go in the init area...
+init
+(def "clave" [3 3 4 2 4])
+part groove sound d time (get "clave")
+part kick soind k time (get "clave")
+
+I think the only question is where does the map that (def) writes to live?
