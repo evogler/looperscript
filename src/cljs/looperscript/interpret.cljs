@@ -114,8 +114,6 @@
   (let [factor (/ t (reduce + v))]
     (map #(* factor %) v)))
 
-(def repeat* repeat)
-
 (defn cycle* [v]
   (let [pos (atom -1)
         v-len (count v)]
@@ -131,6 +129,11 @@
   (for [d degrees
         p pattern]
     (scale-nth scale (+ d p))))
+
+(defn transpose-scale [degree scale]
+  (->> scale
+      (map #(mod (+ % degree) 12))
+      sort))
 
 (defn scale-range [floor ceil scale]
   (let [a (dec (int (/ floor 12)))
@@ -184,6 +187,29 @@
          (reset! last-res new-res)
          res-diff))]))
 
+(defn insert-randomly [v x]  ; helper for grow
+  (let [pos (rand-int (inc (count v)))]
+    (-> (take pos v)
+        vec
+        (into [x])
+        (into (drop pos v)))))
+
+(defn grow [odds new-note-fn]
+  (let [accum (atom [])]
+    (fn []
+      (if (or (empty? @accum) (< (rand) odds))
+        (swap! accum insert-randomly (new-note-fn))
+        @accum))))
+
+(defn add-dethunk-test [& args]
+  (let [dethunk (fn dethunk [x]
+                  (if (fn? x)
+                    (dethunk (x)) x))]
+    (apply + (map dethunk args))))
+
+(defn nil-fn-test [& args]
+  [])
+
 (def vec-fns
   {:shuffle shuffle
    :mild-shuffle mild-shuffle
@@ -197,13 +223,14 @@
    :weight2 rand-weighted-zip
    :walk rand-walk
    :in in
-   :x repeat*
+   :x repeat
    :repeatedly repeatedly
    :range range*
    :cycle cycle*
    :pattern scale-pattern
    :scale-range scale-range
    :scale-range-sweep scale-range-sweep
+   :transpose-scale transpose-scale
    :splice mark-for-splice
    :flatten flatten
    :log log*
@@ -213,6 +240,9 @@
    :vector vector
    :interleave interleave
    :over over-mod
+   :grow grow
+   :add add-dethunk-test
+   :nil-fn nil-fn-test
    })
 
 (declare -process-vec)
@@ -284,17 +314,17 @@
 ;; tree walker.
 
 (def grammar
+  (str
   "s = <sp*> params <sp*> part*
   params = param*
   <param> = (bpm | version) <sp*>
   bpm = <'bpm'> <sp?> (number | fraction | vec)
   version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
-  vec = ('#' | '@' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp)+ <(']' | ')')>
-  vec-code = ('rand' | 'shuffle' | 'range' | 'rand-range' | 'rand-exp-range' | 'take' |
-    'in' | 'repeatedly' | 'x' | 'weight' | 'walk' | 'cycle' | 'log' | 'pattern' |
-    'weight2' | 'rand-hold' | 'mild-shuffle' | 'flatten' | 'log' |
-    'scale-range' | 'scale-range-sweep' | 'user' | 'bass-fret' | 'nth' | 'vector' |
-    'rand-int' | 'interleave' | 'over')
+  vec = ('#' | '@' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp | vec-code)* <(']' | ')')>
+  vec-code = ("
+  (clojure.string/join " | " (mapv (comp #(apply str "'" % "'")
+                                         (partial apply str) rest str) (keys vec-fns)))
+  ")
   part = part-title <sp> aspect*
   <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
   aspect = aspect-header data
@@ -314,7 +344,7 @@
   hz = (number | vec) sp* 'hz'
   ratio = number <':'> number
   number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
-      <sp> = <#'[\\s,]+'>")
+      <sp> = <#'[\\s,]+'>"))
 
 (def looper-parse (insta/parser grammar))
 

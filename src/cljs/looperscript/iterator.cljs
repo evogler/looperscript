@@ -81,6 +81,9 @@
               (vec-push! stack v)))
         (let [x (get-next-stack-val stack)]
           (cond
+           (or (nil? x) (and (sequential? x) (empty? x)))
+           (recur)
+
            (modifier-fn? x)
            (do (swap! modifiers conj (second x))
                (recur))

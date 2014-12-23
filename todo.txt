@@ -10,8 +10,10 @@ REFACTOR:
     -Q: where to put event hook for live syntax / graphics?
   -vec-functions have proper parameters?
   -lazy-evaluation fully realized
-  -pipeline for optional nodes
+  -pipeline for optional nodes (possibly specify full chain in vector??)
 UPCOMING STEPS:
+  -fix !() to return functions from funcions that should return functions.
+  -toggle setinterval length based on document.hasfocus
   -proper params. as well as bpm, setting for latency.
   -standardize mode concept. (e.g.'s: tuning, hz)
     -push/pop modes?
@@ -23,16 +25,27 @@ UPCOMING STEPS:
   -proper handling of bpm changes
   -handle complex rhythms inside vectors...
   -reverse order of modifier application?
+  -pass modifier state to each modifier-fn
+  -show errors somewhere!
 LANGUAGE FEATURES:
+  -modifiers that hook in in more ways? (controlling flow of input values, changing
+   time after accumulation, creating loops?...)
   -try-repeatedly (try x times or until pred is matched (or score is maximized))
     -especially for use with coprime
   -legato/staccato!
   -sections defined within part, and then each aspect is defined per section
   -triggers (when time hits !, pitch moves)
+    -triggers have ids and are shared across a bus
+  -shared repo(?) for motives, fragments, and functions.
+  -functions for defining abstrac values over time (e.g. ramp, interp..)
+    -with
+  -history of everything that's been played? functions to refer back to these?
+  -time functions based on actual time (and/or date?)
   -parts with separate rhythm controlling steps
-  -first-class rhythmic layers to allow functions in lower layers.
+  -first-class nested rhythmic layers to allow functions in lower layers.
   -chords (ala looper1's ",") (+ figure out logical questions)
   -arbitrary nos of multiple cycles to alter aspect (e.g. not just <p> and <tr>)
+    -plus and times type layers, at the least.
   -random but avoid what the note something else is currently playing
   -random for modes
   -specify filtering of multi-aspects for modes?
@@ -41,7 +54,7 @@ LANGUAGE FEATURES:
     -same definition for multiple parts with differences notated
     -dataflow / spreadsheetish approach?
   -chord changes?
-    -chords? voice leading?
+    -chords? voice leADING?
     -pitches as intervals of chords!!! (this could be a whole language!)
     -chords specified on lattice
   -logical operators (AND / OR 2 rhythms)
@@ -50,6 +63,7 @@ LANGUAGE FEATURES:
   -adsr
     -envelopes within aspect of single note
   -map any tuning system to integers (or possibly to non-integers as well!!)
+  -move just intonation around lattice e.g. (just 3 -1)
   -express note as product of partials
   -gradual changes over time (e.g. ramps)
 SECTION-LEVEL LANGUAGE IDEAS:

@@ -142,6 +142,344 @@ for the other layers. If I wanted to have functions involved in the under layers
 Like time 2 1 1 time-under #(rand [8v8] [10v8]).
 Ya, that's gotta still be on the to-do list.
 
+The next step is probably still to think about the format for expressing the
+different time layers, which means thinking in general about how to express
+multiple streams that combine to yield one aspect.
+
 ***************************************************************************
 
 REAL-TIME RELOADING, BACKGROUND PARSER, ETC:
+
+Steps involved in this process:
+-Parsing current text
+-Knowing if text has changed anyway
+-Crunching through queued loop to be keeping up with current time position
+-Making swap to queued version of loop.
+-Perhaps a bit down the line: assessing whether which elements can be calculated
+ directly, which can be crunched through in a reasonable amount of time, and
+ which need to simply be started at the current time.
+
+A simple model would be:
+-PLAY button runs parser if necessary, then starts playback at 0.
+-UPDATE button runs parser. If not playing, queues loop; if playing, replaces old loop
+ with new loop once new loop has been crunched up to current time.
+
+Another degree of sophistication would be:
+-Detect a certain amount of idle time (a few seconds?), and then try running parser
+ in background.
+-Diff changes that have been made since last parse and only re-parse those.
+-When catching up to current time, when possible, calculate cycle length, to avoid
+ having to crunch every repetition.
+
+So the first phase will be to implement the UPDATE button. When pressed, it parses the
+text, and if there are no errors, if crunches through the resulting tree until
+it is ahead of the current time. I guess it tries to get a few seconds ahead of the
+current time, and stores a queue of the advanced notes it has calculated.
+When it is ready, the next time a batch of notes is scheduled, the notes from
+the new loop are used.
+
+***************************************************************************
+
+MULTIPLE ASPECTS PER ASPECT (?)
+
+First off, maybe I should differentiate the names for a list of numbers versus
+an aspect. They've been the same thing up to this point, but if I have multiple
+lists cycling that combine to create one aspect, they're not. I guess I can call
+them lists vs. aspects. Possibly cycles vs aspects. List-cycles? Items?
+Sub-aspects? Aspect-sub-cycles? (That's the most specific and least sayable).
+I sort of don't want to call them cycles, since that's already a function.
+
+Well, so for each ... "list" ..., we have to name it, and we have to express how it
+works with other lists to create an aspect.
+First off, what possiblities are there for a list's function?
+-basic list. Essentially what all currently do now. Could be seen as result of
+ addition or multiplication of only one number.
+-additive. Potentially related to previous.
+-multiplicative. Also potentially related to previous.
+-limiting. E.g. maximum value, minimum value, etc.
+-overriding. Perhaps I want every fifth note simply overridden by something else?
+-running through whichever modifier you please? (This would be a way to apply
+ modifiers to aspects that are otherwise specified in multi-aspects.
+-fn. Just calculating whatever the heck you want in any function, referring to
+ other aspects.
+-non-cumulative (for time). The way time+ currently functions (changing the start-time
+ only of the current note, without affecting subsequent start-times). This should only
+ be an issue for time, time being the only cumulative aspect.
+ (Perhaps just go with time and time+ as separate aspects
+
+Maybe +, *, etc are modes set within an aspect, and list titles don't need to specify?
+
+Maybe each list is referrable by an equation? E.g. (* (+ time:1 time:2) time:3)
+(For God's sake, is the result of that a new cycle? And does the equation live in
+its own cycle? As weird as it would be to cycle through different equations, I guess
+I don't see why not...)
+
+So the original idea was to have an order to each list, and an identity:
+time 3 3 4 2 4
+time\2:* 1 1 1 1.5
+time\3:+ 0 0 -.5
+
+but now I'm imagining something like
+time\1 3 3 4 2 4
+time\2 1 1 1 1.5
+time\3 0 0 -.5
+time #(+ time\3 (* time\1 time\2))
+
+The former is a little simpler to understand (I think). The latter seems to be more
+flexible.
+
+Let's just see what one or two more options looks like:
+
+time 3 3 4 2 4
+time\2 (*-mode) 1 1 1 1.5
+time\3 (+-mode) 0 0 -.5
+
+time #(+ !(cycle [0 0 -.5]) (* !(cycle [1 1 1 1.5]) !(cycle [3 3 4 2 4])))
+
+The last one could certainly be implemented with the least structural tinkering,
+but it also seems to open up the fewest possiblities. Assuming that variables are going
+to have to be included eventually, this seems like as good as any a time to start.
+Also, just off the top of my head, that makes it tougher to mix and match multi-aspect
+groupings. Like, what if I wanted:
+
+time\1 & sound 3 k, 3 k, 4 s, 2 k, 4 s
+time #(+ time\1 (cycle [0 0 .5]))
+
+or something? Yes, being able to create arbitrary cycles and then combine them as I
+specify seems to be the better way.
+(Not that there's anything wrong with also making the single-cycle approach possible).
+
+So I guess that leads to a question of how to make values addressable from elsewhere
+in the loop. I know I've been leaning towards things dataflow/spreadsheet-like. It would
+be simpler to insist that loops only refer to loops that are earlier in the spec, so
+that an order of calculation will be obvious. Going with the loose style I've been
+leaning towards, I think it would be neat if a loop could actually refer to anything else
+that could possibly have a value. That would entail dealing with dataflow stuff like
+circular references, but it would open a lot of possibilities. In fact, thinking about
+it right now, it really does appeal to me. Instead of tying a given bit of musical
+information to a specific place within a specific aspect of a specific part, why
+not let the information be its own independent entity, which can be referenced by any
+part. I think that fits in a lot better with my musical concept of working abstractly
+with material.
+
+So, anything can reference anything else? I can imagine everything is a cycle, and
+has a value at a given moment. I suppose the "moment" is the nth item in the cycle.
+At a certain moment, every cycle of every aspect of every part is at the 283rd position,
+modulo something. Except that those moments vary from part to part. Part 1 could be
+at it's 65th note, and part 2 at its 1091st.
+
+So does that mean it's more complicated to refer to cycles outside a given part? Within
+a part, time\1 + time\2 + time\3 will be simple to phase. Each will be iterated at
+the same time, so the looper will just grab the next value of each one.
+
+But suppose you wanted to define a melody outside of a specific part, and then refer
+to it from within multiple parts? The melody (or any cycle) wouldn't have an inherent
+phase, unless there were a time aspect associated with it. Actually, it could be conceivable
+to create independent loops always with an explicitly defined time component.
+At the least, it would be a nice option.
+But otherwise, what would it mean if you had
+
+def my-mel 4 2 0 2 4 4 4
+part one sound my-mel time 2
+part two sound my-mel time 3
+?
+
+As far as I can guess, it would mean, iterate through the values of my-mel as needed.
+
+I guess that's two categories of floating data then? Proper cycles with time components,
+and simple vectors to be used anywhere?
+
+(In the previous example, I could have added a time component (which I haven't actually
+decided how to specify yet))
+
+def my-mel 4 2 0 2 4 4 4
+my-mel\time (x 1 6) 2
+
+So in that case, when parts one & two refer to my-mel, do they just automatically
+get its current value? Do they specify whether they're taking the current value or
+the next increment value? What if I want to specify to pitch information and then apply
+multiple time components to it? I guess that would be easier to answer if I had the
+specification for time components set in general.
+Well, shoot, here I am why not think about that:
+
+part one
+sound 4 2 0 2 4 4 4
+sound\time 1x6 2
+time 1.5
+
+I think that's clear enough? Does it work as an abstraction?
+sound ...
+sound\time ...
+volume ...
+volume\time ...
+I think it's clear enough.
+
+Immediately I wonder, what if you nested it?
+sound ...
+sound\time ...
+sound\time\time ...
+When you're incrementing the sound clock, instead of iterating through sound\time
+directly, you check when sound\time\time tells you to move to the next item of sound\time,
+and take the appropriate time interval thusly.
+(Wow, that will surely confuse anyone who's left at this point. Ha.)
+
+It actually seems to make perfect sense. For any cycle, just check if it has a \time
+component. I think that makes sense.
+
+So if I wanted to reference a floating cycle that had a time component specified, but
+didn't want to use the time component (which is hard to understand the reason for),
+would I say
+  part one sound \my-mel sound\time nil
+or something?
+I guess you'd need a code for clearing it?
+Oh, maybe just
+  part one sound \my-mel sound\time \one\time
+? Just override the time component with the overall part's component? That might work
+although it might not be pretty.
+
+So as I'm writing this, I noticed that I'm sort of congealing around a tree structure
+concept for organizing and referring to everything.
+  \part\aspect\sub-aspect (e.g. \click\sound\time)
+It seems clear enough, and kind of fits with my concept of a directory tree struture.
+Of course, the other option would be dots.
+  click.sound.time
+Somehow I find that less distinctive, and a bit more confusing, since it's in contrast
+with the S-expression function style.
+Here's the whole thing as if "cd"ing through a directory structure
+
+\bass
+time 3 3 2
+sound 0 7 12
+vol 1 .5
+\clave
+time 3 3 4 2 4
+sound #(rand [d h])
+sound\time 16
+
+Well, I tweaked this a few times. I couldn't stand to see so many backslashes.
+
+So a question is: how do I differentiate defining things from refering to them?
+Is \bass\sound\time an indication that I'm about to define that cycle, or is it a reference
+to the cycle?
+
+part click time 1 sound h
+volume 1 .5
+volume\time 4
+
+part bass
+sound 0 2 4
+sound\time 4
+time 1.5
+
+...volume \click\volume
+...volume click\volume
+...volume #(- 1 \click\volume)
+...volume \click\volume volume\time nil
+...volume (get \click\volume)
+...volume (copy-straight \click\volume)
+...volume (copy-with-sub-aspects \click\volume)
+
+These last few would be a new kind of function. Data reference functions or something.
+
+...volume (get \click\volume) .5 .5 1
+
+What the heck happens there? I guess it's clear enough if \click\volume has its own
+time sub-aspect, just check wherever it's at right now.
+I guess even if it doesn't, you can still view it that way. Just check what its value
+is right now. (In cases where the referencing note and the referenced note are in sync,
+you'd want to be sure the referenced one was updated first).
+
+...volume #(rand [\click\volume [1 1 0]])
+
+This seems like it should return the [1 .5] defined at click\volume. No, wait, it should
+return the current value of click\volume via click\volume\time. Well, I guess you might
+want either of those.
+
+So you could be refering to
+-the keyword declaration of a cycle,
+-to its elsewhere definition in full
+-"   "       "        "      in full, including its sub-aspect(s)
+-"   "       "        "      at a given instant.
+
+I guess it's clear enough that you don't start with a backslash when you're defining
+something. So how do you differentiate referencing another part in full, (with or without
+sub-aspects?), vs. at the current point? (Holy crap, or at some other specific point? Jesus...)
+  (current \click\volume)
+  (full \click\volume)
+I suppose?
+  \click\volume\current
+  \click\volume\full
+Would that mean don't have sub-aspects with those names? I'm not sure if that's where
+sub-aspects will be put. I guess there could be variables also. Anyway, if you're involved
+enough to be referencing sub-aspects, you're probably involved enough to be told
+not to use certain keywords for names.
+
+part clave sound h time 3 3 4 2 4
+
+part divider sound d
+time (over \clave\time) .5
+
+part divider2 (default \divider)
+rate 2
+
+;;;;;;;;;;
+
+def note 5 10 3 8 1 7 0
+note\time 4 4 4 4 4 4 8  ; note & note\time
+
+part mel sound @note
+time 1 1 1.5 1.5
+
+... So I'm messing with changing the basic post-transform structure to be a proper map,
+instead of a vector of maps with :name properties. I think this is probably more
+appropriate. It will mean parts can't have the same name, but that's probably okay.
+In a sense, if one is ever trying to make loops with the same name, one is probably
+copying and pasting, which means some functionality is lacking. Perhaps I could include
+_ as an "untitled" name, which could have an auto-generated name internally. Or just
+throw an error if you try to reference a name that applies to more than one part.
+
+So the question is around dataflow and order of evaluation. I think I just have to
+try Javelin or another dataflow library, to get a sense for how it's done, even if
+I'm going to write my own. I guess I could also just try, for the hell of it.
+
+
+***************************************************************************
+
+TRIGGERS
+
+[random thought: If triggers communicate through some kind of bus system, maybe there's
+also a shared system for "motives", which a part can transform a motive and declare
+the resulting transformation on. I guess I've already been thinking about declaring
+disembodied fragments of information, but this would be more dynamic. No reason you
+couldn't also declare information in the file to go into this system, I guess.
+Also, you might as well be able to include transforming functions in the shared
+thing. Oh, jeez. This just keeps getting more complicated.]
+
+So, the (initial) idea of triggers is that one process can pause or repeat until another one
+signals that it's finished. The original example is if you want to assign drum sounds
+to differentiate rhythmic ideas, but don't know how many notes will be in each rhythmic
+idea.
+While I can see how to do this with multi-aspects already. I think triggers would express
+the concept more cleanly.
+
+time #(in 4 (x (rand-int 3 7) 1)) (trig tr)
+sound (hold-unless-trigger tr (cycle [d k h]))
+
+time #(v 4 (rand-int 3 7)) tr!
+sound (cycle [d k h]) tr?
+
+vs
+time & sound #(interleave (v 4 (rand-int 3 7)) (repeat !(cycle [d k h])))
+
+Actually, I'm not sure if the (repeat !(cycle)) part in the last example would currently
+work. I'm pretty sure it could be made to work. But I'd still like to be able to write
+the trigger version.
+
+Anyway... So do I know what triggers should look like?
+For the simple case of one aspects of a part triggering another aspect of said part,
+I think I get it. You can intersperse code to send triggers amongst anything else.
+  time 5v4 (send-trig tr) 7v4 (send-trig tr)
+When the iterator encounters a "send-trig" message instead of a number, it registers
+the trigger somewhere and immediately moves on until it finds a number or whatever it
+was looking for.
+  sound r (until-trig tr [h])
