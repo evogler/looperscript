@@ -184,7 +184,7 @@
      (if (insta/failure? parts)
        (log (str (vec parts)))
        (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p @current-start-time)))]
-         ;; make each next-note-fn catch up to current time
+         ;;  each next-note-fn catch up to current time
          (doseq [nnfn new-nnfns]
            (loop []
              (if (and @last-queue-time
@@ -202,6 +202,7 @@
     (if (nil? @current-start-time) (reset-clock! (+ (now) 0.25)))
     (update parts)
     (queue-notes)
+    (kill-playing-interval)
     (reset! playing-interval
             (js/setInterval queue-notes (* queue-time-interval 1000)))))
 
@@ -228,15 +229,6 @@
 (ev/listen! (dom/by-id "update") :click (fn [e] (update)))
 (ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))
 (ev/listen! (dom/by-id "resetclock") :click (fn [e] (reset-clock!)))
-
-;; editor.commands.addCommand({
-;;     name: 'myCommand',
-;;     bindKey: {win: 'Ctrl-M',  mac: 'Command-M'},
-;;     exec: function(editor) {
-;;         //...
-;;     },
-;;     readOnly: true // false if this command should not apply in readOnly mode
-;; })
 
 (defn bind-key [name windows-key mac-key f]
   (.addCommand (aget js/editor "commands")

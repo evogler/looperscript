@@ -1,4 +1,5 @@
 var TopLevel = {
+"addCommand" : function () {},
 "atob" : function () {},
 "AudioContext" : function () {},
 "btoa" : function () {},

@@ -110,6 +110,17 @@
                      (rand-int-range (max 0 (- @pos max-step))
                                      (min max-v (+ @pos max-step))))))))
 
+(defn rand-walk1 [max-step v]
+  (let [rand-int-range (fn [a b] (+ a (rand-int (inc (- b a)))))
+        max-v (dec (count v))
+        pos (atom (rand-int (count v)))]
+    (fn []
+      (nth v (reset! pos
+                     (loop []
+                       (let [new-pos (rand-int-range (max 0 (- @pos max-step))
+                                                     (min max-v (+ @pos max-step)))]
+                         (if (= new-pos @pos) (recur) new-pos))))))))
+
 (defn in [t v]
   (let [factor (/ t (reduce + v))]
     (map #(* factor %) v)))
@@ -214,7 +225,8 @@
 (defn reset-variables! [] (reset! variable-map {}))
 
 (defn define-variable [s x]
-  (swap! variable-map assoc s x))
+  (swap! variable-map assoc s x)
+  nil)
 
 (defn get-variable [s]
   (get @variable-map s))
@@ -231,6 +243,7 @@
    :weight rand-weighted
    :weight2 rand-weighted-zip
    :walk rand-walk
+   :walk1 rand-walk1
    :in in
    :x repeat
    :repeatedly repeatedly
@@ -313,6 +326,14 @@
               pre-process-to-eval-!s
               -process-vec)))
 
+(defn walk-map-applying-fn-to-vals [f m]
+  (reduce (fn [m [k v]]
+            (let [res (if (map? v)
+                        (walk-map-applying-fn-to-vals f v)
+                        (f v))]
+              (assoc m k res)))
+          {} m))
+
 (def grammar
   (str
   "s = <sp*> params init? <sp*> parts
@@ -368,7 +389,7 @@
                                              (assoc m k v))
                                            {} p)})
          :v handle-v-keyword
-         :vec (fn [& args] (process-vec (vec args)))
+         :vec vector
          :vec-code keyword
          :aspect-header vector
          :string str
@@ -386,4 +407,5 @@
          :s (fn [& args]
               (reduce
                (fn [m x] (into m x))
-               {} args))})))
+               {} args))})
+       (walk-map-applying-fn-to-vals process-vec)))

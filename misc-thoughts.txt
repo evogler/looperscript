@@ -516,3 +516,16 @@ part groove sound d time (get "clave")
 part kick soind k time (get "clave")
 
 I think the only question is where does the map that (def) writes to live?
+
+... Well, I made a _super_ basic implementation. There's just an (atom {}) sitting there
+amongst the parser, which (def) writes to and (get) reads from. In my initial attempt,
+I didn't have luck with (def) from inside a part, but it works from init. It does
+succeed at the basic task of allowing multiple parts to refer to the same data.
+It's nice in that that data can be generated at startup, so I can have multiple parts
+working on the same generated motive.
+I found myself working with 3 voices playing off of the same melody, wanting to
+be able to modulate transposition independtly of the cycles of the melody. As it is,
+I can have
+  +#(rand-int 0 5) (get "m")
+which is okay, but it restricts the transposing to be in whole units of the melody.
+I guess that's one more reason to
