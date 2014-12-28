@@ -528,4 +528,4 @@ be able to modulate transposition independtly of the cycles of the melody. As it
 I can have
   +#(rand-int 0 5) (get "m")
 which is okay, but it restricts the transposing to be in whole units of the melody.
-I guess that's one more reason to
+I guess that's one more reason to work out multiple loops per aspect

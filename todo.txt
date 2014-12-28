@@ -12,8 +12,7 @@ REFACTOR:
   -lazy-evaluation fully realized
   -pipeline for optional nodes (possibly specify full chain in vector??)
 UPCOMING STEPS:
-**-XXX: change to looper-transform are causing #(vector (f)) to pre-eval f**********
-  -fix !() to return functions from funcions that should return functions.
+  -smart update: (if no fn in aspect, don't grind; if fn, start anew, unless strict-mode set)
   -toggle setinterval length based on document.hasfocus
   -proper params. as well as bpm, setting for latency.
   -standardize mode concept. (e.g.'s: tuning, hz)
@@ -28,6 +27,7 @@ UPCOMING STEPS:
   -reverse order of modifier application?
   -pass modifier state to each modifier-fn
   -show errors somewhere!
+  -maybe make it easier to specify when functions are expecting rhythms (which may be nestd)
 LANGUAGE FEATURES:
   -modifiers that hook in in more ways? (controlling flow of input values, changing
    time after accumulation, creating loops?...)

@@ -27,8 +27,8 @@
 (def playing-interval (atom nil))
 (def current-start-time (atom nil))
 (def current-next-note-fns (atom []))
-(def queue-time-interval 0.1) ; seconds
-(def queue-time-extra 0.1)
+(def queue-time-interval 0.01) ; seconds
+(def queue-time-extra 0.01)
 (def last-queue-time (atom nil))
 (def params (atom {}))
 (def sounding-notes (atom {}))
@@ -170,11 +170,13 @@
             (if (< (:start-time next-note) end-time)
               (recur))))))))
 
-
-
 (defn reset-clock!
   ([] (reset-clock! nil))
   ([time] (reset! current-start-time time)))
+
+(defn reset-button []
+  (stop)
+  (reset-clock!))
 
 ;; TODO: kill notes
 ;; XXX: probably should rename if not refactor pretty seriously
@@ -196,22 +198,22 @@
                (recur))))
          (reset! current-next-note-fns new-nnfns)))))
 
+(defn kill-playing-interval []
+  (when @playing-interval
+    (js/clearInterval @playing-interval)
+    (reset! playing-interval nil)))
+
 (defn play []
-  (reset! playing true)
   (let [parts (get-parts)]
     (if (nil? @current-start-time) (reset-clock! (+ (now) 0.25)))
     (update parts)
     (queue-notes)
     (kill-playing-interval)
     (reset! playing-interval
-            (js/setInterval queue-notes (* queue-time-interval 1000)))))
+            (js/setInterval queue-notes (* queue-time-interval 1000)))
+    (reset! playing true)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn kill-playing-interval []
-  (when @playing-interval
-    (js/clearInterval @playing-interval)
-    (reset! playing-interval nil)))
 
 (defn kill-sounds []
   (doseq [n (vals @sounding-notes)]
@@ -225,10 +227,10 @@
   (kill-sounds))
 
 (ev/listen! (dom/by-id "play") :click (fn [e] (play)))
-(ev/listen! (dom/by-id "stop") :click (fn [e] (stop)))
+(ev/listen! (dom/by-id "pause") :click (fn [e] (stop)))
 (ev/listen! (dom/by-id "update") :click (fn [e] (update)))
 (ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))
-(ev/listen! (dom/by-id "resetclock") :click (fn [e] (reset-clock!)))
+(ev/listen! (dom/by-id "stop") :click (fn [e] (reset-button)))
 
 (defn bind-key [name windows-key mac-key f]
   (.addCommand (aget js/editor "commands")
@@ -238,8 +240,9 @@
                                   "mac" mac-key)
                 "exec" f)))
 
-(bind-key "update" "Ctrl-u" "Command-U" (fn [& args] (update)))
-(bind-key "stop" "Ctrl-Shift-S" "Command-Shift-S" stop)
+(bind-key "update" "Ctrl-u" "Command-U" update)
+(bind-key "stop" "Ctrl-Shift-S" "Command-Shift-S" reset-button)
+(bind-key "play" "Ctrol-Shift-P" "Command-Shift-P" play)
 
 (audio/load-some-drums)
 
