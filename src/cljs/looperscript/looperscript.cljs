@@ -27,8 +27,8 @@
 (def playing-interval (atom nil))
 (def current-start-time (atom nil))
 (def current-next-note-fns (atom []))
-(def queue-time-interval 0.01) ; seconds
-(def queue-time-extra 0.01)
+(def queue-time-interval 1) ; seconds
+(def queue-time-extra 0.1)
 (def last-queue-time (atom nil))
 (def params (atom {}))
 (def sounding-notes (atom {}))
@@ -68,7 +68,6 @@
 
 (defn get-looper-text []
   (-> (.getValue js/editor)
-
       parse/remove-comments))
 
 (defn get-parts []
@@ -88,6 +87,7 @@
         (reset! params new-params)
         parts))))
 
+;; "sounding-notes" is an atom vector of sounds that haven't finished playing yet.
 (def add-note-to-sounding-notes
   (let [sounding-counter (atom 0)]
     (fn [n node]
@@ -95,6 +95,8 @@
         (swap! sounding-notes assoc id node)
         (aset node "onended" (fn [] (swap! sounding-notes dissoc id)))))))
 
+;; make-iterators takes a part map and returns a map of iterators.
+;; It is where default aspect values are added where needed.
 (defn make-iterators [part]
   (let [part-keys (->> (keys part) (remove #(= % :name)))
         specified-aspects (reduce into #{} part-keys)
@@ -103,6 +105,13 @@
         (into (zipmap (map vector non-specified-aspects)
                       (map #(iter/iterator (get aspect-defaults %)) non-specified-aspects))))))
 
+;; next-note-fn called for each part, each time schedule-note wants another note from
+;; that part. next-note-fn:
+;; -creates iterators
+;; -tracks the time-pos of each part
+;; -splits apart multi-aspects
+;; -handles accumulation of time and non-accumulation of time+
+;; -loops if a note has a positive :skip value
 (defn next-note-fn [part start-time]
   (let [iterators (make-iterators part)
         time-pos (atom (+ start-time
@@ -117,7 +126,7 @@
                   res (into {} res-v)
                   res (-> res
                           (assoc :start-time @time-pos)
-                          (assoc :overtones [1])
+                          (assoc :overtones [1]) ;; XXX
                           (update-in [:time] * (if-let [bpm (:bpm @params)] bpm 1))
                           (update-in [:time+] * (if-let [bpm (:bpm @params)] bpm 1)))]
               (if (>= 0 (res :skip))
@@ -130,8 +139,12 @@
   (let [sound (:sound n)
         rate (:rate n)
         start-time (+ (:start-time n) (:time+ n))
-        start-time (if-let [l (get audio/sample-lags sound)]
-                     (- start-time (/ l rate))
+        start-time (if (and (vector? sound) (= (first sound) :drum-code))
+                     (if-let [l (->> sound second
+                                     (get audio/drum-codes)
+                                     (get audio/sample-lags))]
+                       (- start-time (/ l rate))
+                       start-time)
                      start-time)]
     (if (>= start-time (now))
       (let [sound (cond (number? sound)

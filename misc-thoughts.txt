@@ -180,7 +180,7 @@ the new loop are used.
 
 ***************************************************************************
 
-MULTIPLE ASPECTS PER ASPECT (?)
+MULTI-ASPECTS
 
 First off, maybe I should differentiate the names for a list of numbers versus
 an aspect. They've been the same thing up to this point, but if I have multiple
@@ -529,3 +529,90 @@ I can have
   +#(rand-int 0 5) (get "m")
 which is okay, but it restricts the transposing to be in whole units of the melody.
 I guess that's one more reason to work out multiple loops per aspect
+
+***************************************************************************
+
+ASPECT TIMES
+
+So I've known for a long time that there should be an option for any aspect to have
+its own rhythm determining when it advances to its next value. The basic case is pretty
+clear in my mind:
+  time 1 1 1.5 1.5
+  sound 5 -2 3 8 1 7 0 0
+  sound:time 4 3
+...for example, would be the roots of the first section of ATTYA, in 7, with SSLL
+as their rhythm.
+
+That's basically how I envision it working.
+What questions come to mind?
+-Is there a problem with multi-aspects? If nnfn is calling a single iterator for the
+multi-aspect, will it mess it up to have a sub-time for one of the aspects?
+Would you have to refer to the multi-aspect as a whole? In practice, it's hard to
+see why you'd group parts in a multi-aspect but want separate sub-times for each?
+Maybe for now just not allow it? Another possibility would be to only allow a sub-time
+for the multi-aspect as a whole. I think that's pretty reasonable, actually. The only
+problem is maybe how to refer to the multi-aspect. "sound&volume:time" might be confusing
+to look at. Maybe it's okay.
+-What happens if the time aspect has a long break, and in the meantime another aspect's
+sub-time has a lot of beats? What I worry about is that when you finally wanted a
+note, the aspect with the busy sub-time would have to catch up, and potentially grind
+through a lot of values. This could cause stuttering in playback.
+One solution would be just to keep a bigger buffer time, in case that should happen. I'd
+be sad to have to increase buffer time just for that reason, though.
+Another would be to keep the sub-aspect moving along, even if it hasn't been called yet.
+Actually, that could be a good enough way to do the whole thing. Have a function that
+can return the proper value for an aspect, and that you also inform each time you
+do a batch of notes, so it can update as much as it needs to, in order to be ready
+to quickly return the proper value. That seems like as good a way as any to split
+things up.
+
+Otherwise, I think it's pretty clear. Instead of just an iterator, you also have the
+option of a sub-timed iterator-like function. That thing itself uses an iterator for the sub-time
+and one for the aspect in question.
+The only difference from the interface's standpoint is you have to pass in the current
+time-pos, which basic iterators don't need.
+
+So I think the main things will be
+-update the parser to include sub-time aspects & figure out how they'll look in the
+ transformed tree.
+-notice aspects with sub-times in make-iterators and create timed-iterators instead.
+-in next-note-fns, either pass time-pos to all iterators, or detect which ones are
+timed-iterators and pass it to those.
+-write the actual timed-iterator fn.
+-include in the timed-iterator the option to update to the current time-pos without
+ returning a value, in order not to get too behind. Have this called by (update).
+
+Oh, wow! Here's a dilemma: Normal aspects can be values or functions that are called
+each time the loop gets to them. But timed aspects actually have 3 possibilities:
+-simple value
+-function that's called every single time you want a note
+-function that's called once each time the sub-time loop gets around to it.
+For example, in
+  sound #(rand-int 0 12)
+  sound:time 8
+  time 1
+should rand-int be called every 1 or every 8?
+I'm pretty sure I'd like to have either option available. Wow!
+Could I solve it with 2 layers of function?
+#(#(rand-int 0 12)) or something?
+##(rand-int 0 12)?
+Maybe that's simple enough? I forget if the way things are currently set up relies
+on nested de-thunking prior to final iterating, in which case this would be challenging.
+So
+  sound #(rand-int 0 12)
+  sound:time 8 time 1
+will return a number every 8, while
+  sound ##(rand-int 0 12)
+  sound:time 8 time 1
+will return a funciton every 8, which will then be dethunked?
+I guess that'll have to work.
+
+What about with cycles?
+  sound 0 (cycle [1 2 3])
+  sound:time 8
+will return 0 for 8, 1 for 8, 0 for 8, 2 for 8
+
+What if I want to spend 8 bars going through cycle A, then 8 going through cycle B?
+  sound #(!(cycle [..A..])) #(!(cycle [..B..]))
+Okay, I just tested that and it seems to work, although of course it's still not
+guaranteed to work in

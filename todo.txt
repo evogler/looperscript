@@ -20,12 +20,11 @@ UPCOMING STEPS:
   -peek ahead at next note's time to properly calculate note durs re. time+
   -reparse input in background (which means encorporate core.async?)
   -parser versions
-  -pause?
   -abstract node pipeline for playing notes
   -proper handling of bpm changes
-  -handle complex rhythms inside vectors...
+  -handle complex rhythms inside vector functions
   -reverse order of modifier application?
-  -pass modifier state to each modifier-fn
+  -pass modifier state to each modifier-fn?
   -show errors somewhere!
   -maybe make it easier to specify when functions are expecting rhythms (which may be nestd)
 LANGUAGE FEATURES:
@@ -80,37 +79,30 @@ TECH STEPS:
   -functioning REPL!
   -mp3 caching!
   -lzma.js for GET
-  -appache gzip .JS
   -check out more of web audio, especially LFO
-  -iOS compatibility
+  -iOS compatibility library!
   -explore limits of mobile webapp background consistency
-  -user upload samples
+  -user upload samples?
   -reuse nodes when applicable?
   -webGL
-  -Ace code editor!!!
 INTERFACE:
   -tutorial mode!!!!!!
-  -make console less of an eyesore
   -show current beat
-  -daytime / nighttime mode
-  -basic syntax highlighting (possibly via content-editable)
-  -real-time syntax highlighting!!!
+  -daytime / nighttime mode / offer several skins
+  -advanced unpause: resume previous sounds
   -options panel?
   -keypress commands for things like mute
 FURTHER STEPS:
-  -real-time loop updates
   -user samples / more samples
   -step through loop by user input
   -tap tempo? tap tempo to indicate form of mp3?
   -play along with mp3?
-  -'cursor' moving through loops, lazily evaluating?
   -(possibly separate noteon & noteoff for better performance during tempo changes?)
-  -diff updates to text to require minimum recalculation
   -further synth controls
   -templating for interface
   -visual interfaces (esp. on/off grid)
   -big-button phone interfaces
-  -graphical / animated representations of loops
+  -graphical / animated representations of loops; webGL tie in!
   -MIDI and/or screen keyboard play-along (with intonation)
   -record playback to loop form (to capture randoms)
   -record to WAV/MP3
