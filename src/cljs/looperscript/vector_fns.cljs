@@ -220,6 +220,7 @@
    :nth nth*
    :vector vector
    :interleave interleave
+   :sort sort
    :over over-mod
    :grow grow
    :add add-dethunk-test

@@ -650,9 +650,18 @@ v-make iterator checks for ^, leaves intact.
 v-make parser includes sub-time aspects & figure out how they'll look in the
   transformed tree.
 v-partition multi-aspects during make-iterators
- -notice aspects with sub-times in make-iterators and create timed-iterators instead.
+v-notice aspects with sub-times in make-iterators and create timed-iterators instead.
 v-in next-note-fns, either pass time-pos to all iterators, or detect which ones are
   timed-iterators and pass it to those.
 v-write the actual timed-iterator fn. should return create an iterator for vecs.
  -include in the timed-iterator the option to update to the current time-pos without
   returning a value, in order not to get too behind. Have this called by (update).
+
+...
+
+Okay, I think I actually did it! Well, I know I got basic aspect-times working, and I know
+I'm not completely done.
+First of all, hooray!
+Second, here's what needs to be done now:
+-see if I need to keep timed-iterators somewhat up to date (now I'm thinking maybe I dont')
+-figure out why ^#() isn't behaving properly.

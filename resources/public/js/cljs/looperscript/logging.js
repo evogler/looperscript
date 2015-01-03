@@ -15,8 +15,8 @@ var args = null;if (arguments.length > 0) {
   args = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0),0);} 
 return log__delegate.call(this,args);};
 log.cljs$lang$maxFixedArity = 0;
-log.cljs$lang$applyTo = (function (arglist__26760){
-var args = cljs.core.seq(arglist__26760);
+log.cljs$lang$applyTo = (function (arglist__11400){
+var args = cljs.core.seq(arglist__11400);
 return log__delegate(args);
 });
 log.cljs$core$IFn$_invoke$arity$variadic = log__delegate;
@@ -35,8 +35,8 @@ var args = null;if (arguments.length > 0) {
   args = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0),0);} 
 return log__GT___delegate.call(this,args);};
 log__GT_.cljs$lang$maxFixedArity = 0;
-log__GT_.cljs$lang$applyTo = (function (arglist__26761){
-var args = cljs.core.seq(arglist__26761);
+log__GT_.cljs$lang$applyTo = (function (arglist__11401){
+var args = cljs.core.seq(arglist__11401);
 return log__GT___delegate(args);
 });
 log__GT_.cljs$core$IFn$_invoke$arity$variadic = log__GT___delegate;

@@ -23,10 +23,11 @@
 (defn get-next-stack-val
   ([stack] (get-next-stack-val stack true))
   ([stack preserve-carots?]
-     (let [x (dethunk (-pop! stack))]
+     (let [x (-pop! stack)
+           preserve? (and (get (meta x) :intact-for-sub-time) preserve-carots?)
+           x (if-not preserve? (dethunk x) x)]
        (if (and (or (seq? x) (vector? x))
-                (not (and (get (meta x) :intact-for-sub-time)
-                          preserve-carots?))
+                (not preserve?)
                 (not (keyword? (first x))))
          (do (doseq [i (reverse x)]
                (push! stack i))
@@ -103,13 +104,18 @@
               (apply-modifiers @modifiers x))))))))
 
 (defn timed-iterator [v time-v]
-  (let [v-iterator (iterator v)
+  (let [v-iterator (iterator v true)
         time-iterator (iterator time-v)
         get-next-v #(let [next-v (v-iterator)]
-                      (if (or
-                           (and (vector? next-v) (not (keyword? (first next-v))))
-                           (fn? next-v))
-                       (iterator next-v false) next-v))
+                      (cond
+                       (and (vector? next-v) (not (keyword? (first next-v))))
+                       (iterator next-v false)
+
+                       (fn? next-v)
+                       (iterator (next-v) false)
+
+                       :else
+                       next-v))
         current-val (atom (get-next-v))
         current-val-expiration-time (atom (time-iterator))]
     (fn [note-time]

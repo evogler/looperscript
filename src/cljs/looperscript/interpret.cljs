@@ -82,7 +82,9 @@
        (delve v)
        :else
        v)
-      (with-meta (if caroted? {:intact-for-sub-time :true} {})))))
+      (#(if caroted? (with-meta % {:intact-for-sub-time :true})
+           %))
+      )))
 
 (defn pre-process-to-eval-!s [v invade-carots?]
   (let [[a b] v
