@@ -49,42 +49,42 @@
 
 (declare -process-vec)
 
-(defn maybe-process-vec [x]
+(defn maybe-process-vec [x invade-carots?]
   (cond (vector? x)
-        (-process-vec x)
+        (-process-vec x invade-carots?)
         :else
         x))
 
-(defn -process-vec [v]
-  (let [[a b] v
+(defn -process-vec [v invade-carots?]
+  (let [caroted? (= (first v) "^")
+        v (if caroted? (rest v) v)
+        [a b] v
         r (vec (rest v))
         r2 (vec (drop 2 v))
         [afn bfn] (map #(get vec-fns %) [a b])
-        delve #(splice (map maybe-process-vec %))]
-    (cond
-     ;; [rand ...
-     afn
-     (apply afn (delve r))
+        delve #(splice (map (fn [x] (maybe-process-vec x invade-carots?)) %))]
+    ;;^ and invade : process (rest v)
+    ;;^ and don't invade : process (rest v) & add meta
+    ;;normal : process
 
-     ;; #[rand ...
-     (and (= a "#") bfn)
-     #(apply bfn (delve r2))
+    (->
+      (cond
+       ;; [rand ...
+       afn
+       (apply afn (delve r))
 
-     ;; @[rand]
-     (and (= a "@") bfn)
-     (mark-for-splice (apply bfn (delve r2)))
+       ;; #[rand ...
+       (and (= a "#") bfn)
+       #(apply bfn (delve r2))
 
-     ;; @[1 2 3
-     (= a "@")
-     (mark-for-splice (delve r))
+       ;; [1 2 3 ...
+       (sequential? v)
+       (delve v)
+       :else
+       v)
+      (with-meta (if caroted? {:intact-for-sub-time :true} {})))))
 
-     ;; [1 2 3 ...
-     (sequential? v)
-     (delve v)
-     :else
-     v)))
-
-(defn pre-process-to-eval-!s [v]
+(defn pre-process-to-eval-!s [v invade-carots?]
   (let [[a b] v
         r (vec (rest v))
         r2 (vec (drop 2 v))
@@ -92,7 +92,7 @@
     (cond
      ;; ![rand ...
      (= a "!")
-     (-process-vec r)
+     (-process-vec r invade-carots?)
 
      (sequential? v)
      (mapv #(if (sequential? %) (pre-process-to-eval-!s %) %) v)
@@ -100,11 +100,14 @@
      :else
      v)))
 
-(defn process-vec [args]
-  (if-not (sequential? args) args
-          (-> args
-              pre-process-to-eval-!s
-              -process-vec)))
+(defn process-vec
+  ([args]
+     (process-vec args false))
+  ([args invade-carots?]
+     (if-not (sequential? args) args
+             (-> args
+                 (pre-process-to-eval-!s invade-carots?)
+                 (-process-vec invade-carots?)))))
 
 (defn walk-map-applying-fn-to-vals [f m]
   (reduce (fn [m [k v]]
@@ -122,7 +125,7 @@
   <param> = (bpm | version) <sp*>
   bpm = <'bpm'> <sp?> (number | fraction | vec)
   version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
-  vec = ('#' | '@' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp |
+  vec = '^'? ('#' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp |
                                                     string | vec-code)* <(']' | ')')>
   vec-code = ("
   (clojure.string/join " | " (mapv (comp #(apply str "'" % "'")
@@ -132,8 +135,10 @@
   init = <'init'> (<sp*> vec)*
   <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
   aspect = aspect-header data
-  aspect-header = aspect-keyword (sp* <'&'> sp* aspect-keyword)*
+  aspect-header = full-aspect-name (sp* <'&'> sp* full-aspect-name)*
+  full-aspect-name = aspect-keyword (':' sub-aspect-keyword)*
   aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |                              'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
+  sub-aspect-keyword = ('time')
   data = data-element+
   <data-element> = (ratio | hz | modifier | number | sp | vec | drum-code |
   data-shorthand | synth-code)
@@ -160,7 +165,6 @@
          :data #(-> %& splice)
          :ratio (fn [n d] (ratio->note (/ n d)))
          :fraction (fn [n d] [:fraction (/ n d)])
-         :aspect-keyword keyword
          :bpm (fn [x] [:bpm (/ 60 (cond
                                   (and (vector? x) (= (first x) :fraction)) (second x)
                                   (vector? x) (process-vec x)
@@ -171,6 +175,12 @@
          :v vec-fns/handle-v-keyword
          :vec vector
          :vec-code keyword
+         :aspect-keyword keyword
+         :sub-aspect-keyword keyword
+         :full-aspect-name (fn [& args]
+                             (if (= (count args) 1)
+                               (first args)
+                               [(first args) (nth args 2)]))
          :aspect-header vector
          :string str
          :part (fn [part-name & aspects]

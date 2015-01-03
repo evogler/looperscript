@@ -602,17 +602,57 @@ So
   sound #(rand-int 0 12)
   sound:time 8 time 1
 will return a number every 8, while
-  sound ##(rand-int 0 12)
+  sound #(#(rand-int 0 12))
   sound:time 8 time 1
 will return a funciton every 8, which will then be dethunked?
 I guess that'll have to work.
-
 What about with cycles?
   sound 0 (cycle [1 2 3])
   sound:time 8
 will return 0 for 8, 1 for 8, 0 for 8, 2 for 8
-
 What if I want to spend 8 bars going through cycle A, then 8 going through cycle B?
   sound #(!(cycle [..A..])) #(!(cycle [..B..]))
 Okay, I just tested that and it seems to work, although of course it's still not
-guaranteed to work in
+guaranteed to work with aspect-times.
+Wait, but what about nested functions?
+  #(rand [#(repeatedly 6 #(rand-int 0 12)) [1 2 3]])
+Do I want do fully dethunk, then take one value per time section? Or do I want to
+generate a vector, and then iterate over that vector?
+  (cycle [(cycle [1 2]) (cycle [(cycle [3 4]) (cycle [5 6])])])
+What if I wanted to fully dethunk that?
+What if I want to call it once and then get one of two cycles?
+What if I what I mean is to get cycles of [1 2] [3 4] [1 2] [5 6]?
+I think I need another function marker (probably ##) that tells the first iterator
+to stop dethunking. Shoot, except that that works for functions where I'd be adding
+a # anyway. I can change #(rand) to ##(rand), but (cycle) returns a function, so
+so how do I tell the first iterator not to call cycle? Maybe I need to use a separate
+symbol?
+Maybe ^? ^#(rand), ^(cycle)... I guess that's as good as anything, for now. I can always
+refactor that kind of thing, right?...
+So I could have
+  (cycle [(cycle [1 2]) (cycle [(cycle [3 4]) (cycle [5 6])])])
+  (cycle [^(cycle [1 2]) ^(cycle [(cycle [3 4]) (cycle [5 6])])])
+  (cycle [^(cycle [1 2]) (cycle [^(cycle [3 4]) ^(cycle [5 6])])])
+  #(rand-int 0 12)
+  ^#(rand-int 0 12)
+Ugh... okay, I think that makes sense.
+Quick check: does this fit with multi-aspects?
+  time & sound  4 #(rand-int 0 12), 3 ^#(rand-int 0 12), 5 ^[1 2 3]
+I think that's fine. The point is that everything within the expression a carot is
+touching will be run through its own iterator for the duration of a time section.
+
+Ooookaaaaayyyyy... Soooooo...
+Once again, steps:
+
+v-make parser recognize ^, (thus ^[], ^#(), ^!()).
+v-make process-vec handle those cases, leaving intact those with ^.
+v-make iterator checks for ^, leaves intact.
+v-make parser includes sub-time aspects & figure out how they'll look in the
+  transformed tree.
+v-partition multi-aspects during make-iterators
+ -notice aspects with sub-times in make-iterators and create timed-iterators instead.
+v-in next-note-fns, either pass time-pos to all iterators, or detect which ones are
+  timed-iterators and pass it to those.
+v-write the actual timed-iterator fn. should return create an iterator for vecs.
+ -include in the timed-iterator the option to update to the current time-pos without
+  returning a value, in order not to get too behind. Have this called by (update).

@@ -63,6 +63,9 @@
 
 (defn ratio->freq [r] (* 261.625565 r))
 
+(defn get-bpm []
+  (if-let [bpm (:bpm @params)] bpm 1))
+
 (defn dethunk [x]
   (if (fn? x) (x) x))
 
@@ -95,14 +98,40 @@
         (swap! sounding-notes assoc id node)
         (aset node "onended" (fn [] (swap! sounding-notes dissoc id)))))))
 
+;; partitions multi-aspects into separate iterators, so that timed-iterators can be
+;; applied where necessary
+(defn separate-multi-aspects [part]
+  (assoc
+   (reduce
+    (fn [m [k v]]
+      (if (= 1 (count k))
+        (assoc m (first k) v)
+        (reduce into m
+                (for [i (range (count k))]
+                  {(nth k i) (vec (apply concat (partition 1 (count k) (drop i v))))}))))
+    {}
+    (vec (dissoc part :name)))
+   :name (get part :name)))
+
 ;; make-iterators takes a part map and returns a map of iterators.
 ;; It is where default aspect values are added where needed.
+
 (defn make-iterators [part]
-  (let [part-keys (->> (keys part) (remove #(= % :name)))
-        specified-aspects (reduce into #{} part-keys)
+  (let [part (separate-multi-aspects part)
+        part-keys (->> (keys part)
+                       (remove #(= % :name))
+                       (filter keyword?))
+        specified-aspects (set part-keys)
+        sub-aspects (->> (keys part) (filter vector?) set)
         non-specified-aspects (remove #(contains? specified-aspects %) aspects)]
-    (-> (zipmap part-keys (map #(iter/iterator (get part %)) part-keys))
-        (into (zipmap (map vector non-specified-aspects)
+    (-> (zipmap part-keys (map
+                           #(cond
+                             (contains? sub-aspects [% :time])
+                             (iter/timed-iterator (get part %) (get part [% :time]))
+                             :else
+                             (iter/iterator (get part %)))
+                           part-keys))
+        (into (zipmap non-specified-aspects
                       (map #(iter/iterator (get aspect-defaults %)) non-specified-aspects))))))
 
 ;; next-note-fn called for each part, each time schedule-note wants another note from
@@ -112,23 +141,27 @@
 ;; -splits apart multi-aspects
 ;; -handles accumulation of time and non-accumulation of time+
 ;; -loops if a note has a positive :skip value
+;; -adjusts for BPM!!!
 (defn next-note-fn [part start-time]
   (let [iterators (make-iterators part)
         time-pos (atom (+ start-time
-                          (* (if-let [bpm (:bpm @params)] bpm 1)
+                          (* (get-bpm)
                              (first (get part [:offset] [0])))))]
     (fn
       ([command] (if (= command :time-pos) @time-pos))
       ([] (loop []
-            (let [res-v (for [[k iter] iterators
-                              aspect k]
-                          [aspect (iter)])
+            (let [;; adjusted-timepos seems kind of hacky to me.
+                  ;; maybe I should differentiate part-time and real-time?
+                  ;; also, this floating point error correction is lame
+                  adjusted-time-pos (+ 1e-7 (/ (- @time-pos start-time) (get-bpm)))
+                  res-v (for [[aspect iter] iterators]
+                          [aspect (iter adjusted-time-pos)])
                   res (into {} res-v)
                   res (-> res
                           (assoc :start-time @time-pos)
                           (assoc :overtones [1]) ;; XXX
-                          (update-in [:time] * (if-let [bpm (:bpm @params)] bpm 1))
-                          (update-in [:time+] * (if-let [bpm (:bpm @params)] bpm 1)))]
+                          (update-in [:time] * (get-bpm))
+                          (update-in [:time+] * (get-bpm)))]
               (if (>= 0 (res :skip))
                 (recur)
                 (do (swap! time-pos + (res :time))

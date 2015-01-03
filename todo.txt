@@ -26,6 +26,7 @@ UPCOMING STEPS:
   -reverse order of modifier application?
   -pass modifier state to each modifier-fn?
   -show errors somewhere!
+  -get random library & allow seeding
   -maybe make it easier to specify when functions are expecting rhythms (which may be nestd)
 LANGUAGE FEATURES:
   -modifiers that hook in in more ways? (controlling flow of input values, changing

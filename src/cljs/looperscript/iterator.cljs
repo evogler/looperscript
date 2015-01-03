@@ -20,14 +20,18 @@
       (recur (r))
       r)))
 
-(defn get-next-stack-val [stack]
-  (let [x (dethunk (-pop! stack))]
-    (if (and (or (seq? x) (vector? x))
-             (not (keyword? (first x))))
-      (do (doseq [i (reverse x)]
-            (push! stack i))
-          (get-next-stack-val stack))
-      x)))
+(defn get-next-stack-val
+  ([stack] (get-next-stack-val stack true))
+  ([stack preserve-carots?]
+     (let [x (dethunk (-pop! stack))]
+       (if (and (or (seq? x) (vector? x))
+                (not (and (get (meta x) :intact-for-sub-time)
+                          preserve-carots?))
+                (not (keyword? (first x))))
+         (do (doseq [i (reverse x)]
+               (push! stack i))
+             (get-next-stack-val stack))
+         x))))
 
 (defn modifier? [x]
   (and (vector? x) (= (first x) :modifier)))
@@ -68,30 +72,50 @@
          :fraction (* n (second m))
          :plus (+ n (second m))
          :just (justify n))))
-    x mods)
-  )
+    x mods))
 
-(defn iterator [v]
-  (let [stack (atom [])
-        modifiers (atom [])]
-    (fn []
+(defn iterator
+  ([v] (iterator v true))
+  ([v preserve-carots?]
+     (let [stack (atom [])
+           modifiers (atom [])]
+       (fn [& args]
+         (loop []
+           (if (empty? @stack)
+             (do (reset! modifiers [])
+                 (vec-push! stack v)))
+           (let [x (get-next-stack-val stack preserve-carots?)]
+             (cond
+              ;; I forget what conditions returned here [], but it was causing problems...
+              (or (nil? x) (and (sequential? x) (empty? x)))
+              (recur)
+
+              (modifier-fn? x)
+              (do (swap! modifiers conj (second x))
+                  (recur))
+
+              (modifier? x)
+              ;; map dethunk could be [(first (second x)) (dethunk (second (second  x)))]:
+              (do (swap! modifiers conj (map dethunk (second x)))
+                  (recur))
+
+              :else
+              (apply-modifiers @modifiers x))))))))
+
+(defn timed-iterator [v time-v]
+  (let [v-iterator (iterator v)
+        time-iterator (iterator time-v)
+        get-next-v #(let [next-v (v-iterator)]
+                      (if (or
+                           (and (vector? next-v) (not (keyword? (first next-v))))
+                           (fn? next-v))
+                       (iterator next-v false) next-v))
+        current-val (atom (get-next-v))
+        current-val-expiration-time (atom (time-iterator))]
+    (fn [note-time]
       (loop []
-        (if (empty? @stack)
-          (do (reset! modifiers [])
-              (vec-push! stack v)))
-        (let [x (get-next-stack-val stack)]
-          (cond
-           (or (nil? x) (and (sequential? x) (empty? x)))
-           (recur)
-
-           (modifier-fn? x)
-           (do (swap! modifiers conj (second x))
-               (recur))
-
-           (modifier? x)
-            ; map dethunk could be [(first (second x)) (dethunk (second (second  x)))]:
-           (do (swap! modifiers conj (map dethunk (second x)))
-                (recur))
-
-           :else
-           (apply-modifiers @modifiers x)))))))
+        (when (>= note-time @current-val-expiration-time)
+          (swap! current-val-expiration-time + (time-iterator))
+          (reset! current-val (get-next-v))
+          (recur)))
+      (dethunk @current-val))))
