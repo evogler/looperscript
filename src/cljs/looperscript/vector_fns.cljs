@@ -6,7 +6,10 @@
 
 (defn shuffle* [v] shuffle)
 
-(def range* range)
+(defn range*
+  ([a] (range (inc a)))
+  ([a b] (range a (inc b)))
+  ([a b c] (range a (inc b) c)))
 
 (defn rand-range [floor ceil]
   (-> (rand)
@@ -78,7 +81,8 @@
                          (if (= new-pos @pos) (recur) new-pos))))))))
 
 (defn in [t v]
-  (let [factor (/ t (reduce + v))]
+  (let [v (flatten v)
+        factor (/ t (reduce + v))]
     (map #(* factor %) v)))
 
 (defn cycle* [v]
@@ -86,8 +90,33 @@
         v-len (count v)]
     (fn [] (nth v (swap! pos #(mod (inc %) v-len))))))
 
+;; fill-time would be an interesting code-golf candidate
+(defn fill-time [t v]
+  (let [previous-total (atom nil)
+        total (atom 0)]
+    (-> (take-while
+         #(do
+            (reset! previous-total @total)
+            (< (swap! total + %) t))
+         (if (fn? v) (repeatedly v)
+             (cycle (flatten v))))
+        vec
+        (conj (- t @previous-total)))))
+
+(defn once [x]
+  (let [called? (atom false)]
+    (fn []
+      (when (not @called?)
+        (reset! called? true)
+        x))))
+
 (defn flatten* [& args]
   (flatten args))
+
+(defn dethunk [x]
+  (if (fn? x)
+    (dethunk (x))
+    x))
 
 (def nth* nth)
 
@@ -209,6 +238,8 @@
    :repeatedly repeatedly
    :range range*
    :cycle cycle*
+   :fill fill-time
+   :once once
    :pattern scale-pattern
    :scale-range scale-range
    :scale-range-sweep scale-range-sweep
@@ -220,6 +251,7 @@
    :nth nth*
    :vector vector
    :interleave interleave
+   :dethunk dethunk
    :sort sort
    :over over-mod
    :grow grow

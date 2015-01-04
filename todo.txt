@@ -1,31 +1,26 @@
-TODAY, TUESDAY, DECEMBER 16!:
-  -reparse, transform, and catch up in background!
 REFACTOR:
   -modules:
-    -parser / transformer
-    -vec-functions
     -tree-traverser
     -note-scheduler
     -looperscript ui stuff
     -Q: where to put event hook for live syntax / graphics?
-  -vec-functions have proper parameters?
-  -lazy-evaluation fully realized
-  -pipeline for optional nodes (possibly specify full chain in vector??)
 UPCOMING STEPS:
+  -keep improving ^!#(). (What's wrong with !(cycle)?)
+  -fix infinite loops on 0-length vectors
   -smart update: (if no fn in aspect, don't grind; if fn, start anew, unless strict-mode set)
   -toggle setinterval length based on document.hasfocus
   -proper params. as well as bpm, setting for latency.
   -standardize mode concept. (e.g.'s: tuning, hz)
     -push/pop modes?
   -peek ahead at next note's time to properly calculate note durs re. time+
-  -reparse input in background (which means encorporate core.async?)
+  -reparse input in background
   -parser versions
   -abstract node pipeline for playing notes
   -proper handling of bpm changes
   -handle complex rhythms inside vector functions
   -reverse order of modifier application?
   -pass modifier state to each modifier-fn?
-  -show errors somewhere!
+  -show errors somewhere! (& bug instaparse guy about bug)
   -get random library & allow seeding
   -maybe make it easier to specify when functions are expecting rhythms (which may be nestd)
 LANGUAGE FEATURES:
@@ -34,11 +29,13 @@ LANGUAGE FEATURES:
   -try-repeatedly (try x times or until pred is matched (or score is maximized))
     -especially for use with coprime
   -legato/staccato!
+  -quantize! (hello?!)
+    -to any rhythm? with any percent? with a maxiumum offset?
   -sections defined within part, and then each aspect is defined per section
   -triggers (when time hits !, pitch moves)
     -triggers have ids and are shared across a bus
   -shared repo(?) for motives, fragments, and functions.
-  -functions for defining abstrac values over time (e.g. ramp, interp..)
+  -functions for defining abstract values over time (e.g. ramp, interp..)
     -with
   -history of everything that's been played? functions to refer back to these?
   -time functions based on actual time (and/or date?)

@@ -3,10 +3,12 @@
 (defn log [& args]
   (.log js/console (apply str args)))
 
-; (if (js* "typeof AudioContext === function"))
-(def ctx (js/webkitAudioContext.))
-(if (nil? ctx) (def ctx (js/AudioContext.)))
 
+;; ; (if (js* "typeof AudioContext === function"))
+;; (def ctx (js/webkitAudioContext.))
+;; (if (nil? ctx) (def ctx (js/AudioContext.)))
+
+(def ctx (js/AudioContext.))
 
 #_(def pending-sounds (atom #{}))
 (def drums ["kick" "snare" "hat" "sidestick" "ride-bell" "ride"])

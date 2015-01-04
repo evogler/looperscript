@@ -28,7 +28,7 @@
 (def current-start-time (atom nil))
 (def current-next-note-fns (atom []))
 (def queue-time-interval 1) ; seconds
-(def queue-time-extra 0.1)
+(def queue-time-extra 0.5)
 (def last-queue-time (atom nil))
 (def params (atom {}))
 (def sounding-notes (atom {}))
@@ -251,7 +251,7 @@
 
 (defn play []
   (let [parts (get-parts)]
-    (if (nil? @current-start-time) (reset-clock! (+ (now) 0.25)))
+    (if (nil? @current-start-time) (reset-clock! (+ (now) 0.5)))
     (update parts)
     (queue-notes)
     (kill-playing-interval)
@@ -286,7 +286,8 @@
                                   "mac" mac-key)
                 "exec" f)))
 
-(bind-key "update" "Ctrl-u" "Command-U" update)
+(bind-key "update" "Ctrl-Shift-u" "Command-Shift-U" (fn [& args] (update)))
+(bind-key "link" "Ctrl-Shift-l" "Command-Shift-L" (fn [e] (get/text->link)) )
 (bind-key "stop" "Ctrl-Shift-S" "Command-Shift-S" reset-button)
 (bind-key "play" "Ctrol-Shift-P" "Command-Shift-P" play)
 

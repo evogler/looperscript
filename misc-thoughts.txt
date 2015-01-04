@@ -665,3 +665,18 @@ First of all, hooray!
 Second, here's what needs to be done now:
 -see if I need to keep timed-iterators somewhat up to date (now I'm thinking maybe I dont')
 -figure out why ^#() isn't behaving properly.
+
+...
+Okay, fixed the ^#() problem. However, I hit on something else.
+Suppose you had something like #(rand !(take 3 (shuffle (range 24)))), where 3 numbers
+are chosen at the beginning and then randomly chosen between each time the function
+is called, and you wanted the same thing, except that the 3 notes are resampled
+each time you get to a new sub-time section. You'd need another gradation beyond !.
+Currently you have ! to indicate that a subset of a function should be fully calculated
+in advance. I wondered at some point if that would be enough, but couldn't think of
+a case where it would be insufficient. Well, I think this is it.
+
+Solutions?
+-Bite the bullet and work out (let).
+-Maybe employ degrees of !? Seems hacky, and I'd hate to see more than !!. !!!! would
+ be weird.
