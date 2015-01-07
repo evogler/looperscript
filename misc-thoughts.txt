@@ -679,4 +679,35 @@ a case where it would be insufficient. Well, I think this is it.
 Solutions?
 -Bite the bullet and work out (let).
 -Maybe employ degrees of !? Seems hacky, and I'd hate to see more than !!. !!!! would
- be weird.
+ be weird. Or ! with numbers? !2(rand)? I don't think I can look at that. I should
+ try to think through this degrees concept.
+-Maybe just a darned symbol for "calculate this once per sub-time section"? ^! comes to
+ mind. Potentially it would seem like the opposite of what it should do, since ^
+ has a preserving effect otherwise. Maybe you'd just think of it as the symbol for
+ stuff to do with sub-times?
+
+Okay, I hit a snag with something I changed. In retrospect it's obvious. When I split
+multi-aspects into separate iterators earlier, I forgot that that only works when
+the aspects information is divided at the base vector level. But, of course, you want
+to be able to generate multi-aspect data from a function. That was the whole point.
+Looks like I'm going to have to think about that.
+
+Is it possible to keep multi-aspect splitting post-function while allowing some of
+the aspects to be timed aspects?
+There's a fundamental problem, in that the functional generation happens at a certain
+time, based on the part needing notes. But a timed aspect will need values at a
+completely different rate.
+I can only see how this works if you calculate the whole thing out in advance, and
+cache the results for whichever aspect turns out the be slower. Otherwise, they're just
+not going to be generated at the same time.
+For the simple case, where the items really are separated at the lowest level of the
+vector, it does work. (I.e. the way it is now). I wonder if it makes sense to allow
+both semi-features to work, based on context? If you're dealing with timed aspects,
+automatically split at the bottom vector level, but if you're not, wait until
+post-function and descend into the resulting tree?
+That would allow the most functionality, but it would make the programs behavior
+more confusing.
+Another option would be to allow the user to specify which style they wanted...
+
+[Note: think about a single stream commanding aspect changes, and otherwise all
+aspects stay the same...]

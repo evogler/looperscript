@@ -56,6 +56,7 @@
         x))
 
 (defn -process-vec [v invade-carots?]
+  ;(log "-process-vec in: " v)
   (let [caroted? (= (first v) "^")
         v (if caroted? (rest v) v)
         [a b] v
@@ -83,8 +84,7 @@
        :else
        v)
       (#(if caroted? (with-meta % {:intact-for-sub-time :true})
-           %))
-      )))
+           %)))))
 
 (defn pre-process-to-eval-!s [v invade-carots?]
   (let [[a b] v
@@ -94,10 +94,10 @@
     (cond
      ;; ![rand ...
      (= a "!")
-     (-process-vec r invade-carots?)
+     (process-vec r invade-carots?)
 
      (sequential? v)
-     (mapv #(if (sequential? %) (pre-process-to-eval-!s %) %) v)
+     (mapv #(if (sequential? %) (pre-process-to-eval-!s % invade-carots?) %) v)
 
      :else
      v)))
@@ -106,6 +106,7 @@
   ([args]
      (process-vec args false))
   ([args invade-carots?]
+     ;;(log "proess vec in: " args)
      (if-not (sequential? args) args
              (-> args
                  (pre-process-to-eval-!s invade-carots?)

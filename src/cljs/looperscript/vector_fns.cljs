@@ -81,7 +81,8 @@
                          (if (= new-pos @pos) (recur) new-pos))))))))
 
 (defn in [t v]
-  (let [v (flatten v)
+  (log "in t v: " t v)
+  (let [v (flatten [v])
         factor (/ t (reduce + v))]
     (map #(* factor %) v)))
 
@@ -200,6 +201,13 @@
         (swap! accum insert-randomly (new-note-fn))
         @accum))))
 
+(defn step [start-val increment]
+  (let [val (atom start-val)]
+    (fn []
+      (let [res @val]
+        (swap! val + increment)
+        res))))
+
 (defn add-dethunk-test [& args]
   (let [dethunk (fn dethunk [x]
                   (if (fn? x)
@@ -255,6 +263,7 @@
    :sort sort
    :over over-mod
    :grow grow
+   :step step
    :add add-dethunk-test
    :def define-variable
    :get get-variable})

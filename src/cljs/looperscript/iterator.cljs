@@ -85,11 +85,14 @@
            (if (empty? @stack)
              (do (reset! modifiers [])
                  (vec-push! stack v)))
-           (let [x (get-next-stack-val stack preserve-carots?)]
+           (let [x (get-next-stack-val stack preserve-carots?)
+                 _ (if (and (sequential? v) (fn? (first v)))
+                     (log "iterator v, x: " v x))]
              (cond
               ;; I forget what conditions returned here [], but it was causing problems...
               (or (nil? x) (and (sequential? x) (empty? x)))
               (recur)
+
 
               (modifier-fn? x)
               (do (swap! modifiers conj (second x))
