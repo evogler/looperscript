@@ -7,7 +7,8 @@ REFACTOR:
 QUESTIONS:
   -multiple aspects refering to same cycle? (probably means cache results of actual fn)
 UPCOMING STEPS:
-  -keep improving ^!#(). (What's wrong with !(cycle)?)
+  -fix parameterless functions to not require space before closing parens
+  -fix calling actual functions [e.g. ((cycle))]
   -fix infinite loops on 0-length vectors
   -smart update: (if no fn in aspect, don't grind; if fn, start anew, unless strict-mode set)
   -toggle setinterval length based on document.hasfocus

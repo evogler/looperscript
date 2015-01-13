@@ -16,8 +16,10 @@ var TopLevel = {
 "document" : function () {},
 "editor" : function () {},
 "escape" : function () {},
+"exponentialRampToValueAtTime" : function () {},
 "getValue" : function () {},
 "history" : function () {},
+"linearRampToValueAtTime" : function () {},
 "log" : function () {},
 "moveCursorTo" : function () {},
 "Object" : function () {},
@@ -28,8 +30,11 @@ var TopLevel = {
 "setInterval" : function () {},
 "setPosition" : function () {},
 "setValue" : function () {},
+"speak" : function () {},
+"SpeechSynthesisUtterance" : function () {},
 "start" : function () {},
 "stop" : function () {},
 "unescape" : function () {},
+"window" : function () {},
 "XMLHttpRequest" : function () {}
 }

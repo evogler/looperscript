@@ -74,17 +74,33 @@
         gain (.createGain ctx)
         q 0.25
         filter (.createBiquadFilter ctx)
-         panner (.createPanner ctx)]
+        panner (.createPanner ctx)]
 
     (aset (aget gain "gain") "value" (* 0.1 vol))
+    (.linearRampToValueAtTime (aget gain "gain")
+                              (* 0.1 vol)
+                              start-time)
+    (.exponentialRampToValueAtTime (aget gain "gain")
+                              (* 0.1 0.1 vol)
+                              (+ start-time 3))
 
     (aset (aget filter "frequency") "value" filt-freq)
     (aset (aget filter "Q") "value" q)
+    (.exponentialRampToValueAtTime (aget filter "frequency")
+                                   filt-freq
+                                   start-time)
+    (.exponentialRampToValueAtTime (aget filter "frequency")
+                                   1000
+                                   (+ 0.1 start-time))
+    (.exponentialRampToValueAtTime (aget filter "frequency")
+                                   300
+                                   (+ 1 start-time))
 
     (aset panner "panningModel" "equalpower")
     (.setPosition panner pan 0 0)
 
     (.connect gain filter)
+
     (.connect filter panner)
     (.connect panner (aget ctx "destination"))
 

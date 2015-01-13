@@ -1,5 +1,8 @@
 (ns cljs.looperscript.vector-fns
-  (:require [cljs.looperscript.interp-rhythms :refer [rhythms-interp]]))
+  (:require ; [cemerick.pprng :as rng]
+            [cljs.looperscript.interp-rhythms :refer [rhythms-interp]]
+            [cljs.looperscript.start-time :refer [now get-current-start-time]]))
+
 
 (defn log [& args]
   (.log js/console (apply str args)))
@@ -80,8 +83,20 @@
                                                      (min max-v (+ @pos max-step)))]
                          (if (= new-pos @pos) (recur) new-pos))))))))
 
+(defn rand-walk2 [intervals v]
+  (let [rand-int-range (fn [a b] (+ a (rand-int (inc (- b a)))))
+        max-v (dec (count v))
+        pos (atom (rand-int (count v)))]
+    (fn []
+      (nth v (reset! pos
+                     (loop []
+                       (let [new-pos (->> intervals
+                                          (map #(+ % @pos))
+                                          (filter #(<= 0 % max-v))
+                                          rand-nth)]
+                         (if (= new-pos @pos) (recur) new-pos))))))))
+
 (defn in [t v]
-  (log "in t v: " t v)
   (let [v (flatten [v])
         factor (/ t (reduce + v))]
     (map #(* factor %) v)))
@@ -157,6 +172,14 @@
   (log v)
   v)
 
+(defn say [x]
+  ;; var msg = new SpeechSynthesisUtterance('Hello World');
+  ;;   window.speechSynthesis.speak(msg);
+  (->> x
+       js/SpeechSynthesisUtterance.
+       (.speak (aget js/window "speechSynthesis")))
+  x)
+
 (defn memo* [id f]
   (let [memo-fn (fn [cnt] (f))
         counts (atom {})]))
@@ -208,6 +231,9 @@
         (swap! val + increment)
         res))))
 
+(defn time []
+  (- (now) (get-current-start-time)))
+
 (defn add-dethunk-test [& args]
   (let [dethunk (fn dethunk [x]
                   (if (fn? x)
@@ -227,6 +253,39 @@
 (defn get-variable [s]
   (get @variable-map s))
 
+(defn cache [f]
+  (let [output (atom [])
+        output-pos (atom 0)
+        key-positions (atom {})]
+    (fn [key]
+      (if-not (contains? @key-positions key)
+              (swap! key-positions assoc key 0))
+      (let [key-pos (get @key-positions key)]
+        (when (= key-pos @output-pos)
+          (swap! output conj (f))
+          (swap! output-pos inc))
+        (let [res (nth @output key-pos)]
+          (swap! key-positions update-in [key] inc)
+          res)))))
+
+(defn plus [& args]
+  (apply + args))
+
+(defn times [& args]
+  (apply * args))
+
+(defn pow* [a b]
+  (Math/pow a b))
+
+(defn sin [n]
+  (Math/sin n))
+
+(defn cos [n]
+  (Math/cos n))
+
+(defn floor [n]
+  (Math/floor n))
+
 (def vec-fns
   {:shuffle shuffle
    :mild-shuffle mild-shuffle
@@ -241,9 +300,11 @@
    :weight2 rand-weighted-zip
    :walk rand-walk
    :walk1 rand-walk1
+   :walk2 rand-walk2
    :in in
    :x repeat
    :repeatedly repeatedly
+   :xx repeatedly
    :range range*
    :cycle cycle*
    :fill fill-time
@@ -254,16 +315,31 @@
    :transpose-scale transpose-scale
    :flatten flatten*
    :log log*
+   :say say
    :user user
    :bass-fret bass-fret
    :nth nth*
    :vector vector
    :interleave interleave
    :dethunk dethunk
+   :call dethunk
    :sort sort
    :over over-mod
    :grow grow
    :step step
    :add add-dethunk-test
    :def define-variable
-   :get get-variable})
+   :get get-variable
+   :cache cache
+   :plus plus
+   :times times
+   :mod mod
+   :pow pow*
+   :sin sin
+   :cos cos
+   :floor floor
+   :time time
+;;   :round round
+;;   :round-up round-up
+;;   :round-down round-down
+   })

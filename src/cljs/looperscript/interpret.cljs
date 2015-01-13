@@ -130,10 +130,6 @@
   version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
   vec = '^'? ('#' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp |
                                                     string | vec-code)* <(']' | ')')>
-  vec-code = ("
-  (clojure.string/join " | " (mapv (comp #(apply str "'" % "'")
-                                         (partial apply str) rest str) (keys vec-fns)))
-  ") <sp>
   part = part-title <sp>* aspect*
   init = <'init'> (<sp*> vec)*
   <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
@@ -148,13 +144,20 @@
   <synth-code> = ('sawtooth' | 'sine' | 'square' | 'triangle')
   <data-shorthand> = v
   v = number <'v'> number
-  drum-code = #'[bcdhkrs]'
-  modifier = (plus | fraction | mod-code)
+  drum-code = !vec-code #'[bcdhkrs]'
+  modifier = (plus-mod | fraction | mod-code)
   mod-code = 'just'
-  plus = <'+'> sp* (number | ratio | vec)
+  plus-mod = <'+'> sp* (number | ratio | vec)
   fraction = number <'/'> number
   hz = (number | vec) sp* 'hz'
   ratio = number <':'> number
+
+  vec-code = ("
+  (clojure.string/join " | " (mapv (comp #(apply str "'" % "'")
+                                         (partial apply str) rest str) (keys vec-fns)))
+  ") <sp>
+
+
   string = <'\"'> #'([^\"]*)' <'\"'>
   number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
       <sp> = <#'[\\s,]+'>"))

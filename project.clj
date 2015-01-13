@@ -5,11 +5,12 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths ["src/clj" "src/cljs"]
   :dependencies [[org.clojure/clojure "1.6.0"]
-;                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
+;;               [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  [compojure "1.2.1"]
                  [org.clojure/clojurescript "0.0-2371"]
                  [domina "1.0.3-SNAPSHOT"]
-;                 [hiccups "0.3.0"]
+;;                 [hiccups "0.3.0"]
+                 [com.cemerick/pprng "0.0.3"]
                  [org.clojars.magomimmo/shoreleave-remote-ring "0.3.1-SNAPSHOT"]
                  [org.clojars.magomimmo/shoreleave-remote "0.3.1-SNAPSHOT"]
                  [com.lucasbradstreet/instaparse-cljs "1.3.4.2"

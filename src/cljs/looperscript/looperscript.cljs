@@ -14,7 +14,8 @@
             [cljs.looperscript.audio :as audio]
             [cljs.looperscript.interpret :as parse]
             [cljs.looperscript.iterator :as iter]
-            [cljs.looperscript.logging :refer [log log->]]))
+            [cljs.looperscript.logging :refer [log log->]]
+            [cljs.looperscript.start-time :refer [get-current-start-time reset-clock! now]]))
 
 (declare stop)
 
@@ -25,7 +26,6 @@
 (def ctx audio/ctx)
 (def playing (atom false))
 (def playing-interval (atom nil))
-(def current-start-time (atom nil))
 (def current-next-note-fns (atom []))
 (def queue-time-interval 1) ; seconds
 (def queue-time-extra 0.5)
@@ -48,8 +48,6 @@
    :skip [1]})
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn now [] (aget audio/ctx "currentTime"))
 
 (defn log-time [f & args]
   (let [start-time (now)
@@ -216,10 +214,6 @@
             (if (< (:start-time next-note) end-time)
               (recur))))))))
 
-(defn reset-clock!
-  ([] (reset-clock! nil))
-  ([time] (reset! current-start-time time)))
-
 (defn reset-button []
   (stop)
   (reset-clock!))
@@ -231,7 +225,7 @@
   ([parts]
      (if (insta/failure? parts)
        (log (str (vec parts)))
-       (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p @current-start-time)))]
+       (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p (get-current-start-time))))]
          ;;  each next-note-fn catch up to current time
          (doseq [nnfn new-nnfns]
            (loop []
@@ -251,7 +245,7 @@
 
 (defn play []
   (let [parts (get-parts)]
-    (if (nil? @current-start-time) (reset-clock! (+ (now) 0.5)))
+    (if (nil? (get-current-start-time)) (reset-clock! (+ (now) 0.5)))
     (update parts)
     (queue-notes)
     (kill-playing-interval)

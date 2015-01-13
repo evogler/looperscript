@@ -709,5 +709,161 @@ That would allow the most functionality, but it would make the programs behavior
 more confusing.
 Another option would be to allow the user to specify which style they wanted...
 
-[Note: think about a single stream commanding aspect changes, and otherwise all
-aspects stay the same...]
+***************************************************************************
+
+AUDIO NODE PIPELINE, CHORDS
+
+One area I'd like to address a lot more is sound. I'd like to take advange of a lot
+more of the webaudio api has to offer. (Jeez, two sentences in, and it occurs to me,
+could I make the audio properties general enough that they could be used to control
+something else, e.g. Supercollider?).
+I'd like to be able to offer as much as possible of gains, filters, ramps, fades,
+and if possible LFOs. Ideally the looper would be able to specify any sequence
+of values for any sequence of nodes that the webaudio api allows.
+Maybe a list of things that I have, and things I'd like to have.
+
+Already:
+-choice of generating synths.
+-volume of synth.
+-one low-pass filter.
+-crappy pan.
+-sample playback rate.
+
+Desired:
+-envelope on volume. (ADSR or generic interpolated levels).
+-arbitrary high, low, resonant filters.
+-proper panning.
+-filters on samples.
+-arbitrary starting points on samples.
+-envelope on any value (gain, filter frequency, filter Q, sample rate).
+-arbitrary order of nodes (gains, filters, etc).
+-LFO!!! (And thus: vibrato, tremelo, etc).
+-forking and exponentiating chords!!!!
+
+I can imagine a lot of this as a simple listing of a node pipeline:
+  (sawtooth 440)
+  (gain 1)
+  (exponentiate (low-pass-filter 2000 .5) (resonant-filter 5000 .5))
+or
+  note 3
+  overtones 1|2
+  sawtooth
+  gain-time & gain [0 0, .01 1, .5 .2, 3 0] ;; how to indicate release?
+  resonant-filters 300|1300|3000
+  reverb .1
+or
+  sample ride
+  gain envelope 0 1, .2 1, .22 0
+  low-pass-filter envelope 0 100, .2 5000
+or
+  note 7
+  sawtooth
+  adsr ...
+  fork 16 resonant filters
+  match forks with 16 pans
+
+So, ya, I think most of the items in the "desired" list would fit into the concept of a
+pipeline. Pretty much I need to specify a series of nodes, and how they plug into each
+other. I guess you would plug in either values or other nodes as parameters.
+I think that makes sense. I'd have to figure out exactly how to specify that stuff,
+but I think the concept is clear enough. Descriing a tree that leads into a node
+could be a little awkward in text, but I think it's doable.
+
+
+From my notes in a JS file:
+So in conclusion, we have the following types of things happening:
+(TRIVIAL: Create context, get current time)
+
+MUST HAPPEN FIRST:
+-create nodes (oscillator, gain, biquadFilter)
+
+CAN HAPPEN IN ANY ORDER:
+-connect nodes to other nodes & to other nodes' parameters
+-set basic parameters (type, filter.Q.value)
+-set values on timeline: setValueAtTime, linearRampToValueAtTime, exponentialRampToValueAtTime
+-set start & stop times
+
+thus you'd need:
+-create
+-set
+-setAtTime, linearAtTime, exponentialAtTime
+-startTime, endTime
+
+I think you could create a data spec in clojure for all of this:
+'[[create oscillator O1]
+  [create oscillator O2]
+  [create gain G1]
+  [create gain G2]
+  [O1 set type "sawtooth"]
+  [O1 set-at-time frequency 220 0]
+  [O1 linear-ramp frequency 440 0.5]
+  [O2 set type "sine"]
+  [O2 set frequency 6]
+  [G1 set gain .01]
+  [G2 set gain 1]
+  [connect O2 G1.gain]
+  [connect G1 O1.frequency]
+  [connect O1 G2]
+  [connect G2 destination]
+  [O1 start start-time]
+  [O2 start start-time]
+  [O1 end end-time]
+  [O2 end end-time]]
+
+And you could abbreviate it some more
+
+'[[O1 oscillator]
+  [O2 oscillator]
+  [G1 gain]
+  [G2 gain]
+  [O1 type "sawtooth"]
+  [O1 at-time frequency 220 0]
+  [O1 linear-ramp frequency 440 0.5]
+  [O2 type "sine"]
+  [O2 frequency 6]
+  [G1 gain .01]
+  [G2 gain 1]
+  [O2 G1.gain]
+  [G1 O1.frequency]
+  [O1 G2]
+  [G2 destination]
+  [O1 start start-time]
+  [O2 start start-time]
+  [O1 end end-time]
+  [O2 end end-time]]
+
+You could combine some stuff:
+
+'[[all-nodes [start start-time] [end end-time]]
+
+  [O1, O2 oscillator]
+  [G1, G2 gain]
+
+  [O1 [type "sawtooth"]
+      [at-time frequency 220 0]
+      [linear-ramp frequency 440 0.5]]
+  [O2 [type "sine"] [frequency 6]]
+  [G1 gain .01]
+  [G2 gain 1]
+
+  [O2 > G1 > O1.frequency]
+  [O1 > G2 > destination]]
+
+Possibly nest without naming things?
+
+  '[[all-oscillators [start start-time] [end end-time]]
+  [[oscillator [type "sawtooth"]
+               [at-time frequency 220 0]
+               [linear-ramp frequency 440 0.5]
+               [frequency [oscillator [type "sine"] [frequency 6]]
+                           > [gain [gain .01]]
+                           > O1.frequency]]
+    > [gain 1]
+    > destination]]
+
+You'd need to be able to name things so that you could refer to them for connections in
+multiple places.
+I think this is doable. Maybe there's a question about avoiding using macros, but I don't
+think it's too bad. That would be the last step, to get stuff as succinct as possible.
+
+There is the question of how to fit branching into this stuff?
