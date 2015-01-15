@@ -12,7 +12,7 @@
 (defn range*
   ([a] (range (inc a)))
   ([a b] (range a (inc b)))
-  ([a b c] (range a (inc b) c)))
+  ([a b c] (range a (+ b c) c)))
 
 (defn rand-range [floor ceil]
   (-> (rand)
@@ -268,8 +268,17 @@
           (swap! key-positions update-in [key] inc)
           res)))))
 
+(defn set-rand-seed [& args]
+  (if (empty? args)
+    (.seedrandom js/Math)
+    (.seedrandom js/Math args))
+  nil)
+
 (defn plus [& args]
   (apply + args))
+
+(defn sum [& args]
+  (apply + (flatten args)))
 
 (defn times [& args]
   (apply * args))
@@ -331,7 +340,9 @@
    :def define-variable
    :get get-variable
    :cache cache
+   :seed set-rand-seed
    :plus plus
+   :sum sum
    :times times
    :mod mod
    :pow pow*
