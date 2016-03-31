@@ -13,7 +13,7 @@
                  [com.cemerick/pprng "0.0.3"]
                  [org.clojars.magomimmo/shoreleave-remote-ring "0.3.1-SNAPSHOT"]
                  [org.clojars.magomimmo/shoreleave-remote "0.3.1-SNAPSHOT"]
-                 [com.lucasbradstreet/instaparse-cljs "1.3.4.2"
+                 [com.lucasbradstreet/instaparse-cljs "1.4.1.0"
                        :exclusions [org.clojure/clojure]]]
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-ring "0.8.13"]
@@ -27,7 +27,7 @@
               {:fat {:source-paths ["src/cljs"]
                      :compiler {:output-to "resources/public/js/looperscript.js"
                                 :output-dir "resources/public/js"
-                                :optimizations :whitespace
+;                                :optimizations :whitespace
                                 :pretty-print true
                                 :source-map "resources/public/js/looperscript.js.map"
                                 :externs ["externs/externs.js"]}}

@@ -20,6 +20,8 @@
 (declare stop)
 
 (js* "var L = cljs.looperscript.looperscript")
+;(js* "var C = cljs.core")
+;(js* "var V = cljs.looperscript.vector_fns")
 
 ;;;;;;;;;;
 
@@ -28,7 +30,7 @@
 (def playing-interval (atom nil))
 (def current-next-note-fns (atom []))
 (def queue-time-interval 1) ; seconds
-(def queue-time-extra 0.5)
+(def queue-time-extra 2)
 (def last-queue-time (atom nil))
 (def params (atom {}))
 (def sounding-notes (atom {}))

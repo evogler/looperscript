@@ -81,8 +81,8 @@
                               (* 0.1 vol)
                               start-time)
     (.exponentialRampToValueAtTime (aget gain "gain")
-                              (* 0.1 0.1 vol)
-                              (+ start-time 3))
+                              (* 0.1 0.3 vol)
+                              (+ start-time 0.5))
 
     (aset (aget filter "frequency") "value" filt-freq)
     (aset (aget filter "Q") "value" q)
@@ -91,10 +91,10 @@
                                    start-time)
     (.exponentialRampToValueAtTime (aget filter "frequency")
                                    1000
-                                   (+ 0.1 start-time))
-    (.exponentialRampToValueAtTime (aget filter "frequency")
-                                   300
-                                   (+ 1 start-time))
+                                   (+ 0.3 start-time))
+    ;; (.exponentialRampToValueAtTime (aget filter "frequency")
+    ;;                                20300
+    ;;                                (+ 15 start-time))
 
     (aset panner "panningModel" "equalpower")
     (.setPosition panner pan 0 0)

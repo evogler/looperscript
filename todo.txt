@@ -55,7 +55,7 @@ LANGUAGE FEATURES:
     -same definition for multiple parts with differences notated
     -dataflow / spreadsheetish approach?
   -chord changes?
-    -chords? voice leADING?
+    -chords? voice leading?
     -pitches as intervals of chords!!! (this could be a whole language!)
     -chords specified on lattice
   -logical operators (AND / OR 2 rhythms)

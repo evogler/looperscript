@@ -3,7 +3,6 @@
             [cljs.looperscript.interp-rhythms :refer [rhythms-interp]]
             [cljs.looperscript.start-time :refer [now get-current-start-time]]))
 
-
 (defn log [& args]
   (.log js/console (apply str args)))
 
@@ -84,8 +83,7 @@
                          (if (= new-pos @pos) (recur) new-pos))))))))
 
 (defn rand-walk2 [intervals v]
-  (let [rand-int-range (fn [a b] (+ a (rand-int (inc (- b a)))))
-        max-v (dec (count v))
+  (let [max-v (dec (count v))
         pos (atom (rand-int (count v)))]
     (fn []
       (nth v (reset! pos
@@ -168,9 +166,9 @@
        sort
        (map second)))
 
-(defn log* [v]
-  (log v)
-  v)
+(defn log* [& args]
+  (apply log args)
+  (last args))
 
 (defn say [x]
   ;; var msg = new SpeechSynthesisUtterance('Hello World');
@@ -247,6 +245,7 @@
 (defn reset-variables! [] (reset! variable-map {}))
 
 (defn define-variable [s x]
+  (log "defined " s " as " x)
   (swap! variable-map assoc s x)
   nil)
 
@@ -328,6 +327,7 @@
    :user user
    :bass-fret bass-fret
    :nth nth*
+   :count count
    :vector vector
    :interleave interleave
    :dethunk dethunk

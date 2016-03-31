@@ -714,7 +714,7 @@ Another option would be to allow the user to specify which style they wanted...
 AUDIO NODE PIPELINE, CHORDS
 
 One area I'd like to address a lot more is sound. I'd like to take advange of a lot
-more of the webaudio api has to offer. (Jeez, two sentences in, and it occurs to me,
+more of what the webaudio api has to offer. (Jeez, two sentences in, and it occurs to me,
 could I make the audio properties general enough that they could be used to control
 something else, e.g. Supercollider?).
 I'd like to be able to offer as much as possible of gains, filters, ramps, fades,
@@ -735,8 +735,7 @@ Desired:
 -proper panning.
 -filters on samples.
 -arbitrary starting points on samples.
--envelope on any value (gain, filter frequency, filter Q, sample rate).
--arbitrary order of nodes (gains, filters, etc).
+ order of nodes (gains, filters, etc).
 -LFO!!! (And thus: vibrato, tremelo, etc).
 -forking and exponentiating chords!!!!
 
@@ -769,7 +768,6 @@ I think that makes sense. I'd have to figure out exactly how to specify that stu
 but I think the concept is clear enough. Descriing a tree that leads into a node
 could be a little awkward in text, but I think it's doable.
 
-
 From my notes in a JS file:
 So in conclusion, we have the following types of things happening:
 (TRIVIAL: Create context, get current time)
@@ -788,6 +786,7 @@ thus you'd need:
 -set
 -setAtTime, linearAtTime, exponentialAtTime
 -startTime, endTime
+
 
 I think you could create a data spec in clojure for all of this:
 '[[create oscillator O1]
@@ -867,3 +866,106 @@ I think this is doable. Maybe there's a question about avoiding using macros, bu
 think it's too bad. That would be the last step, to get stuff as succinct as possible.
 
 There is the question of how to fit branching into this stuff?
+I suppose anywhere you would've put the name of a node, you could have a vector of nodes,
+and the given operation would be performed on oll of them.
+Instead of
+  [O1 [frequency 6]]
+you could have
+  [O1 [frequency [6 10 50 4000]]]
+and result in a vector of 4 nodes.
+The question is how do you deal with multiplicative vs consecutive (name?) vectors?
+  [def V1 [oscillator [type ["sine" "sawtooth"]] [frequency [220 440]]]]
+Does that result in 2 or 4 nodes? And assuming V1 is 2 or 4 nodes
+  [V1 > [panner [pan [-1 1]]]]
+Does that double the number of nodes, with each node in V1 getting a -1 and a 1 pan?
+Or does it apply them consecutively?
+Or conceivably does it compress all of V1 into one gain node, and then run that through
+two pan nodes? (I guess this would be functionally the same thing, since if you're writing
+in this kind of notation, there's no way you'd be trying to change anything about the
+specific connection from one node in V1 to one of the panners, so you might as well make
+an intermediary combiner.
+I could imagine wanting to specify several base notes, then for each make a note that was
+based on a series of overtones, each getting a certain envelope, and then all of that
+sound going into a filter envelope, and a series of panned band-pass filters.
+
+So there's expanding, contracting, and parallel. You could have a vector "multiplied"
+by another vector, resulting in MxN vectors. (I'm not sure if you'd need to be able to
+recobine these by individual axis or not).
+You could have a vector treated in parallel, resulting in max(M, N) nodes.
+You could have a vector compressed, resulting in presumably 1 node. (Maybe in more than
+1 though? Imagine you smoosh 20 nodes randomly down to 3 destination nodes?)
+
+Maybe the characters <, >, and =, then, to symbolize the three options?
+
+...I'm jumping back in a week or two later. Glad I wrote this all down and that I
+re-read it. So, it seems like maybe step one would be a basic spec that only did one
+thing per line. From there, I could get into abreviating syntactical sugar, branching,
+and integrating cycling values.
+
+Let's think again about the first post-JS example. (I'm going to edit it in place).
+
+'[[O1 osc]
+  [O2 osc]
+  [G1 gain]
+  [G2 gain]
+  [O1 type "sawtooth"]
+  [O1 freq at 0 220]
+  [O1 freq linear 0.5 440]
+  [O2 type "sine"]
+  [O2 freq 6]
+  [G1 gain .01]
+  [G2 gain 1]
+  [O2 > G1.gain]
+  [G1 > O1.freq]
+  [O1 > G2]
+  [G2 > destination]]
+
+Do I need all those start-time and end-time settings? I could assume for now that
+everything starts at the beginning of the note and ends at the end...
+UPDATE: removed them.
+Might as well abreviate a few words...
+UPDATE: made some abreviations.
+
+Another point: I think I could get away with removing parenthesis, since the arity is
+unambiguous in all cases. I think... At least for the ease of typing it here.
+
+Shit, but still, how do I connect this stuff even to basic looper stuff? Hmm...
+
+Meanwhile, I'm going to try translating the play-filtered-tone function as it's
+currently written:
+
+  o osc ?
+  g gain
+  f filter
+  p panner
+
+  g gain at 0? (* VOL 0.1)?
+  g gain exp 0.3 (* VOL 0.01)?
+  f q 0.25
+  f freq at 0 FILT-FREQ?
+  f freq exp 0.3 1000
+  p "panningModel"? "equalpower"?
+  p pos PAN
+
+  g > f
+  f > p
+  p > dest
+
+  o type SYNTH?
+  o freq (* OVERTONE? FREQ?)?
+  o > g
+
+Well, in some ways that was reasonably successful, but it also has some big questions
+I haven't answered yet.
+-Perhaps first of all, it's the same question I asked a minute ago: How do I plug variables
+into this thing???
+-How do I do any math?
+-How do I handle terms like "panningModel" and "equalpower"? Have a list of them all?
+Or is there a default way to do it? (I guess this is more reason I should learn more about
+having variables and an environment).
+-When I refer to times, do I mean absolute time, bpm adjusted time, or time relative to the
+length of the particular note, (etc...)? I think by default I'd be referring to absolute
+time, since this is mostly about instrument sounds. I suppose that would tie in with
+using variables in general.
+-How do I branch? I left out a doseq loop in the real function that creates an oscillator
+for each overtone, and plugs them all into the next node in the chain (gain in this case).
