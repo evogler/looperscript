@@ -229,7 +229,7 @@
         (swap! val + increment)
         res))))
 
-(defn time []
+(defn time* []
   (- (now) (get-current-start-time)))
 
 (defn add-dethunk-test [& args]
@@ -298,6 +298,7 @@
   {:shuffle shuffle
    :mild-shuffle mild-shuffle
    :rand rand-nth*
+   :asdf rand-nth*
    :take take*
    :rand-int rand-int*
    :rand-range rand-range
@@ -349,7 +350,7 @@
    :sin sin
    :cos cos
    :floor floor
-   :time time
+   :time time*
 ;;   :round round
 ;;   :round-up round-up
 ;;   :round-down round-down

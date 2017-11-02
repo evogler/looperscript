@@ -48,6 +48,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;
 
 (declare -process-vec)
+(declare process-vec)
+
 
 (defn maybe-process-vec [x invade-carots?]
   (cond (vector? x)

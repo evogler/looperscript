@@ -34,6 +34,7 @@
 (def last-queue-time (atom nil))
 (def params (atom {}))
 (def sounding-notes (atom {}))
+(def last-transformed-tree (atom nil))
 (def aspects [:time :sound :volume :filter :pan :rate :synth :overtones :time+ :mute :skip])
 (def aspect-defaults
   {:sound [[:drum-code "r"]]
@@ -79,10 +80,11 @@
         parse-tree (parse/looper-parse text)]
     (if (insta/failure? parse-tree)
       parse-tree
-      (let [ _ (log :tree parse-tree \newline)
+      (let [;;_ (log :tree parse-tree \newline)
             parse-time (- (now) start-time)
             transformed-tree (parse/looper-transform parse-tree)
-             _ (log :transformed transformed-tree \newline)
+;;             _ (log :transformed transformed-tree \newline)
+            _ (reset! last-transformed-tree transformed-tree)
             transform-time (- (now) start-time)
             new-params (:params transformed-tree)
             parts (:parts transformed-tree)]
@@ -222,8 +224,8 @@
 
 ;; TODO: kill notes
 ;; XXX: probably should rename if not refactor pretty seriously
-(defn update
-  ([] (update (get-parts)))
+(defn update*
+  ([] (update* (get-parts)))
   ([parts]
      (if (insta/failure? parts)
        (log (str (vec parts)))
@@ -248,7 +250,7 @@
 (defn play []
   (let [parts (get-parts)]
     (if (nil? (get-current-start-time)) (reset-clock! (+ (now) 0.5)))
-    (update parts)
+    (update* parts)
     (queue-notes)
     (kill-playing-interval)
     (reset! playing-interval
@@ -270,7 +272,7 @@
 
 (ev/listen! (dom/by-id "play") :click (fn [e] (play)))
 (ev/listen! (dom/by-id "pause") :click (fn [e] (stop)))
-(ev/listen! (dom/by-id "update") :click (fn [e] (update)))
+(ev/listen! (dom/by-id "update") :click (fn [e] (update*)))
 (ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))
 (ev/listen! (dom/by-id "stop") :click (fn [e] (reset-button)))
 
@@ -282,7 +284,7 @@
                                   "mac" mac-key)
                 "exec" f)))
 
-(bind-key "update" "Ctrl-Shift-u" "Command-Shift-U" (fn [& args] (update)))
+(bind-key "update" "Ctrl-Shift-u" "Command-Shift-U" (fn [& args] (update*)))
 (bind-key "link" "Ctrl-Shift-l" "Command-Shift-L" (fn [e] (get/text->link)) )
 (bind-key "stop" "Ctrl-Shift-S" "Command-Shift-S" reset-button)
 (bind-key "play" "Ctrol-Shift-P" "Command-Shift-P" play)

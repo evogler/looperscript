@@ -40,3 +40,156 @@ notifying browser that file changed:  resources/public/js/cljs/looperscript/inte
 [0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
 [32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.28 seconds.[0m
 notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:232  column:1  ----[0m
+
+  [1mtime already refers to: cljs.core/time being replaced by: cljs.looperscript.vector-fns/time[0m
+
+  [36m228[0m  [36m      (let [res @val][0m
+  [36m229[0m  [36m        (swap! val + increment)[0m
+  [36m230[0m  [36m        res))))[0m
+  [36m231[0m  [36m[0m
+  [33m232[0m  [1m(defn time [][0m
+  [0m   [0m  [33m^--- time already refers to: cljs.core/time being replaced by: cljs.looperscript.vector-fns/time[0m
+  [36m233[0m  [36m  (- (now) (get-current-start-time)))[0m
+  [36m234[0m  [36m[0m
+  [36m235[0m  [36m(defn add-dethunk-test [& args][0m
+  [36m236[0m  [36m  (let [dethunk (fn dethunk [x][0m
+  [36m237[0m  [36m                  (if (fn? x)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/interpret.cljs   line:97  column:7  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.interpret/process-vec[0m
+
+  [36m 93[0m  [36m        delve #(splice (map maybe-process-vec %))][0m
+  [36m 94[0m  [36m    (cond[0m
+  [36m 95[0m  [36m     ;; ![rand ...[0m
+  [36m 96[0m  [36m     (= a "!")[0m
+  [33m 97[0m  [1m     (process-vec r invade-carots?)[0m
+  [0m   [0m  [33m      ^--- Use of undeclared Var cljs.looperscript.interpret/process-vec[0m
+  [36m 98[0m  [36m[0m
+  [36m 99[0m  [36m     (sequential? v)[0m
+  [36m100[0m  [36m     (mapv #(if (sequential? %) (pre-process-to-eval-!s % invade-carots?) %) v)[0m
+  [36m101[0m  [36m[0m
+  [36m102[0m  [36m     :else[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/interpret.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:225  column:1  ----[0m
+
+  [1mupdate already refers to: cljs.core/update being replaced by: cljs.looperscript.looperscript/update[0m
+
+  [36m221[0m  [36m  (reset-clock!))[0m
+  [36m222[0m  [36m[0m
+  [36m223[0m  [36m;; TODO: kill notes[0m
+  [36m224[0m  [36m;; XXX: probably should rename if not refactor pretty seriously[0m
+  [33m225[0m  [1m(defn update[0m
+  [0m   [0m  [33m^--- update already refers to: cljs.core/update being replaced by: cljs.looperscript.looperscript/update[0m
+  [36m226[0m  [36m  ([] (update (get-parts)))[0m
+  [36m227[0m  [36m  ([parts][0m
+  [36m228[0m  [36m     (if (insta/failure? parts)[0m
+  [36m229[0m  [36m       (log (str (vec parts)))[0m
+  [36m230[0m  [36m       (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p (get-current-start-time))))][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 2.111 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/interpret.cljs   line:97  column:7  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.interpret/process-vec[0m
+
+  [36m 93[0m  [36m        delve #(splice (map maybe-process-vec %))][0m
+  [36m 94[0m  [36m    (cond[0m
+  [36m 95[0m  [36m     ;; ![rand ...[0m
+  [36m 96[0m  [36m     (= a "!")[0m
+  [33m 97[0m  [1m     (process-vec r invade-carots?)[0m
+  [0m   [0m  [33m      ^--- Use of undeclared Var cljs.looperscript.interpret/process-vec[0m
+  [36m 98[0m  [36m[0m
+  [36m 99[0m  [36m     (sequential? v)[0m
+  [36m100[0m  [36m     (mapv #(if (sequential? %) (pre-process-to-eval-!s % invade-carots?) %) v)[0m
+  [36m101[0m  [36m[0m
+  [36m102[0m  [36m     :else[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/interpret.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:225  column:1  ----[0m
+
+  [1mupdate already refers to: cljs.core/update being replaced by: cljs.looperscript.looperscript/update[0m
+
+  [36m221[0m  [36m  (reset-clock!))[0m
+  [36m222[0m  [36m[0m
+  [36m223[0m  [36m;; TODO: kill notes[0m
+  [36m224[0m  [36m;; XXX: probably should rename if not refactor pretty seriously[0m
+  [33m225[0m  [1m(defn update[0m
+  [0m   [0m  [33m^--- update already refers to: cljs.core/update being replaced by: cljs.looperscript.looperscript/update[0m
+  [36m226[0m  [36m  ([] (update (get-parts)))[0m
+  [36m227[0m  [36m  ([parts][0m
+  [36m228[0m  [36m     (if (insta/failure? parts)[0m
+  [36m229[0m  [36m       (log (str (vec parts)))[0m
+  [36m230[0m  [36m       (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p (get-current-start-time))))][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.821 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:225  column:1  ----[0m
+
+  [1mupdate already refers to: cljs.core/update being replaced by: cljs.looperscript.looperscript/update[0m
+
+  [36m221[0m  [36m  (reset-clock!))[0m
+  [36m222[0m  [36m[0m
+  [36m223[0m  [36m;; TODO: kill notes[0m
+  [36m224[0m  [36m;; XXX: probably should rename if not refactor pretty seriously[0m
+  [33m225[0m  [1m(defn update[0m
+  [0m   [0m  [33m^--- update already refers to: cljs.core/update being replaced by: cljs.looperscript.looperscript/update[0m
+  [36m226[0m  [36m  ([] (update (get-parts)))[0m
+  [36m227[0m  [36m  ([parts][0m
+  [36m228[0m  [36m     (if (insta/failure? parts)[0m
+  [36m229[0m  [36m       (log (str (vec parts)))[0m
+  [36m230[0m  [36m       (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p (get-current-start-time))))][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.506 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.885 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.001 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.827 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.572 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.369 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.797 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.69 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.749 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.555 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.715 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 2.369 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 2.621 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
