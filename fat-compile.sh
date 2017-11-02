@@ -3,8 +3,8 @@
 lein cljsbuild once fat
 RC=$?
 if [ "${RC}" -ne "0" ]; then
-  afplay roll
+  afplay roll &
 else
-  afplay beep
+  afplay beep &
 fi
 

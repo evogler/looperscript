@@ -8,17 +8,18 @@
 ;;               [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  [compojure "1.2.1"]
 ;;                 [org.clojure/clojurescript "0.0-2371"]
-                 [org.clojure/clojurescript "1.8.40"]
+                 [org.clojure/clojurescript "1.9.908"]
                  [domina "1.0.3-SNAPSHOT"]
 ;;                 [hiccups "0.3.0"]
                  [com.cemerick/pprng "0.0.3"]
                  [org.clojars.magomimmo/shoreleave-remote-ring "0.3.1-SNAPSHOT"]
                  [org.clojars.magomimmo/shoreleave-remote "0.3.1-SNAPSHOT"]
-                 [com.lucasbradstreet/instaparse-cljs "1.4.1.0"
+                 [instaparse "1.4.8"
                        :exclusions [org.clojure/clojure]]]
-  :plugins [[lein-cljsbuild "1.0.3"]
+  :plugins [[lein-cljsbuild "1.1.3"]
             [lein-ring "0.8.13"]
             [lein-externs "0.1.3"]
+            [lein-figwheel "0.5.13"]
 ;;            [lein-git-deps "0.0.1-SNAPSHOT"]
             ]
 ;;  :git-dependencies [["https://github.com/lbradstreet/instaparse-cljs.git"]]
@@ -26,14 +27,18 @@
   :ring {:handler looperscript.remotes/app}
   :cljsbuild {:builds
               {:fat {:source-paths ["src/cljs"]
+                     :figwheel true 
                      :compiler {:output-to "resources/public/js/looperscript.js"
                                 :output-dir "resources/public/js"
-;                                :optimizations :whitespace
-                                :pretty-print true
-                                :source-map "resources/public/js/looperscript.js.map"
+                                :asset-path "js"
+                                :main "cljs.looperscript.looperscript"
                                 :externs ["externs/externs.js"]}}
                :thin {:source-paths ["src/cljs"]
                      :compiler {:output-to "resources/public/js/looperscript.js"
                                 :optimizations :advanced
                                 :pretty-print false
-                                :externs ["externs/externs.js"]}}}})
+                                :externs ["externs/externs.js"]}}}}
+  :figwheel {
+    :css-dirs ["resources/public/css"]
+    :http-server-root "public"
+    })
