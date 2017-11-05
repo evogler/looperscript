@@ -25,18 +25,19 @@
 
 ;;;;;;;;;;
 
-(def ctx audio/ctx)
-(def playing (atom false))
-(def playing-interval (atom nil))
-(def current-next-note-fns (atom []))
-(def queue-time-interval 1) ; seconds
-(def queue-time-extra 2)
-(def last-queue-time (atom nil))
-(def params (atom {}))
-(def sounding-notes (atom {}))
-(def last-transformed-tree (atom nil))
-(def aspects [:time :sound :volume :filter :pan :rate :synth :overtones :time+ :mute :skip])
-(def aspect-defaults
+
+(defonce ctx audio/ctx)
+(defonce playing (atom false))
+(defonce playing-interval (atom nil))
+(defonce current-next-note-fns (atom []))
+(defonce queue-time-interval 1) ; seconds
+(defonce queue-time-extra 2)
+(defonce last-queue-time (atom nil))
+(defonce params (atom {}))
+(defonce sounding-notes (atom {}))
+(defonce last-transformed-tree (atom nil))
+(defonce aspects [:time :sound :volume :filter :pan :rate :synth :overtones :time+ :mute :skip])
+(defonce aspect-defaults
   {:sound [[:drum-code "r"]]
    :synth ["sawtooth"]
    :time [1]

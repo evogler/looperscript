@@ -27,13 +27,14 @@
   :ring {:handler looperscript.remotes/app}
   :cljsbuild {:builds
               {:fat {:source-paths ["src/cljs"]
-                     :figwheel true 
+                     :figwheel true
                      :compiler {:output-to "resources/public/js/looperscript.js"
                                 :output-dir "resources/public/js"
                                 :asset-path "js"
                                 :main "cljs.looperscript.looperscript"
                                 :externs ["externs/externs.js"]}}
                :thin {:source-paths ["src/cljs"]
+                     :figwheel false
                      :compiler {:output-to "resources/public/js/looperscript.js"
                                 :optimizations :advanced
                                 :pretty-print false

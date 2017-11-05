@@ -198,7 +198,7 @@
   [:modifier-fn (fn [x] (* x n))])
 
 (defn over-mod [& layers]
-  (log :over-mod layers)
+;;  (log :over-mod layers)
   (let [last-res (atom 0)
         cum-time-in (atom 0)]
     [:modifier-fn

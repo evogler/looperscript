@@ -138,7 +138,8 @@
   aspect = aspect-header data
   aspect-header = full-aspect-name (sp* <'&'> sp* full-aspect-name)*
   full-aspect-name = aspect-keyword (':' sub-aspect-keyword)*
-  aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |                              'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
+  aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |
+                               'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
   sub-aspect-keyword = ('time')
   data = data-element+
   <data-element> = (ratio | hz | modifier | number | sp | vec | drum-code |

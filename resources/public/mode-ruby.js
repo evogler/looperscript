@@ -26,11 +26,12 @@ var qqString = exports.qqString = {
 
 var RubyHighlightRules = function() {
 
-    var builtinFunctions = ('rand shuffle range rand-range rand-exp-range take in repeatedly ' +
-        'x weight walk cycle log pattern weight2 rand-hold mild-shuffle ' +
-        'flatten log scale-range scale-range-sweep user bass-fret nth vector ' +
-        'rand-int interleave over'
-    );
+    var builtinFunctions = ('say shuffle repeatedly get dethunk interleave cos ' +
+        'cycle walk call rand asdf mod pow weight1 fill time times nth xx walk2 ' +
+        'scale-range-sweep vector seed walk1 scale-range flatten grow rand-hold ' +
+        'cache weight2 weight rand-range once count plus transpose-scale sin ' +
+        'rand-exp-range def x over add mild-shuffle bass-fret rand-int step take ' +
+        'log user floor sort sum range in pattern')
 
     var keywords = ('time sound volume filter pan rate offset synth ' +
         'overtones time+ mute skip part bpm'
