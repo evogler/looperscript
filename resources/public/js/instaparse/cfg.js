@@ -39,23 +39,23 @@ while(true){
 var temp__4655__auto__ = cljs.core.first.call(null,sq);
 if(cljs.core.truth_(temp__4655__auto__)){
 var c = temp__4655__auto__;
-var G__30745 = c;
-switch (G__30745) {
+var G__31561 = c;
+switch (G__31561) {
 case "\\":
 var temp__4655__auto____$1 = cljs.core.second.call(null,sq);
 if(cljs.core.truth_(temp__4655__auto____$1)){
 var c2 = temp__4655__auto____$1;
 if(cljs.core._EQ_.call(null,c2,"'")){
-var G__30747 = cljs.core.drop.call(null,(2),sq);
-var G__30748 = cljs.core.conj.call(null,v,c2);
-sq = G__30747;
-v = G__30748;
+var G__31563 = cljs.core.drop.call(null,(2),sq);
+var G__31564 = cljs.core.conj.call(null,v,c2);
+sq = G__31563;
+v = G__31564;
 continue;
 } else {
-var G__30749 = cljs.core.drop.call(null,(2),sq);
-var G__30750 = cljs.core.conj.call(null,v,c,c2);
-sq = G__30749;
-v = G__30750;
+var G__31565 = cljs.core.drop.call(null,(2),sq);
+var G__31566 = cljs.core.conj.call(null,v,c,c2);
+sq = G__31565;
+v = G__31566;
 continue;
 }
 } else {
@@ -64,18 +64,18 @@ return instaparse.util.throw_runtime_exception.call(null,"Encountered backslash 
 
 break;
 case "\"":
-var G__30751 = cljs.core.next.call(null,sq);
-var G__30752 = cljs.core.conj.call(null,v,"\\","\"");
-sq = G__30751;
-v = G__30752;
+var G__31567 = cljs.core.next.call(null,sq);
+var G__31568 = cljs.core.conj.call(null,v,"\\","\"");
+sq = G__31567;
+v = G__31568;
 continue;
 
 break;
 default:
-var G__30753 = cljs.core.next.call(null,sq);
-var G__30754 = cljs.core.conj.call(null,v,c);
-sq = G__30753;
-v = G__30754;
+var G__31569 = cljs.core.next.call(null,sq);
+var G__31570 = cljs.core.conj.call(null,v,c);
+sq = G__31569;
+v = G__31570;
 continue;
 
 }
@@ -111,13 +111,13 @@ return final_string;
  */
 instaparse.cfg.build_rule = (function instaparse$cfg$build_rule(tree){
 while(true){
-var G__30755 = instaparse.cfg.tag.call(null,tree);
-var G__30755__$1 = (((G__30755 instanceof cljs.core.Keyword))?G__30755.fqn:null);
-switch (G__30755__$1) {
+var G__31571 = instaparse.cfg.tag.call(null,tree);
+var G__31571__$1 = (((G__31571 instanceof cljs.core.Keyword))?G__31571.fqn:null);
+switch (G__31571__$1) {
 case "rule":
-var vec__30756 = instaparse.cfg.contents.call(null,tree);
-var nt = cljs.core.nth.call(null,vec__30756,(0),null);
-var alt_or_ord = cljs.core.nth.call(null,vec__30756,(1),null);
+var vec__31572 = instaparse.cfg.contents.call(null,tree);
+var nt = cljs.core.nth.call(null,vec__31572,(0),null);
+var alt_or_ord = cljs.core.nth.call(null,vec__31572,(1),null);
 if(cljs.core._EQ_.call(null,instaparse.cfg.tag.call(null,nt),new cljs.core.Keyword(null,"hide-nt","hide-nt",-228813845))){
 return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.keyword.call(null,instaparse.cfg.content.call(null,instaparse.cfg.content.call(null,nt))),instaparse.combinators_source.hide_tag.call(null,instaparse.cfg.build_rule.call(null,alt_or_ord))], null);
 } else {
@@ -138,8 +138,8 @@ return cljs.core.apply.call(null,instaparse.combinators_source.ord,cljs.core.map
 
 break;
 case "paren":
-var G__30760 = instaparse.cfg.content.call(null,tree);
-tree = G__30760;
+var G__31576 = instaparse.cfg.content.call(null,tree);
+tree = G__31576;
 continue;
 
 break;
@@ -184,7 +184,7 @@ return instaparse.combinators_source.Epsilon;
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__30755__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__31571__$1)].join('')));
 
 }
 break;
@@ -195,9 +195,9 @@ break;
  */
 instaparse.cfg.seq_nt = (function instaparse$cfg$seq_nt(parser){
 while(true){
-var G__30761 = new cljs.core.Keyword(null,"tag","tag",-1290361223).cljs$core$IFn$_invoke$arity$1(parser);
-var G__30761__$1 = (((G__30761 instanceof cljs.core.Keyword))?G__30761.fqn:null);
-switch (G__30761__$1) {
+var G__31577 = new cljs.core.Keyword(null,"tag","tag",-1290361223).cljs$core$IFn$_invoke$arity$1(parser);
+var G__31577__$1 = (((G__31577 instanceof cljs.core.Keyword))?G__31577.fqn:null);
+switch (G__31577__$1) {
 case "nt":
 return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"keyword","keyword",811389747).cljs$core$IFn$_invoke$arity$1(parser)], null);
 
@@ -216,8 +216,8 @@ case "star":
 case "look":
 case "neg":
 case "rep":
-var G__30763 = new cljs.core.Keyword(null,"parser","parser",-1543495310).cljs$core$IFn$_invoke$arity$1(parser);
-parser = G__30763;
+var G__31579 = new cljs.core.Keyword(null,"parser","parser",-1543495310).cljs$core$IFn$_invoke$arity$1(parser);
+parser = G__31579;
 continue;
 
 break;
@@ -231,7 +231,7 @@ return cljs.core.mapcat.call(null,instaparse.cfg.seq_nt,new cljs.core.Persistent
 
 break;
 default:
-throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__30761__$1)].join('')));
+throw (new Error(["No matching clause: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(G__31577__$1)].join('')));
 
 }
 break;
@@ -241,58 +241,58 @@ break;
  * Throw error if grammar uses any invalid non-terminals in its productions
  */
 instaparse.cfg.check_grammar = (function instaparse$cfg$check_grammar(grammar_map){
-var valid_nts_30768 = cljs.core.set.call(null,cljs.core.keys.call(null,grammar_map));
-var seq__30764_30769 = cljs.core.seq.call(null,cljs.core.distinct.call(null,cljs.core.mapcat.call(null,instaparse.cfg.seq_nt,cljs.core.vals.call(null,grammar_map))));
-var chunk__30765_30770 = null;
-var count__30766_30771 = (0);
-var i__30767_30772 = (0);
+var valid_nts_31584 = cljs.core.set.call(null,cljs.core.keys.call(null,grammar_map));
+var seq__31580_31585 = cljs.core.seq.call(null,cljs.core.distinct.call(null,cljs.core.mapcat.call(null,instaparse.cfg.seq_nt,cljs.core.vals.call(null,grammar_map))));
+var chunk__31581_31586 = null;
+var count__31582_31587 = (0);
+var i__31583_31588 = (0);
 while(true){
-if((i__30767_30772 < count__30766_30771)){
-var nt_30773 = cljs.core._nth.call(null,chunk__30765_30770,i__30767_30772);
-if(cljs.core.truth_(valid_nts_30768.call(null,nt_30773))){
+if((i__31583_31588 < count__31582_31587)){
+var nt_31589 = cljs.core._nth.call(null,chunk__31581_31586,i__31583_31588);
+if(cljs.core.truth_(valid_nts_31584.call(null,nt_31589))){
 } else {
-instaparse.util.throw_runtime_exception.call(null,cljs.core.subs.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(nt_30773)].join(''),(1))," occurs on the right-hand side of your grammar, but not on the left");
+instaparse.util.throw_runtime_exception.call(null,cljs.core.subs.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(nt_31589)].join(''),(1))," occurs on the right-hand side of your grammar, but not on the left");
 }
 
-var G__30774 = seq__30764_30769;
-var G__30775 = chunk__30765_30770;
-var G__30776 = count__30766_30771;
-var G__30777 = (i__30767_30772 + (1));
-seq__30764_30769 = G__30774;
-chunk__30765_30770 = G__30775;
-count__30766_30771 = G__30776;
-i__30767_30772 = G__30777;
+var G__31590 = seq__31580_31585;
+var G__31591 = chunk__31581_31586;
+var G__31592 = count__31582_31587;
+var G__31593 = (i__31583_31588 + (1));
+seq__31580_31585 = G__31590;
+chunk__31581_31586 = G__31591;
+count__31582_31587 = G__31592;
+i__31583_31588 = G__31593;
 continue;
 } else {
-var temp__4657__auto___30778 = cljs.core.seq.call(null,seq__30764_30769);
-if(temp__4657__auto___30778){
-var seq__30764_30779__$1 = temp__4657__auto___30778;
-if(cljs.core.chunked_seq_QMARK_.call(null,seq__30764_30779__$1)){
-var c__28828__auto___30780 = cljs.core.chunk_first.call(null,seq__30764_30779__$1);
-var G__30781 = cljs.core.chunk_rest.call(null,seq__30764_30779__$1);
-var G__30782 = c__28828__auto___30780;
-var G__30783 = cljs.core.count.call(null,c__28828__auto___30780);
-var G__30784 = (0);
-seq__30764_30769 = G__30781;
-chunk__30765_30770 = G__30782;
-count__30766_30771 = G__30783;
-i__30767_30772 = G__30784;
+var temp__4657__auto___31594 = cljs.core.seq.call(null,seq__31580_31585);
+if(temp__4657__auto___31594){
+var seq__31580_31595__$1 = temp__4657__auto___31594;
+if(cljs.core.chunked_seq_QMARK_.call(null,seq__31580_31595__$1)){
+var c__28775__auto___31596 = cljs.core.chunk_first.call(null,seq__31580_31595__$1);
+var G__31597 = cljs.core.chunk_rest.call(null,seq__31580_31595__$1);
+var G__31598 = c__28775__auto___31596;
+var G__31599 = cljs.core.count.call(null,c__28775__auto___31596);
+var G__31600 = (0);
+seq__31580_31585 = G__31597;
+chunk__31581_31586 = G__31598;
+count__31582_31587 = G__31599;
+i__31583_31588 = G__31600;
 continue;
 } else {
-var nt_30785 = cljs.core.first.call(null,seq__30764_30779__$1);
-if(cljs.core.truth_(valid_nts_30768.call(null,nt_30785))){
+var nt_31601 = cljs.core.first.call(null,seq__31580_31595__$1);
+if(cljs.core.truth_(valid_nts_31584.call(null,nt_31601))){
 } else {
-instaparse.util.throw_runtime_exception.call(null,cljs.core.subs.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(nt_30785)].join(''),(1))," occurs on the right-hand side of your grammar, but not on the left");
+instaparse.util.throw_runtime_exception.call(null,cljs.core.subs.call(null,[cljs.core.str.cljs$core$IFn$_invoke$arity$1(nt_31601)].join(''),(1))," occurs on the right-hand side of your grammar, but not on the left");
 }
 
-var G__30786 = cljs.core.next.call(null,seq__30764_30779__$1);
-var G__30787 = null;
-var G__30788 = (0);
-var G__30789 = (0);
-seq__30764_30769 = G__30786;
-chunk__30765_30770 = G__30787;
-count__30766_30771 = G__30788;
-i__30767_30772 = G__30789;
+var G__31602 = cljs.core.next.call(null,seq__31580_31595__$1);
+var G__31603 = null;
+var G__31604 = (0);
+var G__31605 = (0);
+seq__31580_31585 = G__31602;
+chunk__31581_31586 = G__31603;
+count__31582_31587 = G__31604;
+i__31583_31588 = G__31605;
 continue;
 }
 } else {
@@ -306,23 +306,23 @@ return grammar_map;
 instaparse.cfg.build_parser = (function instaparse$cfg$build_parser(spec,output_format){
 var rules = instaparse.gll.parse.call(null,instaparse.cfg.cfg,new cljs.core.Keyword(null,"rules","rules",1198912366),spec,false);
 if((rules instanceof instaparse.gll.Failure)){
-return instaparse.util.throw_runtime_exception.call(null,"Error parsing grammar specification:\n",(function (){var sb__29016__auto__ = (new goog.string.StringBuffer());
-var _STAR_print_newline_STAR_30790_30792 = cljs.core._STAR_print_newline_STAR_;
-var _STAR_print_fn_STAR_30791_30793 = cljs.core._STAR_print_fn_STAR_;
+return instaparse.util.throw_runtime_exception.call(null,"Error parsing grammar specification:\n",(function (){var sb__28963__auto__ = (new goog.string.StringBuffer());
+var _STAR_print_newline_STAR_31606_31608 = cljs.core._STAR_print_newline_STAR_;
+var _STAR_print_fn_STAR_31607_31609 = cljs.core._STAR_print_fn_STAR_;
 cljs.core._STAR_print_newline_STAR_ = true;
 
-cljs.core._STAR_print_fn_STAR_ = ((function (_STAR_print_newline_STAR_30790_30792,_STAR_print_fn_STAR_30791_30793,sb__29016__auto__,rules){
-return (function (x__29017__auto__){
-return sb__29016__auto__.append(x__29017__auto__);
-});})(_STAR_print_newline_STAR_30790_30792,_STAR_print_fn_STAR_30791_30793,sb__29016__auto__,rules))
+cljs.core._STAR_print_fn_STAR_ = ((function (_STAR_print_newline_STAR_31606_31608,_STAR_print_fn_STAR_31607_31609,sb__28963__auto__,rules){
+return (function (x__28964__auto__){
+return sb__28963__auto__.append(x__28964__auto__);
+});})(_STAR_print_newline_STAR_31606_31608,_STAR_print_fn_STAR_31607_31609,sb__28963__auto__,rules))
 ;
 
 try{cljs.core.println.call(null,rules);
-}finally {cljs.core._STAR_print_fn_STAR_ = _STAR_print_fn_STAR_30791_30793;
+}finally {cljs.core._STAR_print_fn_STAR_ = _STAR_print_fn_STAR_31607_31609;
 
-cljs.core._STAR_print_newline_STAR_ = _STAR_print_newline_STAR_30790_30792;
+cljs.core._STAR_print_newline_STAR_ = _STAR_print_newline_STAR_31606_31608;
 }
-return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(sb__29016__auto__)].join('');
+return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(sb__28963__auto__)].join('');
 })());
 } else {
 var productions = cljs.core.map.call(null,instaparse.cfg.build_rule,rules);
@@ -346,23 +346,23 @@ return new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"gr
 instaparse.cfg.ebnf = (function instaparse$cfg$ebnf(spec){
 var rules = instaparse.gll.parse.call(null,instaparse.cfg.cfg,new cljs.core.Keyword(null,"rules-or-parser","rules-or-parser",-314380386),spec,false);
 if((rules instanceof instaparse.gll.Failure)){
-return instaparse.util.throw_runtime_exception.call(null,"Error parsing grammar specification:\n",(function (){var sb__29016__auto__ = (new goog.string.StringBuffer());
-var _STAR_print_newline_STAR_30794_30796 = cljs.core._STAR_print_newline_STAR_;
-var _STAR_print_fn_STAR_30795_30797 = cljs.core._STAR_print_fn_STAR_;
+return instaparse.util.throw_runtime_exception.call(null,"Error parsing grammar specification:\n",(function (){var sb__28963__auto__ = (new goog.string.StringBuffer());
+var _STAR_print_newline_STAR_31610_31612 = cljs.core._STAR_print_newline_STAR_;
+var _STAR_print_fn_STAR_31611_31613 = cljs.core._STAR_print_fn_STAR_;
 cljs.core._STAR_print_newline_STAR_ = true;
 
-cljs.core._STAR_print_fn_STAR_ = ((function (_STAR_print_newline_STAR_30794_30796,_STAR_print_fn_STAR_30795_30797,sb__29016__auto__,rules){
-return (function (x__29017__auto__){
-return sb__29016__auto__.append(x__29017__auto__);
-});})(_STAR_print_newline_STAR_30794_30796,_STAR_print_fn_STAR_30795_30797,sb__29016__auto__,rules))
+cljs.core._STAR_print_fn_STAR_ = ((function (_STAR_print_newline_STAR_31610_31612,_STAR_print_fn_STAR_31611_31613,sb__28963__auto__,rules){
+return (function (x__28964__auto__){
+return sb__28963__auto__.append(x__28964__auto__);
+});})(_STAR_print_newline_STAR_31610_31612,_STAR_print_fn_STAR_31611_31613,sb__28963__auto__,rules))
 ;
 
 try{cljs.core.println.call(null,rules);
-}finally {cljs.core._STAR_print_fn_STAR_ = _STAR_print_fn_STAR_30795_30797;
+}finally {cljs.core._STAR_print_fn_STAR_ = _STAR_print_fn_STAR_31611_31613;
 
-cljs.core._STAR_print_newline_STAR_ = _STAR_print_newline_STAR_30794_30796;
+cljs.core._STAR_print_newline_STAR_ = _STAR_print_newline_STAR_31610_31612;
 }
-return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(sb__29016__auto__)].join('');
+return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(sb__28963__auto__)].join('');
 })());
 } else {
 if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"rule","rule",729973257),cljs.core.ffirst.call(null,rules))){
@@ -374,4 +374,4 @@ return instaparse.cfg.build_rule.call(null,cljs.core.first.call(null,rules));
 }
 });
 
-//# sourceMappingURL=cfg.js.map
+//# sourceMappingURL=cfg.js.map?rel=1509845003056

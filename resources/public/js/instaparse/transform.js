@@ -55,11 +55,11 @@ instaparse.transform.transform = (function instaparse$transform$transform(transf
 if(typeof parse_tree === 'string'){
 return parse_tree;
 } else {
-if(cljs.core.truth_((function (){var and__27977__auto__ = cljs.core.map_QMARK_.call(null,parse_tree);
-if(and__27977__auto__){
+if(cljs.core.truth_((function (){var and__27924__auto__ = cljs.core.map_QMARK_.call(null,parse_tree);
+if(and__27924__auto__){
 return new cljs.core.Keyword(null,"tag","tag",-1290361223).cljs$core$IFn$_invoke$arity$1(parse_tree);
 } else {
-return and__27977__auto__;
+return and__27924__auto__;
 }
 })())){
 return instaparse.transform.enlive_transform.call(null,transform_map,parse_tree);
@@ -82,4 +82,4 @@ return instaparse.util.throw_illegal_argument_exception.call(null,"Invalid parse
 }
 });
 
-//# sourceMappingURL=transform.js.map
+//# sourceMappingURL=transform.js.map?rel=1509845001184

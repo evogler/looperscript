@@ -12,14 +12,14 @@ instaparse.auto_flatten_seq.conj_flat = (function instaparse$auto_flatten_seq$co
 if((!((self == null))) && (!((self.instaparse$auto_flatten_seq$ConjFlat$conj_flat$arity$2 == null)))){
 return self.instaparse$auto_flatten_seq$ConjFlat$conj_flat$arity$2(self,obj);
 } else {
-var x__28672__auto__ = (((self == null))?null:self);
-var m__28673__auto__ = (instaparse.auto_flatten_seq.conj_flat[goog.typeOf(x__28672__auto__)]);
-if(!((m__28673__auto__ == null))){
-return m__28673__auto__.call(null,self,obj);
+var x__28619__auto__ = (((self == null))?null:self);
+var m__28620__auto__ = (instaparse.auto_flatten_seq.conj_flat[goog.typeOf(x__28619__auto__)]);
+if(!((m__28620__auto__ == null))){
+return m__28620__auto__.call(null,self,obj);
 } else {
-var m__28673__auto____$1 = (instaparse.auto_flatten_seq.conj_flat["_"]);
-if(!((m__28673__auto____$1 == null))){
-return m__28673__auto____$1.call(null,self,obj);
+var m__28620__auto____$1 = (instaparse.auto_flatten_seq.conj_flat["_"]);
+if(!((m__28620__auto____$1 == null))){
+return m__28620__auto____$1.call(null,self,obj);
 } else {
 throw cljs.core.missing_protocol.call(null,"ConjFlat.conj-flat",self);
 }
@@ -31,14 +31,14 @@ instaparse.auto_flatten_seq.cached_QMARK_ = (function instaparse$auto_flatten_se
 if((!((self == null))) && (!((self.instaparse$auto_flatten_seq$ConjFlat$cached_QMARK_$arity$1 == null)))){
 return self.instaparse$auto_flatten_seq$ConjFlat$cached_QMARK_$arity$1(self);
 } else {
-var x__28672__auto__ = (((self == null))?null:self);
-var m__28673__auto__ = (instaparse.auto_flatten_seq.cached_QMARK_[goog.typeOf(x__28672__auto__)]);
-if(!((m__28673__auto__ == null))){
-return m__28673__auto__.call(null,self);
+var x__28619__auto__ = (((self == null))?null:self);
+var m__28620__auto__ = (instaparse.auto_flatten_seq.cached_QMARK_[goog.typeOf(x__28619__auto__)]);
+if(!((m__28620__auto__ == null))){
+return m__28620__auto__.call(null,self);
 } else {
-var m__28673__auto____$1 = (instaparse.auto_flatten_seq.cached_QMARK_["_"]);
-if(!((m__28673__auto____$1 == null))){
-return m__28673__auto____$1.call(null,self);
+var m__28620__auto____$1 = (instaparse.auto_flatten_seq.cached_QMARK_["_"]);
+if(!((m__28620__auto____$1 == null))){
+return m__28620__auto____$1.call(null,self);
 } else {
 throw cljs.core.missing_protocol.call(null,"ConjFlat.cached?",self);
 }
@@ -68,23 +68,23 @@ while(true){
 var t = cljs.core.even_QMARK_.call(null,n);
 var n__$1 = cljs.core.quot.call(null,n,(2));
 if(t){
-var G__29541 = n__$1;
-var G__29542 = y;
-var G__29543 = cljs.core.imul.call(null,z,z);
-n = G__29541;
-y = G__29542;
-z = G__29543;
+var G__30122 = n__$1;
+var G__30123 = y;
+var G__30124 = cljs.core.imul.call(null,z,z);
+n = G__30122;
+y = G__30123;
+z = G__30124;
 continue;
 } else {
 if((n__$1 === (0))){
 return cljs.core.imul.call(null,z,y);
 } else {
-var G__29544 = n__$1;
-var G__29545 = cljs.core.imul.call(null,z,y);
-var G__29546 = cljs.core.imul.call(null,z,z);
-n = G__29544;
-y = G__29545;
-z = G__29546;
+var G__30125 = n__$1;
+var G__30126 = cljs.core.imul.call(null,z,y);
+var G__30127 = cljs.core.imul.call(null,z,z);
+n = G__30125;
+y = G__30126;
+z = G__30127;
 continue;
 
 }
@@ -98,10 +98,10 @@ var v__$1 = cljs.core.get_in.call(null,v,index);
 var index__$1 = index;
 while(true){
 if(cljs.core.truth_(instaparse.auto_flatten_seq.afs_QMARK_.call(null,v__$1))){
-var G__29547 = cljs.core.get.call(null,v__$1,(0));
-var G__29548 = cljs.core.conj.call(null,index__$1,(0));
-v__$1 = G__29547;
-index__$1 = G__29548;
+var G__30128 = cljs.core.get.call(null,v__$1,(0));
+var G__30129 = cljs.core.conj.call(null,index__$1,(0));
+v__$1 = G__30128;
+index__$1 = G__30129;
 continue;
 } else {
 return index__$1;
@@ -121,10 +121,10 @@ return null;
 if((cljs.core.peek.call(null,index) < (instaparse.auto_flatten_seq.true_count.call(null,cljs.core.get_in.call(null,v,cljs.core.pop.call(null,index))) - (1)))){
 return instaparse.auto_flatten_seq.delve.call(null,v,cljs.core.conj.call(null,cljs.core.pop.call(null,index),(cljs.core.peek.call(null,index) + (1))));
 } else {
-var G__29549 = v;
-var G__29550 = cljs.core.pop.call(null,index);
-v = G__29549;
-index = G__29550;
+var G__30130 = v;
+var G__30131 = cljs.core.pop.call(null,index);
+v = G__30130;
+index = G__30131;
 continue;
 
 }
@@ -133,8 +133,8 @@ break;
 }
 });
 instaparse.auto_flatten_seq.flat_seq = (function instaparse$auto_flatten_seq$flat_seq(var_args){
-var G__29552 = arguments.length;
-switch (G__29552) {
+var G__30133 = arguments.length;
+switch (G__30133) {
 case 1:
 return instaparse.auto_flatten_seq.flat_seq.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -305,9 +305,9 @@ return obj;
 if((cljs.core.count.call(null,obj) <= (32))){
 var phc = instaparse.auto_flatten_seq.hash_cat.call(null,self__$1,obj);
 var new_cnt = (self__.cnt + cljs.core.count.call(null,obj));
-return (new instaparse.auto_flatten_seq.AutoFlattenSeq(cljs.core.into.call(null,self__.v,obj),phc,cljs.core.mix_collection_hash.call(null,phc,new_cnt),new_cnt,(function (){var or__27989__auto__ = self__.dirty;
-if(or__27989__auto__){
-return or__27989__auto__;
+return (new instaparse.auto_flatten_seq.AutoFlattenSeq(cljs.core.into.call(null,self__.v,obj),phc,cljs.core.mix_collection_hash.call(null,phc,new_cnt),new_cnt,(function (){var or__27936__auto__ = self__.dirty;
+if(or__27936__auto__){
+return or__27936__auto__;
 } else {
 return obj.dirty;
 }
@@ -342,8 +342,8 @@ instaparse.auto_flatten_seq.AutoFlattenSeq.cljs$lang$type = true;
 
 instaparse.auto_flatten_seq.AutoFlattenSeq.cljs$lang$ctorStr = "instaparse.auto-flatten-seq/AutoFlattenSeq";
 
-instaparse.auto_flatten_seq.AutoFlattenSeq.cljs$lang$ctorPrWriter = (function (this__28614__auto__,writer__28615__auto__,opt__28616__auto__){
-return cljs.core._write.call(null,writer__28615__auto__,"instaparse.auto-flatten-seq/AutoFlattenSeq");
+instaparse.auto_flatten_seq.AutoFlattenSeq.cljs$lang$ctorPrWriter = (function (this__28561__auto__,writer__28562__auto__,opt__28563__auto__){
+return cljs.core._write.call(null,writer__28562__auto__,"instaparse.auto-flatten-seq/AutoFlattenSeq");
 });
 
 instaparse.auto_flatten_seq.__GT_AutoFlattenSeq = (function instaparse$auto_flatten_seq$__GT_AutoFlattenSeq(v,premix_hashcode,hashcode,cnt,dirty,cached_seq){
@@ -359,8 +359,8 @@ return (cljs.core.imul.call(null,e,v1.premix_hashcode) + (v2.premix_hashcode - e
  * Returns the partially calculated hash code, still requires a call to mix-collection-hash
  */
 instaparse.auto_flatten_seq.hash_ordered_coll_without_mix = (function instaparse$auto_flatten_seq$hash_ordered_coll_without_mix(var_args){
-var G__29555 = arguments.length;
-switch (G__29555) {
+var G__30136 = arguments.length;
+switch (G__30136) {
 case 1:
 return instaparse.auto_flatten_seq.hash_ordered_coll_without_mix.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -384,10 +384,10 @@ var unmixed_hash = existing_unmixed_hash;
 var coll__$1 = cljs.core.seq.call(null,coll);
 while(true){
 if(!((coll__$1 == null))){
-var G__29557 = ((cljs.core.imul.call(null,(31),unmixed_hash) + cljs.core.hash.call(null,cljs.core.first.call(null,coll__$1))) | (0));
-var G__29558 = cljs.core.next.call(null,coll__$1);
-unmixed_hash = G__29557;
-coll__$1 = G__29558;
+var G__30138 = ((cljs.core.imul.call(null,(31),unmixed_hash) + cljs.core.hash.call(null,cljs.core.first.call(null,coll__$1))) | (0));
+var G__30139 = cljs.core.next.call(null,coll__$1);
+unmixed_hash = G__30138;
+coll__$1 = G__30139;
 continue;
 } else {
 return unmixed_hash;
@@ -426,16 +426,16 @@ if(temp__4655__auto__){
 var s = temp__4655__auto__;
 var fst = cljs.core.first.call(null,v);
 if(cljs.core.truth_(instaparse.auto_flatten_seq.afs_QMARK_.call(null,fst))){
-var G__29559 = instaparse.auto_flatten_seq.flat_vec_helper.call(null,acc,fst);
-var G__29560 = cljs.core.next.call(null,v);
-acc = G__29559;
-v = G__29560;
+var G__30140 = instaparse.auto_flatten_seq.flat_vec_helper.call(null,acc,fst);
+var G__30141 = cljs.core.next.call(null,v);
+acc = G__30140;
+v = G__30141;
 continue;
 } else {
-var G__29561 = cljs.core.conj_BANG_.call(null,acc,fst);
-var G__29562 = cljs.core.next.call(null,v);
-acc = G__29561;
-v = G__29562;
+var G__30142 = cljs.core.conj_BANG_.call(null,acc,fst);
+var G__30143 = cljs.core.next.call(null,v);
+acc = G__30142;
+v = G__30143;
 continue;
 }
 } else {
@@ -460,14 +460,14 @@ instaparse.auto_flatten_seq.get_vec = (function instaparse$auto_flatten_seq$get_
 if((!((self == null))) && (!((self.instaparse$auto_flatten_seq$GetVec$get_vec$arity$1 == null)))){
 return self.instaparse$auto_flatten_seq$GetVec$get_vec$arity$1(self);
 } else {
-var x__28672__auto__ = (((self == null))?null:self);
-var m__28673__auto__ = (instaparse.auto_flatten_seq.get_vec[goog.typeOf(x__28672__auto__)]);
-if(!((m__28673__auto__ == null))){
-return m__28673__auto__.call(null,self);
+var x__28619__auto__ = (((self == null))?null:self);
+var m__28620__auto__ = (instaparse.auto_flatten_seq.get_vec[goog.typeOf(x__28619__auto__)]);
+if(!((m__28620__auto__ == null))){
+return m__28620__auto__.call(null,self);
 } else {
-var m__28673__auto____$1 = (instaparse.auto_flatten_seq.get_vec["_"]);
-if(!((m__28673__auto____$1 == null))){
-return m__28673__auto____$1.call(null,self);
+var m__28620__auto____$1 = (instaparse.auto_flatten_seq.get_vec["_"]);
+if(!((m__28620__auto____$1 == null))){
+return m__28620__auto____$1.call(null,self);
 } else {
 throw cljs.core.missing_protocol.call(null,"GetVec.get-vec",self);
 }
@@ -663,38 +663,38 @@ return cljs.core.conj.call(null,instaparse.auto_flatten_seq.get_vec.call(null,se
 });
 
 instaparse.auto_flatten_seq.FlattenOnDemandVector.prototype.call = (function() {
-var G__29564 = null;
-var G__29564__2 = (function (self__,arg){
+var G__30145 = null;
+var G__30145__2 = (function (self__,arg){
 var self__ = this;
 var self____$1 = this;
 var self = self____$1;
 return cljs.core._invoke.call(null,instaparse.auto_flatten_seq.get_vec.call(null,self),arg);
 });
-var G__29564__3 = (function (self__,arg,not_found){
+var G__30145__3 = (function (self__,arg,not_found){
 var self__ = this;
 var self____$1 = this;
 var self = self____$1;
 return cljs.core._invoke.call(null,instaparse.auto_flatten_seq.get_vec.call(null,self),arg,not_found);
 });
-G__29564 = function(self__,arg,not_found){
+G__30145 = function(self__,arg,not_found){
 switch(arguments.length){
 case 2:
-return G__29564__2.call(this,self__,arg);
+return G__30145__2.call(this,self__,arg);
 case 3:
-return G__29564__3.call(this,self__,arg,not_found);
+return G__30145__3.call(this,self__,arg,not_found);
 }
 throw(new Error('Invalid arity: ' + (arguments.length - 1)));
 };
-G__29564.cljs$core$IFn$_invoke$arity$2 = G__29564__2;
-G__29564.cljs$core$IFn$_invoke$arity$3 = G__29564__3;
-return G__29564;
+G__30145.cljs$core$IFn$_invoke$arity$2 = G__30145__2;
+G__30145.cljs$core$IFn$_invoke$arity$3 = G__30145__3;
+return G__30145;
 })()
 ;
 
-instaparse.auto_flatten_seq.FlattenOnDemandVector.prototype.apply = (function (self__,args29563){
+instaparse.auto_flatten_seq.FlattenOnDemandVector.prototype.apply = (function (self__,args30144){
 var self__ = this;
 var self____$1 = this;
-return self____$1.call.apply(self____$1,[self____$1].concat(cljs.core.aclone.call(null,args29563)));
+return self____$1.call.apply(self____$1,[self____$1].concat(cljs.core.aclone.call(null,args30144)));
 });
 
 instaparse.auto_flatten_seq.FlattenOnDemandVector.prototype.cljs$core$IFn$_invoke$arity$1 = (function (arg){
@@ -723,8 +723,8 @@ instaparse.auto_flatten_seq.FlattenOnDemandVector.cljs$lang$type = true;
 
 instaparse.auto_flatten_seq.FlattenOnDemandVector.cljs$lang$ctorStr = "instaparse.auto-flatten-seq/FlattenOnDemandVector";
 
-instaparse.auto_flatten_seq.FlattenOnDemandVector.cljs$lang$ctorPrWriter = (function (this__28614__auto__,writer__28615__auto__,opt__28616__auto__){
-return cljs.core._write.call(null,writer__28615__auto__,"instaparse.auto-flatten-seq/FlattenOnDemandVector");
+instaparse.auto_flatten_seq.FlattenOnDemandVector.cljs$lang$ctorPrWriter = (function (this__28561__auto__,writer__28562__auto__,opt__28563__auto__){
+return cljs.core._write.call(null,writer__28562__auto__,"instaparse.auto-flatten-seq/FlattenOnDemandVector");
 });
 
 instaparse.auto_flatten_seq.__GT_FlattenOnDemandVector = (function instaparse$auto_flatten_seq$__GT_FlattenOnDemandVector(v,hashcode,cnt,flat){
@@ -750,4 +750,4 @@ return afs.v;
 }
 });
 
-//# sourceMappingURL=auto_flatten_seq.js.map
+//# sourceMappingURL=auto_flatten_seq.js.map?rel=1509844998934

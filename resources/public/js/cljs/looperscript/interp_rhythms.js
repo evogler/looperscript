@@ -21,9 +21,9 @@ return (cljs.core.nth.call(null,cums,pos_in_chorus) + chorus_start);
 }));
 cljs.looperscript.interp_rhythms.rhythms_interp = (function cljs$looperscript$interp_rhythms$rhythms_interp(rs,n){
 var r = cljs.core.last.call(null,rs);
-var vec__30078 = ((!(cljs.core.map_QMARK_.call(null,r)))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [r,(0)], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.get.call(null,r,new cljs.core.Keyword(null,"r","r",-471384190)),cljs.core.get.call(null,r,new cljs.core.Keyword(null,"offset","offset",296498311))], null));
-var r__$1 = cljs.core.nth.call(null,vec__30078,(0),null);
-var offset = cljs.core.nth.call(null,vec__30078,(1),null);
+var vec__30025 = ((!(cljs.core.map_QMARK_.call(null,r)))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [r,(0)], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.get.call(null,r,new cljs.core.Keyword(null,"r","r",-471384190)),cljs.core.get.call(null,r,new cljs.core.Keyword(null,"offset","offset",296498311))], null));
+var r__$1 = cljs.core.nth.call(null,vec__30025,(0),null);
+var offset = cljs.core.nth.call(null,vec__30025,(1),null);
 var n__$1 = (n + offset);
 var rem_rs = cljs.core.drop_last.call(null,rs);
 var whole = cljs.looperscript.interp_rhythms.whole_QMARK_.call(null,n__$1);
@@ -36,8 +36,8 @@ while(true){
 if((f.call(null,i) > n)){
 return i;
 } else {
-var G__30081 = (i * (2));
-i = G__30081;
+var G__30028 = (i * (2));
+i = G__30028;
 continue;
 }
 break;
@@ -52,13 +52,13 @@ return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMP
 } else {
 var new_i = cljs.looperscript.interp_rhythms.blend.call(null,l_bound,u_bound,0.5);
 var new_n = f.call(null,new_i);
-var vec__30082 = (((new_n > n))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [l_bound,new_i], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new_i,u_bound], null));
-var l_bound__$1 = cljs.core.nth.call(null,vec__30082,(0),null);
-var u_bound__$1 = cljs.core.nth.call(null,vec__30082,(1),null);
-var G__30085 = l_bound__$1;
-var G__30086 = u_bound__$1;
-l_bound = G__30085;
-u_bound = G__30086;
+var vec__30029 = (((new_n > n))?new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [l_bound,new_i], null):new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new_i,u_bound], null));
+var l_bound__$1 = cljs.core.nth.call(null,vec__30029,(0),null);
+var u_bound__$1 = cljs.core.nth.call(null,vec__30029,(1),null);
+var G__30032 = l_bound__$1;
+var G__30033 = u_bound__$1;
+l_bound = G__30032;
+u_bound = G__30033;
 continue;
 }
 break;
@@ -71,4 +71,4 @@ cljs.looperscript.interp_rhythms.next_hit_of_layered_rhythm = (function cljs$loo
 return cljs.looperscript.interp_rhythms.rhythms_interp.call(null,rs,cljs.core.second.call(null,cljs.looperscript.interp_rhythms.pos_in_layered_rhythm.call(null,rs,t)));
 });
 
-//# sourceMappingURL=interp_rhythms.js.map
+//# sourceMappingURL=interp_rhythms.js.map?rel=1509844998120

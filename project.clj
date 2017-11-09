@@ -42,4 +42,5 @@
   :figwheel {
     :css-dirs ["resources/public/css"]
     :http-server-root "public"
+;;    :websocket-url "ws://localhost:3449/figwheel-ws"
     })

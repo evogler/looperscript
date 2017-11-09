@@ -12,11 +12,11 @@ instaparse.viz.span = (function instaparse$viz$span(tree){
 var m = cljs.core.meta.call(null,tree);
 var s = new cljs.core.Keyword("instaparse.gll","start-index","instaparse.gll/start-index",404653620).cljs$core$IFn$_invoke$arity$1(m);
 var e = new cljs.core.Keyword("instaparse.gll","end-index","instaparse.gll/end-index",-1851404441).cljs$core$IFn$_invoke$arity$1(m);
-if(cljs.core.truth_((function (){var and__27977__auto__ = s;
-if(cljs.core.truth_(and__27977__auto__)){
+if(cljs.core.truth_((function (){var and__27924__auto__ = s;
+if(cljs.core.truth_(and__27924__auto__)){
 return e;
 } else {
-return and__27977__auto__;
+return and__27924__auto__;
 }
 })())){
 return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [s,e], null);
@@ -25,4 +25,4 @@ return null;
 }
 });
 
-//# sourceMappingURL=viz.js.map
+//# sourceMappingURL=viz.js.map?rel=1509845004204
