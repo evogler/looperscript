@@ -133,7 +133,7 @@
   vec = '^'? ('#' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp |
                                                     string | vec-code)* <(']' | ')')>
   part = part-title <sp>* aspect*
-  init = <'init'> (<sp*> vec)*
+  init = <'init'> (<sp*> (vec | string))*
   <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
   aspect = aspect-header data
   aspect-header = full-aspect-name (sp* <'&'> sp* full-aspect-name)*
@@ -143,7 +143,7 @@
   sub-aspect-keyword = ('time')
   data = data-element+
   <data-element> = (ratio | hz | modifier | number | sp | vec | drum-code |
-  data-shorthand | synth-code)
+  data-shorthand | synth-code | string)
   <synth-code> = ('sawtooth' | 'sine' | 'square' | 'triangle')
   <data-shorthand> = v
   v = number <'v'> number
@@ -159,7 +159,6 @@
   (clojure.string/join " | " (mapv (comp #(apply str "'" % "'")
                                          (partial apply str) rest str) (keys vec-fns)))
   ") <sp>
-
 
   string = <'\"'> #'([^\"]*)' <'\"'>
   number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
@@ -191,7 +190,7 @@
                                (first args)
                                [(first args) (nth args 2)]))
          :aspect-header vector
-         :string str
+         :string vec-fns/eval-str  ;str
          :part (fn [part-name & aspects]
                  (reduce
                   (fn [m [_ k v]]

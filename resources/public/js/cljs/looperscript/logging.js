@@ -4,14 +4,14 @@ goog.require('cljs.core');
 goog.require('domina');
 cljs.looperscript.logging.log = (function cljs$looperscript$logging$log(var_args){
 var args__29112__auto__ = [];
-var len__29105__auto___32205 = arguments.length;
-var i__29106__auto___32206 = (0);
+var len__29105__auto___32204 = arguments.length;
+var i__29106__auto___32205 = (0);
 while(true){
-if((i__29106__auto___32206 < len__29105__auto___32205)){
-args__29112__auto__.push((arguments[i__29106__auto___32206]));
+if((i__29106__auto___32205 < len__29105__auto___32204)){
+args__29112__auto__.push((arguments[i__29106__auto___32205]));
 
-var G__32207 = (i__29106__auto___32206 + (1));
-i__29106__auto___32206 = G__32207;
+var G__32206 = (i__29106__auto___32205 + (1));
+i__29106__auto___32205 = G__32206;
 continue;
 } else {
 }
@@ -31,20 +31,20 @@ return console.log(s);
 
 cljs.looperscript.logging.log.cljs$lang$maxFixedArity = (0);
 
-cljs.looperscript.logging.log.cljs$lang$applyTo = (function (seq32204){
-return cljs.looperscript.logging.log.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq32204));
+cljs.looperscript.logging.log.cljs$lang$applyTo = (function (seq32203){
+return cljs.looperscript.logging.log.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq32203));
 });
 
 cljs.looperscript.logging.log__GT_ = (function cljs$looperscript$logging$log__GT_(var_args){
 var args__29112__auto__ = [];
-var len__29105__auto___32209 = arguments.length;
-var i__29106__auto___32210 = (0);
+var len__29105__auto___32208 = arguments.length;
+var i__29106__auto___32209 = (0);
 while(true){
-if((i__29106__auto___32210 < len__29105__auto___32209)){
-args__29112__auto__.push((arguments[i__29106__auto___32210]));
+if((i__29106__auto___32209 < len__29105__auto___32208)){
+args__29112__auto__.push((arguments[i__29106__auto___32209]));
 
-var G__32211 = (i__29106__auto___32210 + (1));
-i__29106__auto___32210 = G__32211;
+var G__32210 = (i__29106__auto___32209 + (1));
+i__29106__auto___32209 = G__32210;
 continue;
 } else {
 }
@@ -63,9 +63,9 @@ return cljs.core.first.call(null,args);
 
 cljs.looperscript.logging.log__GT_.cljs$lang$maxFixedArity = (0);
 
-cljs.looperscript.logging.log__GT_.cljs$lang$applyTo = (function (seq32208){
-return cljs.looperscript.logging.log__GT_.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq32208));
+cljs.looperscript.logging.log__GT_.cljs$lang$applyTo = (function (seq32207){
+return cljs.looperscript.logging.log__GT_.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq32207));
 });
 
 
-//# sourceMappingURL=logging.js.map?rel=1509845005637
+//# sourceMappingURL=logging.js.map?rel=1510190750194

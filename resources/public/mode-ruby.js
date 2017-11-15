@@ -34,7 +34,7 @@ var RubyHighlightRules = function() {
         'log user floor sort sum range in pattern')
 
     var keywords = ('time sound volume filter pan rate offset synth ' +
-        'overtones time+ mute skip part bpm'
+        'overtones time+ mute skip part bpm init'
     );
 
     var buildinConstants = ("sawtooth sine square triangle"

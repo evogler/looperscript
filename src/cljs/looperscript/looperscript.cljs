@@ -15,7 +15,9 @@
             [cljs.looperscript.interpret :as parse]
             [cljs.looperscript.iterator :as iter]
             [cljs.looperscript.logging :refer [log log->]]
-            [cljs.looperscript.start-time :refer [get-current-start-time reset-clock! now]]))
+            [cljs.looperscript.start-time :refer [get-current-start-time reset-clock! now]]
+
+            ))
 
 (declare stop)
 
@@ -24,7 +26,6 @@
 ;(js* "var V = cljs.looperscript.vector_fns")
 
 ;;;;;;;;;;
-
 
 (defonce ctx audio/ctx)
 (defonce playing (atom false))
@@ -250,7 +251,7 @@
 
 (defn play []
   (let [parts (get-parts)]
-    (if (nil? (get-current-start-time)) (reset-clock! (+ (now) 0.5)))
+    (if (nil? (get-current-start-time)) (reset-clock! (+ (now) 2.5)))
     (update* parts)
     (queue-notes)
     (kill-playing-interval)

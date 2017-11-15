@@ -1,7 +1,20 @@
 (ns cljs.looperscript.vector-fns
   (:require ; [cemerick.pprng :as rng]
             [cljs.looperscript.interp-rhythms :refer [rhythms-interp]]
-            [cljs.looperscript.start-time :refer [now get-current-start-time]]))
+            [cljs.looperscript.start-time :refer [now get-current-start-time]]
+
+            [cljs.tools.reader :refer [read-string]]
+            [cljs.js :refer [empty-state eval js-eval #_eval-str]]
+            [cljs.env :refer [*compiler*]]))
+
+(defn eval-str [s]
+  (eval (empty-state)
+     (read-string s)
+     {:eval       js-eval
+      :source-map true
+      :context    :expr}
+         (fn [result] (:value result))))
+
 
 (defn log [& args]
   (.log js/console (apply str args)))
@@ -351,6 +364,7 @@
    :cos cos
    :floor floor
    :time time*
+   :eval eval-str
 ;;   :round round
 ;;   :round-up round-up
 ;;   :round-down round-down

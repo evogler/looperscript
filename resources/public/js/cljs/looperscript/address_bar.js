@@ -39,4 +39,4 @@ return cljs.looperscript.address_bar.set_loop_text.call(null,loop_text);
 });
 cljs.looperscript.address_bar.load_link__GT_text.call(null,cljs.looperscript.address_bar.default_loop_text);
 
-//# sourceMappingURL=address_bar.js.map?rel=1509844998050
+//# sourceMappingURL=address_bar.js.map?rel=1510190744583
