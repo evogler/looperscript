@@ -1,3 +1,3 @@
 lein externs > externs/externs.js
-lein cljsbuild clean
+lein clean
 lein cljsbuild once thin

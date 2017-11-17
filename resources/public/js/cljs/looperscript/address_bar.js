@@ -28,9 +28,9 @@ return editor.clearSelection();
 });
 cljs.looperscript.address_bar.load_link__GT_text = (function cljs$looperscript$address_bar$load_link__GT_text(default$){
 var get_text = cljs.looperscript.address_bar.get_text_from_get.call(null);
-var loop_text = (function (){var or__27936__auto__ = get_text;
-if(cljs.core.truth_(or__27936__auto__)){
-return or__27936__auto__;
+var loop_text = (function (){var or__7418__auto__ = get_text;
+if(cljs.core.truth_(or__7418__auto__)){
+return or__7418__auto__;
 } else {
 return default$;
 }
@@ -39,4 +39,4 @@ return cljs.looperscript.address_bar.set_loop_text.call(null,loop_text);
 });
 cljs.looperscript.address_bar.load_link__GT_text.call(null,cljs.looperscript.address_bar.default_loop_text);
 
-//# sourceMappingURL=address_bar.js.map?rel=1510190744583
+//# sourceMappingURL=address_bar.js.map

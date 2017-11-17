@@ -27,20 +27,20 @@ return shifted;
 cljs.source_map.base64_vlq.encode_val = (function cljs$source_map$base64_vlq$encode_val(n){
 var sb = (new goog.string.StringBuffer());
 var vlq = cljs.source_map.base64_vlq.to_vlq_signed.call(null,n);
-var digit_39950 = (vlq & cljs.source_map.base64_vlq.vlq_base_mask);
-var vlq_39951__$1 = (vlq >>> (5));
+var digit_10943 = (vlq & cljs.source_map.base64_vlq.vlq_base_mask);
+var vlq_10944__$1 = (vlq >>> (5));
 while(true){
-if((vlq_39951__$1 > (0))){
-var digit_39952__$1 = (digit_39950 | cljs.source_map.base64_vlq.vlq_continuation_bit);
-sb.append(cljs.source_map.base64.encode.call(null,digit_39952__$1));
+if((vlq_10944__$1 > (0))){
+var digit_10945__$1 = (digit_10943 | cljs.source_map.base64_vlq.vlq_continuation_bit);
+sb.append(cljs.source_map.base64.encode.call(null,digit_10945__$1));
 
-var G__39953 = (vlq_39951__$1 & cljs.source_map.base64_vlq.vlq_base_mask);
-var G__39954 = (vlq_39951__$1 >>> (5));
-digit_39950 = G__39953;
-vlq_39951__$1 = G__39954;
+var G__10946 = (vlq_10944__$1 & cljs.source_map.base64_vlq.vlq_base_mask);
+var G__10947 = (vlq_10944__$1 >>> (5));
+digit_10943 = G__10946;
+vlq_10944__$1 = G__10947;
 continue;
 } else {
-sb.append(cljs.source_map.base64.encode.call(null,digit_39950));
+sb.append(cljs.source_map.base64.encode.call(null,digit_10943));
 }
 break;
 }
@@ -68,12 +68,12 @@ var digit__$1 = (digit & cljs.source_map.base64_vlq.vlq_base_mask);
 var result__$1 = (result + (digit__$1 << shift));
 var shift__$1 = (shift + (5));
 if(continuation_QMARK_){
-var G__39955 = i__$1;
-var G__39956 = result__$1;
-var G__39957 = shift__$1;
-i = G__39955;
-result = G__39956;
-shift = G__39957;
+var G__10948 = i__$1;
+var G__10949 = result__$1;
+var G__10950 = shift__$1;
+i = G__10948;
+result = G__10949;
+shift = G__10950;
 continue;
 } else {
 return (new cljs.core.LazySeq(null,((function (i,result,shift,i__$1,continuation_QMARK_,digit__$1,result__$1,shift__$1,digit,l){
@@ -92,4 +92,4 @@ break;
 }
 });
 
-//# sourceMappingURL=base64_vlq.js.map?rel=1510190967771
+//# sourceMappingURL=base64_vlq.js.map
