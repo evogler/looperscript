@@ -271,3 +271,54 @@ notifying browser that file changed:  resources/public/js/cljs/looperscript/inte
 [0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
 [32mSuccessfully compiled "resources/public/js/looperscript.js" in 3.233 seconds.[0m
 notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:236  column:11  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/kill-sounds[0m
+
+  [36m232[0m  [36m(if (insta/failure? parts)[0m
+  [36m233[0m  [36m  (log (str (vec parts)))[0m
+  [36m234[0m  [36m  (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p (get-current-start-time))))][0m
+  [36m235[0m  [36m    ;;  each next-note-fn catch up to current time[0m
+  [33m236[0m  [1m    (kill-sounds)[0m
+  [0m   [0m  [33m     ^--- Use of undeclared Var cljs.looperscript.looperscript/kill-sounds[0m
+  [36m237[0m  [36m    (doseq [nnfn new-nnfns][0m
+  [36m238[0m  [36m      (loop [][0m
+  [36m239[0m  [36m        (if (and @last-queue-time[0m
+  [36m240[0m  [36m                 @playing[0m
+  [36m241[0m  [36m                 (< queue-time-interval) (- (now) @last-queue-time))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.822 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:236  column:11  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/kill-sounds[0m
+
+  [36m232[0m  [36m(if (insta/failure? parts)[0m
+  [36m233[0m  [36m  (log (str (vec parts)))[0m
+  [36m234[0m  [36m  (let [new-nnfns (vec (for [p (vals parts)] (next-note-fn p (get-current-start-time))))][0m
+  [36m235[0m  [36m    ;;  each next-note-fn catch up to current time[0m
+  [33m236[0m  [1m    (kill-sounds)[0m
+  [0m   [0m  [33m     ^--- Use of undeclared Var cljs.looperscript.looperscript/kill-sounds[0m
+  [36m237[0m  [36m    (js/alert "HI")[0m
+  [36m238[0m  [36m    (doseq [nnfn new-nnfns][0m
+  [36m239[0m  [36m      (loop [][0m
+  [36m240[0m  [36m        (if (and @last-queue-time[0m
+  [36m241[0m  [36m                 @playing[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.955 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.623 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.575 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.567 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js

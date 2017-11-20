@@ -43,4 +43,4 @@ time 2 3 2 3 2 2 3" )
         loop-text (or get-text default)]
     (set-loop-text loop-text)))
 
-(load-link->text default-loop-text)
+;(load-link->text default-loop-text)

@@ -224,6 +224,8 @@
   (stop)
   (reset-clock!))
 
+(declare kill-sounds)
+
 ;; TODO: kill notes
 ;; XXX: probably should rename if not refactor pretty seriously
 (defn update*
@@ -242,7 +244,9 @@
              (when (> (now) (nnfn :time-pos))
                (nnfn)
                (recur))))
-         (reset! current-next-note-fns new-nnfns)))))
+         (reset! current-next-note-fns new-nnfns)
+         (kill-sounds)
+))))
 
 (defn kill-playing-interval []
   (when @playing-interval
@@ -251,7 +255,7 @@
 
 (defn play []
   (let [parts (get-parts)]
-    (if (nil? (get-current-start-time)) (reset-clock! (+ (now) 2.5)))
+    (if (nil? (get-current-start-time)) (reset-clock! (+ (now) 0.5)))
     (update* parts)
     (queue-notes)
     (kill-playing-interval)
