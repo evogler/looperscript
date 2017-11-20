@@ -97,10 +97,10 @@
 ;; "sounding-notes" is an atom vector of sounds that haven't finished playing yet.
 (def add-note-to-sounding-notes
   (let [sounding-counter (atom 0)]
-    (fn [n node]
+    (fn [node-dic]
       (let [id (swap! sounding-counter inc)]
-        (swap! sounding-notes assoc id node)
-        (aset node "onended" (fn [] (swap! sounding-notes dissoc id)))))))
+        (swap! sounding-notes assoc id node-dic)
+        (aset (:node node-dic) "onended" (fn [] (swap! sounding-notes dissoc id)))))))
 
 ;; partitions multi-aspects into separate iterators, so that timed-iterators can be
 ;; applied where necessary
@@ -206,7 +206,7 @@
                      (audio/play-tone          sound start-time dur vol pan synth overtones))
                    (audio/play-sound sound start-time vol rate))]
         (doseq [i (if (coll? node) node [node])]
-          (add-note-to-sounding-notes [n (rand)] i))))))
+          (add-note-to-sounding-notes {:node i :start-time start-time}))))))
 
 (defn queue-notes []
   (reset! last-queue-time (now))
@@ -267,7 +267,7 @@
 
 (defn kill-sounds []
   (doseq [n (vals @sounding-notes)]
-    (.stop n))
+    (.stop (:node n)))
   (reset! sounding-notes {}))
 
 ;; XXX: stop doesn't stop?

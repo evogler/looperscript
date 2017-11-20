@@ -322,3 +322,36 @@ notifying browser that file changed:  resources/public/js/cljs/looperscript/loop
 [0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
 [32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.567 seconds.[0m
 notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.78 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.93 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/address_bar.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.714 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/address_bar.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.59 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.943 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.379 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/looperscript.cljs   line:209  column:71  ----[0m
+
+  [1mUnmatched delimiter )[0m
+
+  [36m207[0m  [36m                   (audio/play-sound sound start-time vol rate))][0m
+  [36m208[0m  [36m        (doseq [i (if (coll? node) node [node])][0m
+  [33m209[0m  [1m          (add-note-to-sounding-notes {:node i :start-time start-time))))))[0m
+  [0m   [0m  [33m                                                                      ^--- Unmatched delimiter )[0m
+  [36m210[0m  [36m[0m
+  [36m211[0m  [36m(defn queue-notes [][0m
+  [36m212[0m  [36m  (reset! last-queue-time (now))[0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.658 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
