@@ -31,8 +31,13 @@
 (defonce playing (atom false))
 (defonce playing-interval (atom nil))
 (defonce current-next-note-fns (atom []))
-(defonce queue-time-interval 1) ; seconds
-(defonce queue-time-extra 2)
+;; The next two values are up for grabs. If update* doesn't take too long,
+;; queue-time-extra can be maybe as low as 0.1, or at least 0.25.
+;; Something in the range of <~0.25 will be way better for interactive use.
+;; If improving update* isn't enough, I'll have to also toggle this based on
+;; window focus
+(def queue-time-interval 0.05) ; seconds
+(def queue-time-extra 2)
 (defonce last-queue-time (atom nil))
 (defonce params (atom {}))
 (defonce sounding-notes (atom {}))
@@ -225,6 +230,7 @@
   (reset-clock!))
 
 (declare kill-sounds)
+(declare kill-unstarted-sounds)
 
 ;; TODO: kill notes
 ;; XXX: probably should rename if not refactor pretty seriously
@@ -240,12 +246,14 @@
              (if (and @last-queue-time
                       @playing
                       (< queue-time-interval) (- (now) @last-queue-time))
-               (queue-notes))
+               ;(queue-notes)
+               nil)
              (when (> (now) (nnfn :time-pos))
                (nnfn)
                (recur))))
          (reset! current-next-note-fns new-nnfns)
-         (kill-sounds)
+         (kill-unstarted-sounds)
+         (queue-notes)
 ))))
 
 (defn kill-playing-interval []
@@ -269,6 +277,12 @@
   (doseq [n (vals @sounding-notes)]
     (.stop (:node n)))
   (reset! sounding-notes {}))
+
+(defn kill-unstarted-sounds []
+  (doseq [[id n] @sounding-notes]
+    (when (< (now) (:start-time n))
+      (.stop (:node n))
+      (swap! sounding-notes dissoc id))))
 
 ;; XXX: stop doesn't stop?
 (defn stop []

@@ -7,10 +7,18 @@ REFACTOR:
 QUESTIONS:
   -multiple aspects refering to same cycle? (probably means cache results of actual fn)
 UPCOMING STEPS:
+  (done, I think?)-on update, kill nodes that haven't started yet, but allow started ones to finish
+    -via: alter @sounding-notes to have a start-time value
+  -make update more thoughtful. different modes:
+    -?DGAF: just start the part from (now)
+    -quick (probably default): make one pass over a part's time to figure out
+        how to module time & other aspect list lengths.
+        Will add up if time doesn't have functions
+    -full: grind through next-note-fn's until they catch up
+
   -fix parameterless functions to not require space before closing parens
   -fix calling actual functions [e.g. ((cycle))]
   -fix infinite loops on 0-length vectors
-  -smart update: (if no fn in aspect, don't grind; if fn, start anew, unless strict-mode set)
   -toggle setinterval length based on document.hasfocus
   -proper params. as well as bpm, setting for latency.
   -standardize mode concept. (e.g.'s: tuning, hz)
@@ -109,3 +117,6 @@ FURTHER STEPS:
   -record to WAV/MP3
   -output to staff notation (maybe in browser, in real-time?)
   -split into more modular libraries, to use looper also with overtone
+
+
+DONE:

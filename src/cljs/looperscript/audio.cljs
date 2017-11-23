@@ -8,7 +8,7 @@
 ;; (def ctx (js/webkitAudioContext.))
 ;; (if (nil? ctx) (def ctx (js/AudioContext.)))
 
-(def ctx (js/AudioContext.))
+(defonce ctx (js/AudioContext.))
 
 #_(def pending-sounds (atom #{}))
 (def drums ["kick" "snare" "hat" "sidestick" "ride-bell" "ride"])

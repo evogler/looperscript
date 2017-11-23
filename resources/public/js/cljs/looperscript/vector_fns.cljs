@@ -112,6 +112,9 @@
         factor (/ t (reduce + v))]
     (map #(* factor %) v)))
 
+(defn abs-times [& v]
+  (map - (rest v) v))
+
 (defn cycle* [v]
   (let [pos (atom -1)
         v-len (count v)]
@@ -324,6 +327,7 @@
    :walk1 rand-walk1
    :walk2 rand-walk2
    :in in
+   :abs-times abs-times
    :x repeat
    :repeatedly repeatedly
    :xx repeatedly
