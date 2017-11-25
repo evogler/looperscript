@@ -22,6 +22,7 @@
 (declare stop)
 
 (js* "var L = cljs.looperscript.looperscript")
+;(js* "var ev = cljs.looperscript.vector_fns.eval-str")
 ;(js* "var C = cljs.core")
 ;(js* "var V = cljs.looperscript.vector_fns")
 
@@ -44,7 +45,7 @@
 (defonce last-transformed-tree (atom nil))
 (defonce aspects [:time :sound :volume :filter :pan :rate :synth :overtones :time+ :mute :skip])
 (defonce aspect-defaults
-  {:sound [[:drum-code "r"]]
+  {:sound [[:drum-code "d"]]
    :synth ["sawtooth"]
    :time [1]
    :volume [1]
@@ -95,7 +96,7 @@
             transform-time (- (now) start-time)
             new-params (:params transformed-tree)
             parts (:parts transformed-tree)]
-        (log "Parse time: (" parse-time ") " transform-time)
+        (log "Parse time: " parse-time "; Transorm time: " (- transform-time parse-time))
         (reset! params new-params)
         parts))))
 
@@ -159,10 +160,10 @@
     (fn
       ([command] (if (= command :time-pos) @time-pos))
       ([] (loop []
-            (let [;; adjusted-timepos seems kind of hacky to me.
-                  ;; maybe I should differentiate part-time and real-time?
-                  ;; also, this floating point error correction is lame
-                  adjusted-time-pos (+ 1e-7 (/ (- @time-pos start-time) (get-bpm)))
+;; adjusted-timepos seems kind of hacky to me.
+;; maybe I should differentiate part-time and real-time?
+;; also, this floating point error correction is lame
+            (let [adjusted-time-pos (+ 1e-7 (/ (- @time-pos start-time) (get-bpm)))
                   res-v (for [[aspect iter] iterators]
                           [aspect (iter adjusted-time-pos)])
                   res (into {} res-v)
@@ -177,41 +178,48 @@
                     #_(log :end-of-nnfn res)
                     res))))))))
 
-(defn schedule-note [n]
-  (let [sound (:sound n)
-        rate (:rate n)
-        start-time (+ (:start-time n) (:time+ n))
-        start-time (if (and (vector? sound) (= (first sound) :drum-code))
-                     (if-let [l (->> sound second
-                                     (get audio/drum-codes)
-                                     (get audio/sample-lags))]
-                       (- start-time (/ l rate))
-                       start-time)
-                     start-time)]
-    (if (>= start-time (now))
-      (let [sound (cond (number? sound)
-                        (note->freq sound)
-                        (and (vector? sound) (= (first sound) :ratio))
-                        (-> sound second ratio->freq)
-                        (and (vector? sound) (= (first sound) :hz))
-                        (-> sound second)
-                        (and (vector? sound) (= (first sound) :drum-code))
-                        (-> sound second audio/drum-codes)
-                        :else sound)
-            dur (- (:time n) (:time+ n))
-            vol (:volume n)
-            filter (:filter n)
-            pan (:pan n)
-            synth (:synth n)
-            overtones (:overtones n)
+(def sched-log (atom []))
 
-            node (if (number? sound)
-                   (if filter
-                     (audio/play-filtered-tone sound start-time dur vol pan filter synth overtones)
-                     (audio/play-tone          sound start-time dur vol pan synth overtones))
-                   (audio/play-sound sound start-time vol rate))]
-        (doseq [i (if (coll? node) node [node])]
-          (add-note-to-sounding-notes {:node i :start-time start-time}))))))
+(defn schedule-note [n]
+  ;(swap! sched-log conj n)
+  (if (and (sequential? (:sound n))
+           (= (first (:sound n)) :chord))
+    (doseq [note (flatten (rest (:sound n)))]
+      (schedule-note (assoc n :sound note)))
+    (let [sound (:sound n)
+          rate (:rate n)
+          start-time (+ (:start-time n) (:time+ n))
+          start-time (if (and (vector? sound) (= (first sound) :drum-code))
+                       (if-let [l (->> sound second
+                                       (get audio/drum-codes)
+                                       (get audio/sample-lags))]
+                         (- start-time (/ l rate))
+                         start-time)
+                       start-time)]
+      (if (>= start-time (now))
+        (let [sound (cond (number? sound)
+                          (note->freq sound)
+                          (and (vector? sound) (= (first sound) :ratio))
+                          (-> sound second ratio->freq)
+                          (and (vector? sound) (= (first sound) :hz))
+                          (-> sound second)
+                          (and (vector? sound) (= (first sound) :drum-code))
+                          (-> sound second audio/drum-codes)
+                          :else sound)
+              dur (- (:time n) (:time+ n))
+              vol (:volume n)
+              filter (:filter n)
+              pan (:pan n)
+              synth (:synth n)
+              overtones (:overtones n)
+
+              node (if (number? sound)
+                     (if filter
+                       (audio/play-filtered-tone sound start-time dur vol pan filter synth overtones)
+                       (audio/play-tone          sound start-time dur vol pan synth overtones))
+                     (audio/play-sound sound start-time vol rate))]
+          (doseq [i (if (coll? node) node [node])]
+            (add-note-to-sounding-notes {:node i :start-time start-time})))))))
 
 (defn queue-notes []
   (reset! last-queue-time (now))
@@ -290,11 +298,17 @@
   (kill-playing-interval)
   (kill-sounds))
 
-(ev/listen! (dom/by-id "play") :click (fn [e] (play)))
-(ev/listen! (dom/by-id "pause") :click (fn [e] (stop)))
-(ev/listen! (dom/by-id "update") :click (fn [e] (update*)))
-(ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))
-(ev/listen! (dom/by-id "stop") :click (fn [e] (reset-button)))
+(defn relisten! [id f]
+  (ev/unlisten! (dom/by-id id) :click)
+  (ev/listen! (dom/by-id id) :click (fn [e] (f))))
+
+;(ev/listen! (dom/by-id "play") :click (fn [e] (play)))
+(relisten! "play" play)
+(relisten! "pause" stop)
+(relisten! "update" update*)
+(relisten! "link" get/text->link)
+(relisten! "load" (partial get/load-link->text ""))
+(relisten! "stop" reset-button)
 
 (defn bind-key [name windows-key mac-key f]
   (.addCommand (aget js/editor "commands")
@@ -304,7 +318,7 @@
                                   "mac" mac-key)
                 "exec" f)))
 
-(bind-key "update" "Ctrl-Shift-u" "Command-Shift-U" (fn [& args] (update*)))
+(bind-key "update" "Ctrl-Shift-u" "Command-Enter" (fn [& args] (update*)))
 (bind-key "link" "Ctrl-Shift-l" "Command-Shift-L" (fn [e] (get/text->link)) )
 (bind-key "stop" "Ctrl-Shift-S" "Command-Shift-S" reset-button)
 (bind-key "play" "Ctrol-Shift-P" "Command-Shift-P" play)

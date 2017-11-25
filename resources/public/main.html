@@ -20,6 +20,14 @@
         left: 0;
         right: 0;
     }
+
+    .floating {
+        float: left;
+        position: absolute;
+        left: 500px;
+        top: 200px;
+        background-color: grey;
+    }
   </style>
 
 </head>
@@ -30,14 +38,13 @@
   <button id="pause">pause</button>
   <button id="stop">stop</button>
   <button id="link">link</button>
+  <button id="load">load</button>
 
 
 
   <!-- <textarea class="text-area" id="looper-text"></textarea><br /> -->
 
-  <pre id="editor">
-loading...
-  </pre>
+  <pre id="editor"></pre>
 
   <!-- <br /> -->
 <!--  <textarea class="text-area" id="console"></textarea> -->
@@ -59,11 +66,17 @@ loading...
 //    editor.setOptions({ enableBasicAutocompletion: true });
 </script>
 
+
+<!--
 // experimental:
-<!--<script src='/media/webaudio/sample/js/goog/base.js'></script>-->
+<script src='/media/webaudio/sample/js/goog/base.js'></script>-->
 <script src='/js/goog/base.js'></script>
 
 <!--<script src='/media/webaudio/sample/js/looperscript.js'></script>-->
   <script src='js/looperscript.js'></script>
+
+  <!--<div id="floater" class="floating" width="200px">
+    <input type="range"  min="0" max="1" step="0.001" id="slidey"/>
+  </div>-->
 </body>
 </html>

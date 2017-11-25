@@ -2,7 +2,8 @@
   (:require ; [cemerick.pprng :as rng]
             [cljs.looperscript.interp-rhythms :refer [rhythms-interp]]
             [cljs.looperscript.start-time :refer [now get-current-start-time]]
-
+            [cljs.looperscript.globals :refer [current-time-hack]]
+            [cljs.looperscript.logging :refer [log log->]]
             [cljs.tools.reader :refer [read-string]]
             [cljs.js :refer [empty-state eval js-eval #_eval-str]]
             [cljs.env :refer [*compiler*]]))
@@ -15,9 +16,8 @@
       :context    :expr}
          (fn [result] (:value result))))
 
-
-(defn log [& args]
-  (.log js/console (apply str args)))
+;(defn log [& args]
+;  (.log js/console (apply str args)))
 
 (defn shuffle* [v] shuffle)
 
@@ -133,12 +133,20 @@
         vec
         (conj (- t @previous-total)))))
 
-(defn once [x]
-  (let [called? (atom false)]
-    (fn []
-      (when (not @called?)
-        (reset! called? true)
-        x))))
+(defn once
+  ([x y]
+    (let [called? (atom false)]
+      (fn []
+        (if (not @called?)
+          (do (reset! called? true)
+              x)
+          y))))
+  ([x]
+    (let [called? (atom false)]
+      (fn []
+        (when (not @called?)
+          (reset! called? true)
+          x)))))
 
 (defn flatten* [& args]
   (flatten args))
@@ -147,6 +155,78 @@
   (if (fn? x)
     (dethunk (x))
     x))
+
+(defn chord [& v]
+  (with-meta
+    (flatten [:chord v])
+    {:intact-for-sub-time :true}))
+
+(defn chords [& v]
+  (for [ch v]
+    (chord ch)))
+
+(defn chord? [x]
+  (and (sequential? x) (= (first x) :chord)))
+
+(defn odc [n]
+  "Octave displace each note in chord by up to one octave"
+  ;XXX: should be n octaves
+  [:modifier-fn
+   (fn [c]
+     (into [:chord]
+       (map #(+ (rand-nth [-12 0 12]) %)
+        (rest c))))])
+
+(defn odc1 [_]
+  [:modifier-fn
+   (fn f [n]
+     (if (chord? n)
+       (chord (map f (rest n)))
+       (+ (rand-nth [-12 0 12]) (mod n 12))))])
+
+(def chord-types {
+  :maj [0 4 7]
+  :min [0 3 7]
+  :7 [0 4 7 10]
+  })
+
+(defn pos-in-vec [p v]
+  (let [max-pos (dec (count v))]
+     (loop [pos 0]
+       (if (= pos max-pos)
+         pos
+         (if (and
+                (>= p (nth v pos))
+                (< p (nth v (inc pos))))
+           pos
+           (recur (inc pos)))))))
+
+(defn transpose1 [deg v]
+  (map #(+ deg %) v))
+
+(defn chord-progression1 [chords-v times]
+  (let [chords (->> chords-v rest (take-nth 2) (map chord-types))
+        roots (take-nth 2 chords-v)
+        times (take (count chords) (cycle times))
+        chord-times (reductions + 0 times)
+        form-len (last chord-times)
+        chord-times (drop-last chord-times)
+        ]
+    #(let [pos (pos-in-vec (mod @current-time-hack form-len) chord-times)]
+      (chord (transpose1 (nth roots pos) (nth chords pos))))))
+
+(defn chord-progression2 [chords-v times]
+  (let [chords (->> chords-v rest (take-nth 2) (map chord-types))
+        roots (take-nth 2 chords-v)
+        roots (reductions #(mod (+ % %2) 12) roots)
+        times (take (count chords) (cycle times))
+        chord-times (reductions + 0 times)
+        form-len (last chord-times)
+        chord-times (drop-last chord-times)
+        ]
+    #(let [pos (pos-in-vec (mod @current-time-hack form-len) chord-times)]
+      (chord (transpose1 (nth roots pos) (nth chords pos))))))
+
 
 (def nth* nth)
 
@@ -212,6 +292,11 @@
 
 (defn test-mod [n]
   [:modifier-fn (fn [x] (* x n))])
+
+(defn nothing [& args] nil)
+
+(defn current-beat [x]
+  @current-time-hack)
 
 (defn over-mod [& layers]
 ;;  (log :over-mod layers)
@@ -314,7 +399,6 @@
   {:shuffle shuffle
    :mild-shuffle mild-shuffle
    :rand rand-nth*
-   :asdf rand-nth*
    :take take*
    :rand-int rand-int*
    :rand-range rand-range
@@ -340,6 +424,8 @@
    :scale-range-sweep scale-range-sweep
    :transpose-scale transpose-scale
    :flatten flatten*
+   :chord chord
+   :chords chords
    :log log*
    :say say
    :user user
@@ -369,6 +455,13 @@
    :floor floor
    :time time*
    :eval eval-str
+   :odc odc
+   :odc1 odc1
+   :current-beat current-beat
+   :prog1 chord-progression1
+   :prog2 chord-progression2
+   :nothing nothing
+
 ;;   :round round
 ;;   :round-up round-up
 ;;   :round-down round-down

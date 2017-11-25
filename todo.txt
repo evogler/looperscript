@@ -12,10 +12,10 @@ UPCOMING STEPS:
   -make update more thoughtful. different modes:
     -?DGAF: just start the part from (now)
     -quick (probably default): make one pass over a part's time to figure out
-        how to module time & other aspect list lengths.
-        Will add up if time doesn't have functions
+        how to modulo time & other aspect list lengths.
+        This will be 100% correct if time doesn't have functions.
     -full: grind through next-note-fn's until they catch up
-
+  -make -part completely turn off a part
   -fix parameterless functions to not require space before closing parens
   -fix calling actual functions [e.g. ((cycle))]
   -fix infinite loops on 0-length vectors

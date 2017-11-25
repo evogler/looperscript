@@ -131,12 +131,13 @@
   bpm = <'bpm'> <sp?> (number | fraction | vec)
   version = <'version'> <sp?> #'[a-zA-Z0-9.]+'
   vec = '^'? ('#' | '!')? <('[' | '(')> vec-code? (data-element | vec | sp |
-                                                    string | vec-code)* <(']' | ')')>
+                                                  keyword | string | vec-code)* <(']' | ')')>
   part = part-title <sp>* aspect*
   init = <'init'> (<sp*> (vec | string))*
   <part-title> = <'part'> sp (!aspect-keyword #'[a-zA-Z0-9_.-]+')
   aspect = aspect-header data
   aspect-header = full-aspect-name (sp* <'&'> sp* full-aspect-name)*
+  keyword = <':'> #'[a-zA-Z0-9_.-]+'
   full-aspect-name = aspect-keyword (':' sub-aspect-keyword)*
   aspect-keyword = ('time' | 'sound' | 'volume' | 'filter' | 'pan' | 'rate' | 'offset' |
                                'synth' | 'overtones' | 'time+' | 'mute' | 'skip')
@@ -162,7 +163,7 @@
 
   string = <'\"'> #'([^\"]*)' <'\"'>
   number = #'-?([0-9]*\\.[0-9]*|[0-9]+)'
-      <sp> = <#'[\\s,]+'>"))
+      <sp> = <#'[\\s,\\t]+'>"))
 
 (def looper-parse (insta/parser grammar))
 
@@ -182,6 +183,7 @@
                                            {} p)})
          :v vec-fns/handle-v-keyword
          :vec vector
+         :keyword keyword
          :vec-code keyword
          :aspect-keyword keyword
          :sub-aspect-keyword keyword

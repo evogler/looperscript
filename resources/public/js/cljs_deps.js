@@ -10,6 +10,7 @@ goog.addDependency("../cljs/tools/reader/impl/utils.js", ['cljs.tools.reader.imp
 goog.addDependency("../cljs/tools/reader/reader_types.js", ['cljs.tools.reader.reader_types'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer', 'cljs.tools.reader.impl.utils']);
 goog.addDependency("../cljs/tools/reader/impl/commons.js", ['cljs.tools.reader.impl.commons'], ['cljs.core', 'cljs.tools.reader.reader_types', 'cljs.tools.reader.impl.utils']);
 goog.addDependency("../cljs/tools/reader.js", ['cljs.tools.reader'], ['cljs.tools.reader.impl.commons', 'goog.string', 'cljs.core', 'cljs.tools.reader.reader_types', 'goog.string.StringBuffer', 'cljs.tools.reader.impl.utils', 'clojure.string', 'goog.array']);
+goog.addDependency("../cljs/looperscript/logging.js", ['cljs.looperscript.logging'], ['cljs.core', 'domina']);
 goog.addDependency("../cljs/env.js", ['cljs.env'], ['cljs.core']);
 goog.addDependency("../clojure/set.js", ['clojure.set'], ['cljs.core']);
 goog.addDependency("../cljs/tools/reader/edn.js", ['cljs.tools.reader.edn'], ['cljs.tools.reader.impl.commons', 'cljs.tools.reader', 'goog.string', 'cljs.core', 'cljs.tools.reader.reader_types', 'goog.string.StringBuffer', 'cljs.tools.reader.impl.utils']);
@@ -25,8 +26,9 @@ goog.addDependency("../cljs/spec/gen/alpha.js", ['cljs.spec.gen.alpha'], ['cljs.
 goog.addDependency("../cljs/spec/alpha.js", ['cljs.spec.alpha'], ['cljs.core', 'goog.object', 'clojure.string', 'clojure.walk', 'cljs.spec.gen.alpha']);
 goog.addDependency("../cljs/core$macros.js", ['cljs.core$macros'], ['cljs.compiler', 'cljs.core', 'cljs.env', 'clojure.set', 'cljs.analyzer', 'clojure.string', 'clojure.walk']);
 goog.addDependency("../cljs/js.js", ['cljs.js'], ['cljs.compiler', 'cljs.tools.reader', 'cljs.core', 'goog.crypt.base64', 'cljs.tools.reader.reader_types', 'cljs.env', 'goog.string.StringBuffer', 'cljs.tagged_literals', 'cljs.analyzer', 'cljs.source_map', 'clojure.string', 'cljs.spec.alpha', 'clojure.walk', 'cljs.core$macros']);
+goog.addDependency("../cljs/looperscript/globals.js", ['cljs.looperscript.globals'], ['cljs.core']);
 goog.addDependency("../cljs/looperscript/interp_rhythms.js", ['cljs.looperscript.interp_rhythms'], ['cljs.core']);
-goog.addDependency("../cljs/looperscript/vector_fns.js", ['cljs.looperscript.vector_fns'], ['cljs.looperscript.start_time', 'cljs.tools.reader', 'cljs.js', 'cljs.core', 'cljs.env', 'cljs.looperscript.interp_rhythms']);
+goog.addDependency("../cljs/looperscript/vector_fns.js", ['cljs.looperscript.vector_fns'], ['cljs.looperscript.start_time', 'cljs.tools.reader', 'cljs.looperscript.logging', 'cljs.js', 'cljs.core', 'cljs.looperscript.globals', 'cljs.env', 'cljs.looperscript.interp_rhythms']);
 goog.addDependency("../instaparse/util.js", ['instaparse.util'], ['cljs.core']);
 goog.addDependency("../instaparse/auto_flatten_seq.js", ['instaparse.auto_flatten_seq'], ['cljs.core']);
 goog.addDependency("../instaparse/reduction.js", ['instaparse.reduction'], ['cljs.core', 'instaparse.util', 'instaparse.auto_flatten_seq']);
@@ -42,8 +44,7 @@ goog.addDependency("../instaparse/viz.js", ['instaparse.viz'], ['cljs.core']);
 goog.addDependency("../instaparse/repeat.js", ['instaparse.repeat'], ['instaparse.combinators_source', 'instaparse.reduction', 'cljs.core', 'instaparse.auto_flatten_seq', 'instaparse.failure', 'instaparse.gll', 'instaparse.viz']);
 goog.addDependency("../instaparse/core.js", ['instaparse.core'], ['instaparse.combinators_source', 'instaparse.line_col', 'instaparse.print', 'instaparse.reduction', 'cljs.core', 'instaparse.transform', 'instaparse.cfg', 'instaparse.util', 'instaparse.abnf', 'instaparse.failure', 'instaparse.gll', 'instaparse.viz', 'clojure.walk', 'instaparse.repeat']);
 goog.addDependency("../cljs/looperscript/interpret.js", ['cljs.looperscript.interpret'], ['cljs.looperscript.vector_fns', 'cljs.core', 'instaparse.core', 'cljs.reader']);
-goog.addDependency("../cljs/looperscript/logging.js", ['cljs.looperscript.logging'], ['cljs.core', 'domina']);
-goog.addDependency("../cljs/looperscript/iterator.js", ['cljs.looperscript.iterator'], ['cljs.looperscript.logging', 'cljs.core']);
+goog.addDependency("../cljs/looperscript/iterator.js", ['cljs.looperscript.iterator'], ['cljs.looperscript.logging', 'cljs.core', 'cljs.looperscript.globals']);
 goog.addDependency("../domina/events.js", ['domina.events'], ['cljs.core', 'domina', 'goog.object', 'goog.events']);
 goog.addDependency("../cljs/looperscript/looperscript.js", ['cljs.looperscript.looperscript'], ['cljs.looperscript.start_time', 'cljs.looperscript.address_bar', 'cljs.looperscript.interpret', 'cljs.looperscript.iterator', 'cljs.looperscript.logging', 'cljs.core', 'domina', 'domina.events', 'instaparse.core', 'cljs.looperscript.audio', 'cljs.reader']);
 goog.addDependency("../cljs/core/async/impl/protocols.js", ['cljs.core.async.impl.protocols'], ['cljs.core']);

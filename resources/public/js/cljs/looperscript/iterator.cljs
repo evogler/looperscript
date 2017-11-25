@@ -1,7 +1,8 @@
 (ns cljs.looperscript.iterator
-  (:require [cljs.looperscript.logging :refer [log log->]]))
+  (:require [cljs.looperscript.logging :refer [log log->]]
+            [cljs.looperscript.globals :refer [current-time-hack]]))
 
-(defn -pop! [stack]
+(defn pop!* [stack]
   (let [res (last @stack)]
     (swap! stack (comp vec drop-last))
     res))
@@ -20,10 +21,13 @@
       (recur (r))
       r)))
 
+(defn takes-current-time? [x]
+  (contains? (meta x) :takes-current-time))
+
 (defn get-next-stack-val
-  ([stack] (get-next-stack-val stack true))
-  ([stack preserve-carots?]
-     (let [x (-pop! stack)
+  ([stack current-time] (get-next-stack-val stack true current-time))
+  ([stack preserve-carots? current-time]
+     (let [x (pop!* stack)
            preserve? (and (get (meta x) :intact-for-sub-time) preserve-carots?)
            x (if-not preserve? (dethunk x) x)]
        (if (and (or (seq? x) (vector? x))
@@ -31,7 +35,7 @@
                 (not (keyword? (first x))))
          (do (doseq [i (reverse x)]
                (push! stack i))
-             (get-next-stack-val stack))
+             (get-next-stack-val stack current-time))
          x))))
 
 (defn modifier? [x]
@@ -80,17 +84,17 @@
   ([v preserve-carots?]
      (let [stack (atom [])
            modifiers (atom [])]
-       (fn [& args]
+       (fn [current-time] ;& args]
          (loop []
            (if (empty? @stack)
              (do (reset! modifiers [])
                  (vec-push! stack v)))
-           (let [x (get-next-stack-val stack preserve-carots?)]
+           (reset! current-time-hack current-time)
+           (let [x (get-next-stack-val stack preserve-carots? current-time)]
              (cond
               ;; I forget what conditions returned here [], but it was causing problems...
               (or (nil? x) (and (sequential? x) (empty? x)))
               (recur)
-
 
               (modifier-fn? x)
               (do (swap! modifiers conj (second x))

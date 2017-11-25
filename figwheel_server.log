@@ -355,3 +355,1157 @@ notifying browser that file changed:  resources/public/js/cljs/looperscript/loop
 [0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
 [32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.658 seconds.[0m
 notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.82 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.44 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.875 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.967 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.642 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.707 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.528 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.244 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.605 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.595 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.659 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:182  column:8  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/sequential[0m
+
+  [36m178[0m  [36m                    #_(log :end-of-nnfn res)[0m
+  [36m179[0m  [36m                    res))))))))[0m
+  [36m180[0m  [36m[0m
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [33m182[0m  [1m  (if (sequential (:sound n))[0m
+  [0m   [0m  [33m       ^--- Use of undeclared Var cljs.looperscript.looperscript/sequential[0m
+  [36m183[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [36m184[0m  [36m      (schedule (assoc n :sound note)))[0m
+  [36m185[0m  [36m    (let [sound (:sound n)[0m
+  [36m186[0m  [36m          rate (:rate n)[0m
+  [36m187[0m  [36m          start-time (+ (:start-time n) (:time+ n))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:184  column:8  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/schedule[0m
+
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [36m182[0m  [36m  (if (sequential (:sound n))[0m
+  [36m183[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [33m184[0m  [1m      (schedule (assoc n :sound note)))[0m
+  [0m   [0m  [33m       ^--- Use of undeclared Var cljs.looperscript.looperscript/schedule[0m
+  [36m185[0m  [36m    (let [sound (:sound n)[0m
+  [36m186[0m  [36m          rate (:rate n)[0m
+  [36m187[0m  [36m          start-time (+ (:start-time n) (:time+ n))[0m
+  [36m188[0m  [36m          start-time (if (and (vector? sound) (= (first sound) :drum-code))[0m
+  [36m189[0m  [36m                       (if-let [l (->> sound second[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:184  column:8  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/schedule[0m
+
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [36m182[0m  [36m  (if (sequential (:sound n))[0m
+  [36m183[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [33m184[0m  [1m      (schedule (assoc n :sound note)))[0m
+  [0m   [0m  [33m       ^--- Use of undeclared Var cljs.looperscript.looperscript/schedule[0m
+  [36m185[0m  [36m    (let [sound (:sound n)[0m
+  [36m186[0m  [36m          rate (:rate n)[0m
+  [36m187[0m  [36m          start-time (+ (:start-time n) (:time+ n))[0m
+  [36m188[0m  [36m          start-time (if (and (vector? sound) (= (first sound) :drum-code))[0m
+  [36m189[0m  [36m                       (if-let [l (->> sound second[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.929 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:184  column:8  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/schedule[0m
+
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [36m182[0m  [36m  (if (sequential? (:sound n))[0m
+  [36m183[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [33m184[0m  [1m      (schedule (assoc n :sound note)))[0m
+  [0m   [0m  [33m       ^--- Use of undeclared Var cljs.looperscript.looperscript/schedule[0m
+  [36m185[0m  [36m    (let [sound (:sound n)[0m
+  [36m186[0m  [36m          rate (:rate n)[0m
+  [36m187[0m  [36m          start-time (+ (:start-time n) (:time+ n))[0m
+  [36m188[0m  [36m          start-time (if (and (vector? sound) (= (first sound) :drum-code))[0m
+  [36m189[0m  [36m                       (if-let [l (->> sound second[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:184  column:8  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/schedule[0m
+
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [36m182[0m  [36m  (if (sequential? (:sound n))[0m
+  [36m183[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [33m184[0m  [1m      (schedule (assoc n :sound note)))[0m
+  [0m   [0m  [33m       ^--- Use of undeclared Var cljs.looperscript.looperscript/schedule[0m
+  [36m185[0m  [36m    (let [sound (:sound n)[0m
+  [36m186[0m  [36m          rate (:rate n)[0m
+  [36m187[0m  [36m          start-time (+ (:start-time n) (:time+ n))[0m
+  [36m188[0m  [36m          start-time (if (and (vector? sound) (= (first sound) :drum-code))[0m
+  [36m189[0m  [36m                       (if-let [l (->> sound second[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.707 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.735 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:182  column:10  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/sched-log[0m
+
+  [36m178[0m  [36m                    #_(log :end-of-nnfn res)[0m
+  [36m179[0m  [36m                    res))))))))[0m
+  [36m180[0m  [36m[0m
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [33m182[0m  [1m  (swap! sched-log conj n)[0m
+  [0m   [0m  [33m         ^--- Use of undeclared Var cljs.looperscript.looperscript/sched-log[0m
+  [36m183[0m  [36m  (if (sequential? (:sound n))[0m
+  [36m184[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [36m185[0m  [36m      (schedule-note (assoc n :sound note)))[0m
+  [36m186[0m  [36m    (let [sound (:sound n)[0m
+  [36m187[0m  [36m          rate (:rate n)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.763 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:182  column:10  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/sched-log[0m
+
+  [36m178[0m  [36m                    #_(log :end-of-nnfn res)[0m
+  [36m179[0m  [36m                    res))))))))[0m
+  [36m180[0m  [36m[0m
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [33m182[0m  [1m  (swap! sched-log conj n)[0m
+  [0m   [0m  [33m         ^--- Use of undeclared Var cljs.looperscript.looperscript/sched-log[0m
+  [36m183[0m  [36m  (if (sequential? (:sound n))[0m
+  [36m184[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [36m185[0m  [36m      (schedule-note (assoc n :sound note)))[0m
+  [36m186[0m  [36m    (let [sound (:sound n)[0m
+  [36m187[0m  [36m          rate (:rate n)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.708 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:182  column:10  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.looperscript/sched-log[0m
+
+  [36m178[0m  [36m                    #_(log :end-of-nnfn res)[0m
+  [36m179[0m  [36m                    res))))))))[0m
+  [36m180[0m  [36m[0m
+  [36m181[0m  [36m(defn schedule-note [n][0m
+  [33m182[0m  [1m  (swap! sched-log conj n)[0m
+  [0m   [0m  [33m         ^--- Use of undeclared Var cljs.looperscript.looperscript/sched-log[0m
+  [36m183[0m  [36m  (if (sequential? (:sound n))[0m
+  [36m184[0m  [36m    (doseq [note (flatten (:sound n))][0m
+  [36m185[0m  [36m      (schedule-note (assoc n :sound note)))[0m
+  [36m186[0m  [36m    (let [sound (:sound n)[0m
+  [36m187[0m  [36m          rate (:rate n)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.768 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.595 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.598 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.681 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.639 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.751 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.309 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.751 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.696 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.698 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.808 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.003 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.981 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.918 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.235 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.582 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.998 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.981 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.985 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.12 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 2.483 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.952 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.833 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:143  column:5  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.vector-fns/x[0m
+
+  [36m139[0m  [36m      (if (not @called?)[0m
+  [36m140[0m  [36m        (do (reset! called? true)[0m
+  [36m141[0m  [36m            x)[0m
+  [36m142[0m  [36m        y)))))[0m
+  [33m143[0m  [1m([x][0m
+  [0m   [0m  [33m  ^--- Use of undeclared Var cljs.looperscript.vector-fns/x[0m
+  [36m144[0m  [36m  (let [called? (atom false)][0m
+  [36m145[0m  [36m    (fn [][0m
+  [36m146[0m  [36m      (when (not @called?)[0m
+  [36m147[0m  [36m        (reset! called? true)[0m
+  [36m148[0m  [36m        x)))))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:148  column:11  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.vector-fns/x[0m
+
+  [36m144[0m  [36m    (let [called? (atom false)][0m
+  [36m145[0m  [36m      (fn [][0m
+  [36m146[0m  [36m        (when (not @called?)[0m
+  [36m147[0m  [36m          (reset! called? true)[0m
+  [33m148[0m  [1m          x)))))[0m
+  [0m   [0m  [33m          ^--- Use of undeclared Var cljs.looperscript.vector-fns/x[0m
+  [36m149[0m  [36m[0m
+  [36m150[0m  [36m(defn flatten* [& args][0m
+  [36m151[0m  [36m  (flatten args))[0m
+  [36m152[0m  [36m[0m
+  [36m153[0m  [36m(defn dethunk [x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.479 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/vector_fns.cljs   line:148  column:17  ----[0m
+
+  [1mUnmatched delimiter )[0m
+
+  [36m146[0m  [36m        (when (not @called?)[0m
+  [36m147[0m  [36m          (reset! called? true)[0m
+  [33m148[0m  [1m          x)))))[0m
+  [0m   [0m  [33m                ^--- Unmatched delimiter )[0m
+  [36m149[0m  [36m[0m
+  [36m150[0m  [36m(defn flatten* [& args][0m
+  [36m151[0m  [36m  (flatten args))[0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.943 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.864 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.936 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.086 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.588 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.983 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.147 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.874 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.764 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.836 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:93  column:25  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m89[0m  [36m           (let [x (get-next-stack-val stack preserve-carots?)][0m
+  [36m90[0m  [36m             (log :iterator args))[0m
+  [36m91[0m  [36m             (cond[0m
+  [36m92[0m  [36m              ;; I forget what conditions returned here [], but it was causing problems...[0m
+  [33m93[0m  [1m              (or (nil? x) (and (sequential? x) (empty? x)))[0m
+  [0m  [0m  [33m                        ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m94[0m  [36m              (recur)[0m
+  [36m95[0m  [36m[0m
+  [36m96[0m  [36m              (modifier-fn? x)[0m
+  [36m97[0m  [36m              (do (swap! modifiers conj (second x))[0m
+  [36m98[0m  [36m                  (recur))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:93  column:46  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m89[0m  [36m           (let [x (get-next-stack-val stack preserve-carots?)][0m
+  [36m90[0m  [36m             (log :iterator args))[0m
+  [36m91[0m  [36m             (cond[0m
+  [36m92[0m  [36m              ;; I forget what conditions returned here [], but it was causing problems...[0m
+  [33m93[0m  [1m              (or (nil? x) (and (sequential? x) (empty? x)))[0m
+  [0m  [0m  [33m                                             ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m94[0m  [36m              (recur)[0m
+  [36m95[0m  [36m[0m
+  [36m96[0m  [36m              (modifier-fn? x)[0m
+  [36m97[0m  [36m              (do (swap! modifiers conj (second x))[0m
+  [36m98[0m  [36m                  (recur))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:93  column:57  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m89[0m  [36m           (let [x (get-next-stack-val stack preserve-carots?)][0m
+  [36m90[0m  [36m             (log :iterator args))[0m
+  [36m91[0m  [36m             (cond[0m
+  [36m92[0m  [36m              ;; I forget what conditions returned here [], but it was causing problems...[0m
+  [33m93[0m  [1m              (or (nil? x) (and (sequential? x) (empty? x)))[0m
+  [0m  [0m  [33m                                                        ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m94[0m  [36m              (recur)[0m
+  [36m95[0m  [36m[0m
+  [36m96[0m  [36m              (modifier-fn? x)[0m
+  [36m97[0m  [36m              (do (swap! modifiers conj (second x))[0m
+  [36m98[0m  [36m                  (recur))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:96  column:29  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m 92[0m  [36m              ;; I forget what conditions returned here [], but it was causing problems...[0m
+  [36m 93[0m  [36m              (or (nil? x) (and (sequential? x) (empty? x)))[0m
+  [36m 94[0m  [36m              (recur)[0m
+  [36m 95[0m  [36m[0m
+  [33m 96[0m  [1m              (modifier-fn? x)[0m
+  [0m   [0m  [33m                            ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m 97[0m  [36m              (do (swap! modifiers conj (second x))[0m
+  [36m 98[0m  [36m                  (recur))[0m
+  [36m 99[0m  [36m[0m
+  [36m100[0m  [36m              (modifier? x)[0m
+  [36m101[0m  [36m              ;; map dethunk could be [(first (second x)) (dethunk (second (second  x)))]:[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:97  column:49  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m 93[0m  [36m              (or (nil? x) (and (sequential? x) (empty? x)))[0m
+  [36m 94[0m  [36m              (recur)[0m
+  [36m 95[0m  [36m[0m
+  [36m 96[0m  [36m              (modifier-fn? x)[0m
+  [33m 97[0m  [1m              (do (swap! modifiers conj (second x))[0m
+  [0m   [0m  [33m                                                ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m 98[0m  [36m                  (recur))[0m
+  [36m 99[0m  [36m[0m
+  [36m100[0m  [36m              (modifier? x)[0m
+  [36m101[0m  [36m              ;; map dethunk could be [(first (second x)) (dethunk (second (second  x)))]:[0m
+  [36m102[0m  [36m              (do (swap! modifiers conj (map dethunk (second x)))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:100  column:26  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m 96[0m  [36m              (modifier-fn? x)[0m
+  [36m 97[0m  [36m              (do (swap! modifiers conj (second x))[0m
+  [36m 98[0m  [36m                  (recur))[0m
+  [36m 99[0m  [36m[0m
+  [33m100[0m  [1m              (modifier? x)[0m
+  [0m   [0m  [33m                         ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m101[0m  [36m              ;; map dethunk could be [(first (second x)) (dethunk (second (second  x)))]:[0m
+  [36m102[0m  [36m              (do (swap! modifiers conj (map dethunk (second x)))[0m
+  [36m103[0m  [36m                  (recur))[0m
+  [36m104[0m  [36m[0m
+  [36m105[0m  [36m              :else[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:102  column:62  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m 98[0m  [36m                  (recur))[0m
+  [36m 99[0m  [36m[0m
+  [36m100[0m  [36m              (modifier? x)[0m
+  [36m101[0m  [36m              ;; map dethunk could be [(first (second x)) (dethunk (second (second  x)))]:[0m
+  [33m102[0m  [1m              (do (swap! modifiers conj (map dethunk (second x)))[0m
+  [0m   [0m  [33m                                                             ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m103[0m  [36m                  (recur))[0m
+  [36m104[0m  [36m[0m
+  [36m105[0m  [36m              :else[0m
+  [36m106[0m  [36m              (apply-modifiers @modifiers x))))))))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:106  column:43  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.iterator/x[0m
+
+  [36m102[0m  [36m              (do (swap! modifiers conj (map dethunk (second x)))[0m
+  [36m103[0m  [36m                  (recur))[0m
+  [36m104[0m  [36m[0m
+  [36m105[0m  [36m              :else[0m
+  [33m106[0m  [1m              (apply-modifiers @modifiers x))))))))[0m
+  [0m   [0m  [33m                                          ^--- Use of undeclared Var cljs.looperscript.iterator/x[0m
+  [36m107[0m  [36m[0m
+  [36m108[0m  [36m(defn timed-iterator [v time-v][0m
+  [36m109[0m  [36m  (let [v-iterator (iterator v true)[0m
+  [36m110[0m  [36m        time-iterator (iterator time-v)[0m
+  [36m111[0m  [36m        get-next-v #(let [next-v (v-iterator)][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.538 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/iterator.cljs   line:106  column:52  ----[0m
+
+  [1mUnmatched delimiter )[0m
+
+  [36m105[0m  [36m              :else[0m
+  [33m106[0m  [1m              (apply-modifiers @modifiers x))))))))[0m
+  [0m   [0m  [33m                                                   ^--- Unmatched delimiter )[0m
+  [36m107[0m  [36m[0m
+  [36m108[0m  [36m(defn timed-iterator [v time-v][0m
+  [36m109[0m  [36m  (let [v-iterator (iterator v true)[0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.812 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:4  column:1  ----[0m
+
+  [1m-pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+
+  [36m1[0m  [36m(ns cljs.looperscript.iterator[0m
+  [36m2[0m  [36m  (:require [cljs.looperscript.logging :refer [log log->]]))[0m
+  [36m3[0m  [36m[0m
+  [33m4[0m  [1m(defn -pop! [stack][0m
+  [0m [0m  [33m^--- -pop! already refers to: cljs.core/-pop! being replaced by: cljs.looperscript.iterator/-pop![0m
+  [36m5[0m  [36m  (let [res (last @stack)][0m
+  [36m6[0m  [36m    (swap! stack (comp vec drop-last))[0m
+  [36m7[0m  [36m    res))[0m
+  [36m8[0m  [36m[0m
+  [36m9[0m  [36m(defn push! [stack x][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.976 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.708 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.824 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.858 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.37 seconds.[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.447 seconds.[0m
+[36m----  Could not Analyze  src/cljs/looperscript/iterator.cljs  ----[0m
+
+  [1mNo such namespace: cljs.looperscript.globals, could not locate cljs/looperscript/globals.cljs, cljs/looperscript/globals.cljc, or JavaScript source providing "cljs.looperscript.globals" [0m
+
+[36m----  Analysis Error : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:25  column:3  ----[0m
+
+  [1mWrong number of args (1) passed to cljs.core/contains?[0m
+
+  [36m21[0m  [36m      (recur (r))[0m
+  [36m22[0m  [36m      r)))[0m
+  [36m23[0m  [36m[0m
+  [36m24[0m  [36m(defn takes-current-time? [x][0m
+  [33m25[0m  [1m  (contains? (meta x :takes-current-time)))[0m
+  [0m  [0m  [33m  ^--- Wrong number of args (1) passed to cljs.core/contains?[0m
+  [36m26[0m  [36m[0m
+  [36m27[0m  [36m(defn get-next-stack-val[0m
+  [36m28[0m  [36m  ([stack current-time] (get-next-stack-val stack true current-time))[0m
+  [36m29[0m  [36m  ([stack preserve-carots? current-time][0m
+  [36m30[0m  [36m     (let [x (pop!* stack)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/iterator.cljs   line:25  column:14  ----[0m
+
+  [1mWrong number of args (2) passed to cljs.core/meta[0m
+
+  [36m21[0m  [36m      (recur (r))[0m
+  [36m22[0m  [36m      r)))[0m
+  [36m23[0m  [36m[0m
+  [36m24[0m  [36m(defn takes-current-time? [x][0m
+  [33m25[0m  [1m  (contains? (meta x :takes-current-time)))[0m
+  [0m  [0m  [33m             ^--- Wrong number of args (2) passed to cljs.core/meta[0m
+  [36m26[0m  [36m[0m
+  [36m27[0m  [36m(defn get-next-stack-val[0m
+  [36m28[0m  [36m  ([stack current-time] (get-next-stack-val stack true current-time))[0m
+  [36m29[0m  [36m  ([stack preserve-carots? current-time][0m
+  [36m30[0m  [36m     (let [x (pop!* stack)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/iterator.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.828 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/globals.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.664 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.71 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/iterator.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.88 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:233  column:1  ----[0m
+
+  [1mtest already refers to: cljs.core/test being replaced by: cljs.looperscript.vector-fns/test[0m
+
+  [36m230[0m  [36m(defn test-mod [n][0m
+  [36m231[0m  [36m  [:modifier-fn (fn [x] (* x n))])[0m
+  [36m232[0m  [36m[0m
+  [33m233[0m  [1m(defn test [& args][0m
+  [0m   [0m  [33m^--- test already refers to: cljs.core/test being replaced by: cljs.looperscript.vector-fns/test[0m
+  [36m234[0m  [36m  args)[0m
+  [36m235[0m  [36m[0m
+  [36m236[0m  [36m(defn odc [n][0m
+  [36m237[0m  [36m  [:modifier-fn[0m
+  [36m238[0m  [36m   (fn [c][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.139 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.089 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.35 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.623 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.389 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.76 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.353 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.331 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.032 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.484 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.372 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.84 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.914 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.974 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.597 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.085 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.1 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.03 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.324 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/vector_fns.cljs   line:169  column:1  ----[0m
+
+  [1mInvalid token: :[0m
+
+  [36m167[0m  [36m(def chord-types {[0m
+  [36m168[0m  [36m  :[0m
+  [33m169[0m  [1m[0m
+  [0m   [0m  [33m^--- Invalid token: :[0m
+  [36m170[0m  [36m  })[0m
+  [36m171[0m  [36m[0m
+  [36m172[0m  [36m(defn chord-progression1 [])[0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.129 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.719 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.681 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.723 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.651 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.719 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.806 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.811 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/interpret.cljs   line:186  column:36  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.interpret/temp-kw[0m
+
+  [36m182[0m  [36m                                    (assoc m k v))[0m
+  [36m183[0m  [36m                                  {} p)})[0m
+  [36m184[0m  [36m:v vec-fns/handle-v-keyword[0m
+  [36m185[0m  [36m:vec vector[0m
+  [33m186[0m  [1m:keyword (fn [kw] (reset! temp-kw kw) (keyword kw))[0m
+  [0m   [0m  [33m                          ^--- Use of undeclared Var cljs.looperscript.interpret/temp-kw[0m
+  [36m187[0m  [36m:vec-code keyword[0m
+  [36m188[0m  [36m:aspect-keyword keyword[0m
+  [36m189[0m  [36m:sub-aspect-keyword keyword[0m
+  [36m190[0m  [36m:full-aspect-name (fn [& args][0m
+  [36m191[0m  [36m                    (if (= (count args) 1)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/interpret.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.333 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.91 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.734 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.985 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.723 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.035 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.335 seconds.[0m
+[36m----  Could not Compile  src/cljs/looperscript/vector_fns.cljs  ----[0m
+
+  [1mfailed compiling file:src/cljs/looperscript/vector_fns.cljs[0m
+
+[36m----  Compiler Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.977 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.963 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.215 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:176  column:14  ----[0m
+
+  [1mWrong number of args (1) passed to cljs.core/mod[0m
+
+  [36m172[0m  [36m(defn chord-progression1 [chord-types-v][0m
+  [36m173[0m  [36m  (let [chords (map chord-types chord-types-v)][0m
+  [36m174[0m  [36m    (chord[0m
+  [36m175[0m  [36m      (nth chords[0m
+  [33m176[0m  [1m        (log (mod (int (* 0.25 @current-time-hack))) 2)))[0m
+  [0m   [0m  [33m             ^--- Wrong number of args (1) passed to cljs.core/mod[0m
+  [36m177[0m  [36m  ))[0m
+  [36m178[0m  [36m[0m
+  [36m179[0m  [36m(def nth* nth)[0m
+  [36m180[0m  [36m[0m
+  [36m181[0m  [36m(defn scale-nth [scale degree][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.406 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.298 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.945 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.122 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:305  column:47  ----[0m
+
+  [1mWrong number of args (0) passed to cljs.looperscript.address-bar/load-link->text[0m
+
+  [36m301[0m  [36m(ev/listen! (dom/by-id "play") :click (fn [e] (play)))[0m
+  [36m302[0m  [36m(ev/listen! (dom/by-id "pause") :click (fn [e] (stop)))[0m
+  [36m303[0m  [36m(ev/listen! (dom/by-id "update") :click (fn [e] (update*)))[0m
+  [36m304[0m  [36m(ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))[0m
+  [33m305[0m  [1m(ev/listen! (dom/by-id "load") :click (fn [e] (get/load-link->text)))[0m
+  [0m   [0m  [33m                                              ^--- Wrong number of args (0) passed to cljs.looperscript.address-bar/load-link->text[0m
+  [36m306[0m  [36m(ev/listen! (dom/by-id "stop") :click (fn [e] (reset-button)))[0m
+  [36m307[0m  [36m[0m
+  [36m308[0m  [36m(defn bind-key [name windows-key mac-key f][0m
+  [36m309[0m  [36m  (.addCommand (aget js/editor "commands")[0m
+  [36m310[0m  [36m               (js-obj[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+Figwheel: Can't open  ("src/cljs/looperscript/looperscript.cljs" 305 47) No :open-file-command supplied in the config.
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.29 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.743 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.602 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.17 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.533 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.109 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.958 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.277 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.318 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/vector_fns.cljs   line:176  column:1  ----[0m
+
+  [1mEOF while reading, starting at line 176 and column 1[0m
+
+  [36m174[0m  [36m;;  0  2   4   6  8[0m
+  [36m175[0m  [36m[0m
+  [33m176[0m  [1m(defn pos-in-vec [p v][0m
+  [0m   [0m  [33m^--- EOF while reading, starting at line 176 and column 1[0m
+  [36m177[0m  [36m  (let [max-pos (dec (count v))][0m
+  [36m178[0m  [36m     (loop [pos 0][0m
+  [36m179[0m  [36m       (if (= pos max-pos)[0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.247 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.013 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.198 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.306 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/vector_fns.cljs   line:188  column:1  ----[0m
+
+  [1mEOF while reading, starting at line 188 and column 1[0m
+
+  [36m186[0m  [36m  (map #(+ deg %) v))[0m
+  [36m187[0m  [36m[0m
+  [33m188[0m  [1m(defn chord-progression1 [chords times][0m
+  [0m   [0m  [33m^--- EOF while reading, starting at line 188 and column 1[0m
+  [36m189[0m  [36m  (let [chords (->> chords rest (take-nth 2) (map chord-types))[0m
+  [36m190[0m  [36m        roots (take-nth 2 chords)[0m
+  [36m191[0m  [36m        chord-times (reductions + 0 times)[0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.016 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.027 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.274 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.066 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.605 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/looperscript.cljs   line:305  column:1  ----[0m
+
+  [1mWrong number of args (2) passed to cljs.looperscript.looperscript/relisten![0m
+
+  [36m301[0m  [36m(defn relisten! [id code f][0m
+  [36m302[0m  [36m  (ev/listen! (dom/by-id id) :click f))[0m
+  [36m303[0m  [36m[0m
+  [36m304[0m  [36m;(ev/listen! (dom/by-id "play") :click (fn [e] (play)))[0m
+  [33m305[0m  [1m(relisten! "play" (fn [e] (stop)))[0m
+  [0m   [0m  [33m^--- Wrong number of args (2) passed to cljs.looperscript.looperscript/relisten![0m
+  [36m306[0m  [36m(ev/listen! (dom/by-id "pause") :click (fn [e] (stop)))[0m
+  [36m307[0m  [36m(ev/listen! (dom/by-id "update") :click (fn [e] (update*)))[0m
+  [36m308[0m  [36m(ev/listen! (dom/by-id "link") :click (fn [e] (get/text->link)))[0m
+  [36m309[0m  [36m(ev/listen! (dom/by-id "load") :click (fn [e] (get/load-link->text "")))[0m
+  [36m310[0m  [36m(ev/listen! (dom/by-id "stop") :click (fn [e] (reset-button)))[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.151 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.609 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.526 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.961 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.618 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.941 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.88 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.58 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.022 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:180  column:37  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.vector-fns/%[0m
+
+  [36m177[0m  [36m(defn odc1 [v][0m
+  [36m178[0m  [36m  [:modifier-fn[0m
+  [36m179[0m  [36m    (fn [n][0m
+  [33m180[0m  [1m      (+ (rand-nth [-12 0 12]) (mod % 12)) n)])[0m
+  [0m   [0m  [33m                                    ^--- Use of undeclared Var cljs.looperscript.vector-fns/%[0m
+  [36m181[0m  [36m[0m
+  [36m182[0m  [36m[0m
+  [36m183[0m  [36m(def chord-types {[0m
+  [36m184[0m  [36m  :maj [0 4 7][0m
+  [36m185[0m  [36m  :min [0 3 7][0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.278 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+Figwheel: Can't open  ("src/cljs/looperscript/vector_fns.cljs" 180 37) No :open-file-command supplied in the config.
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.139 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:183  column:18  ----[0m
+
+  [1mUse of undeclared Var cljs.looperscript.vector-fns/s[0m
+
+  [36m180[0m  [36m(defn odc1 [v][0m
+  [36m181[0m  [36m  [:modifier-fn[0m
+  [36m182[0m  [36m   (fn f [n][0m
+  [33m183[0m  [1m     (if (chord? s)[0m
+  [0m   [0m  [33m                 ^--- Use of undeclared Var cljs.looperscript.vector-fns/s[0m
+  [36m184[0m  [36m       (chord (map f (rest n))))[0m
+  [36m185[0m  [36m       (+ (rand-nth [-12 0 12]) (mod n 12)))])[0m
+  [36m186[0m  [36m[0m
+  [36m187[0m  [36m[0m
+  [36m188[0m  [36m(def chord-types {[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.351 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.121 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.317 seconds.[0m
+[36m----  Could not Analyze  src/cljs/looperscript/vector_fns.cljs   line:180  column:1  ----[0m
+
+  [1mUnsupported binding key: :modifier-fn[0m
+
+  [36m178[0m  [36m        (rest c))))])[0m
+  [36m179[0m  [36m[0m
+  [33m180[0m  [1m(defn odc1[0m
+  [0m   [0m  [33m^--- Unsupported binding key: :modifier-fn[0m
+  [36m181[0m  [36m  [:modifier-fn[0m
+  [36m182[0m  [36m   (fn f [n][0m
+  [36m183[0m  [36m     (if (chord? n)[0m
+
+[36m----  Analysis Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.184 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.3 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/vector_fns.cljs   line:185  column:46  ----[0m
+
+  [1mUnmatched delimiter ][0m
+
+  [36m183[0m  [36m     (if (chord? n)[0m
+  [36m184[0m  [36m       nil ;(chord (map f (rest n))))[0m
+  [33m185[0m  [1m       (+ (rand-nth [-12 0 12]) (mod n 12)))])[0m
+  [0m   [0m  [33m                                             ^--- Unmatched delimiter ][0m
+  [36m186[0m  [36m[0m
+  [36m187[0m  [36m(def chord-types {[0m
+  [36m188[0m  [36m  :maj [0 4 7][0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.397 seconds.[0m
+[36m----  Could not Read  src/cljs/looperscript/vector_fns.cljs   line:185  column:46  ----[0m
+
+  [1mUnmatched delimiter ][0m
+
+  [36m183[0m  [36m     (if (chord? n)[0m
+  [36m184[0m  [36m       (chord (map f (rest n)))[0m
+  [33m185[0m  [1m       (+ (rand-nth [-12 0 12]) (mod n 12)))]))[0m
+  [0m   [0m  [33m                                             ^--- Unmatched delimiter ][0m
+  [36m186[0m  [36m[0m
+  [36m187[0m  [36m(def chord-types {[0m
+  [36m188[0m  [36m  :maj [0 4 7][0m
+
+[36m----  Reader Error : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.094 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.108 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[36m----  Compiler Warning on   src/cljs/looperscript/vector_fns.cljs   line:217  column:1  ----[0m
+
+  [1mchord-progression1 at line 207 is being replaced[0m
+
+  [36m213[0m  [36m        ][0m
+  [36m214[0m  [36m    #(let [pos (pos-in-vec (mod @current-time-hack form-len) chord-times)][0m
+  [36m215[0m  [36m      (chord (transpose1 (nth roots pos) (nth chords pos))))))[0m
+  [36m216[0m  [36m[0m
+  [33m217[0m  [1m(defn chord-progression1 [chords-v times][0m
+  [0m   [0m  [33m^--- chord-progression1 at line 207 is being replaced[0m
+  [36m218[0m  [36m  (let [chords (->> chords-v rest (take-nth 2) (map chord-types))[0m
+  [36m219[0m  [36m        roots (take-nth 2 chords-v)[0m
+  [36m220[0m  [36m        roots (reductions #(mod (+ % %2) 12) roots)[0m
+  [36m221[0m  [36m        chord-times (reductions + 0 times)[0m
+  [36m222[0m  [36m        form-len (last chord-times)[0m
+
+[36m----  Compiler Warning : Please see src/cljs/looperscript/vector_fns.cljs  ----[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.346 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.937 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.774 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.058 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.777 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.715 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/interpret.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.952 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/vector_fns.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.715 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js

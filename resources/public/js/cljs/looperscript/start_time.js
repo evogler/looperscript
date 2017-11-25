@@ -7,8 +7,8 @@ cljs.looperscript.start_time.get_current_start_time = (function cljs$looperscrip
 return cljs.core.deref.call(null,cljs.looperscript.start_time.current_start_time);
 });
 cljs.looperscript.start_time.reset_clock_BANG_ = (function cljs$looperscript$start_time$reset_clock_BANG_(var_args){
-var G__40553 = arguments.length;
-switch (G__40553) {
+var G__41949 = arguments.length;
+switch (G__41949) {
 case 0:
 return cljs.looperscript.start_time.reset_clock_BANG_.cljs$core$IFn$_invoke$arity$0();
 
@@ -37,4 +37,4 @@ cljs.looperscript.start_time.now = (function cljs$looperscript$start_time$now(){
 return (cljs.looperscript.audio.ctx["currentTime"]);
 });
 
-//# sourceMappingURL=start_time.js.map?rel=1511400155285
+//# sourceMappingURL=start_time.js.map?rel=1511412390040
