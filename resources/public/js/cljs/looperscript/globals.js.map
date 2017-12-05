@@ -1,0 +1,1 @@
+{"version":3,"file":"\/Users\/Eric\/Workspace\/looperscript\/resources\/public\/js\/cljs\/looperscript\/globals.js","sources":["globals.cljs?rel=1511634893232"],"lineCount":9,"mappings":";AAAA;;AAEA,GAAA,OAASA;AAAT;AAAA,AAAA,AAASA,8CAAkB,yBAAA,zBAACC","names":["cljs.looperscript.globals\/current-time-hack","cljs.core\/atom"]}

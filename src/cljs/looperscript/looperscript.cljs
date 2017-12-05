@@ -8,6 +8,7 @@
             ;; [hiccups.runtime :as hiccupsrt]
             [domina.events :as ev]
             [instaparse.core :as insta]
+            [taoensso.tufte :as tufte :refer [defnp p profiled profile]]
             ;; [shoreleave.remotes.http-rpc :refer [remote-callback]]
             [cljs.reader :refer [read-string]]
             ;; [cljs.core.async :as a]
@@ -16,7 +17,6 @@
             [cljs.looperscript.iterator :as iter]
             [cljs.looperscript.logging :refer [log log->]]
             [cljs.looperscript.start-time :refer [get-current-start-time reset-clock! now]]
-
             ))
 
 (declare stop)
@@ -152,6 +152,7 @@
 ;; -handles accumulation of time and non-accumulation of time+
 ;; -loops if a note has a positive :skip value
 ;; -adjusts for BPM!!!
+;; TODO: rests!
 (defn next-note-fn [part start-time]
   (let [iterators (make-iterators part)
         time-pos (atom (+ start-time
@@ -164,6 +165,7 @@
 ;; maybe I should differentiate part-time and real-time?
 ;; also, this floating point error correction is lame
             (let [adjusted-time-pos (+ 1e-7 (/ (- @time-pos start-time) (get-bpm)))
+;; TODO: check time first, if [:rest ] then don't call other iterators.
                   res-v (for [[aspect iter] iterators]
                           [aspect (iter adjusted-time-pos)])
                   res (into {} res-v)
@@ -221,7 +223,11 @@
           (doseq [i (if (coll? node) node [node])]
             (add-note-to-sounding-notes {:node i :start-time start-time})))))))
 
+(def -time identity)
+
 (defn queue-notes []
+;(profile {} (p ::queue-notes
+(-time (do
   (reset! last-queue-time (now))
   (let [end-time (+ (now) queue-time-extra queue-time-interval)]
     (doseq [n-n-fn @current-next-note-fns]
@@ -231,7 +237,7 @@
             (if (< 0 (:mute next-note))
               (schedule-note next-note))
             (if (< (:start-time next-note) end-time)
-              (recur))))))))
+              (recur))))))))))
 
 (defn reset-button []
   (stop)

@@ -46,7 +46,14 @@ goog.addDependency("../instaparse/core.js", ['instaparse.core'], ['instaparse.co
 goog.addDependency("../cljs/looperscript/interpret.js", ['cljs.looperscript.interpret'], ['cljs.looperscript.vector_fns', 'cljs.core', 'instaparse.core', 'cljs.reader']);
 goog.addDependency("../cljs/looperscript/iterator.js", ['cljs.looperscript.iterator'], ['cljs.looperscript.logging', 'cljs.core', 'cljs.looperscript.globals']);
 goog.addDependency("../domina/events.js", ['domina.events'], ['cljs.core', 'domina', 'goog.object', 'goog.events']);
-goog.addDependency("../cljs/looperscript/looperscript.js", ['cljs.looperscript.looperscript'], ['cljs.looperscript.start_time', 'cljs.looperscript.address_bar', 'cljs.looperscript.interpret', 'cljs.looperscript.iterator', 'cljs.looperscript.logging', 'cljs.core', 'domina', 'domina.events', 'instaparse.core', 'cljs.looperscript.audio', 'cljs.reader']);
+goog.addDependency("../taoensso/truss/impl.js", ['taoensso.truss.impl'], ['cljs.core', 'clojure.set']);
+goog.addDependency("../taoensso/truss.js", ['taoensso.truss'], ['cljs.core', 'taoensso.truss.impl']);
+goog.addDependency("../cljs/pprint.js", ['cljs.pprint'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer', 'clojure.string']);
+goog.addDependency("../cljs/test.js", ['cljs.test'], ['cljs.core', 'cljs.pprint', 'clojure.string']);
+goog.addDependency("../taoensso/encore.js", ['taoensso.encore'], ['goog.net.XhrIoPool', 'cljs.tools.reader.edn', 'taoensso.truss', 'goog.net.XhrIo', 'goog.string', 'goog.Uri.QueryData', 'cljs.core', 'cljs.test', 'goog.object', 'goog.string.StringBuffer', 'goog.net.EventType', 'clojure.set', 'goog.structs', 'goog.string.format', 'clojure.string', 'cljs.reader', 'goog.events', 'goog.net.ErrorCode']);
+goog.addDependency("../taoensso/tufte/impl.js", ['taoensso.tufte.impl'], ['cljs.core', 'clojure.string', 'taoensso.encore']);
+goog.addDependency("../taoensso/tufte.js", ['taoensso.tufte'], ['cljs.core', 'taoensso.tufte.impl', 'taoensso.encore']);
+goog.addDependency("../cljs/looperscript/looperscript.js", ['cljs.looperscript.looperscript'], ['cljs.looperscript.start_time', 'cljs.looperscript.address_bar', 'cljs.looperscript.interpret', 'cljs.looperscript.iterator', 'cljs.looperscript.logging', 'cljs.core', 'domina', 'domina.events', 'instaparse.core', 'taoensso.tufte', 'cljs.looperscript.audio', 'cljs.reader']);
 goog.addDependency("../cljs/core/async/impl/protocols.js", ['cljs.core.async.impl.protocols'], ['cljs.core']);
 goog.addDependency("../cljs/core/async/impl/buffers.js", ['cljs.core.async.impl.buffers'], ['cljs.core', 'cljs.core.async.impl.protocols']);
 goog.addDependency("../cljs/core/async/impl/dispatch.js", ['cljs.core.async.impl.dispatch'], ['cljs.core', 'cljs.core.async.impl.buffers', 'goog.async.nextTick']);
@@ -54,7 +61,6 @@ goog.addDependency("../cljs/core/async/impl/channels.js", ['cljs.core.async.impl
 goog.addDependency("../cljs/core/async/impl/ioc_helpers.js", ['cljs.core.async.impl.ioc_helpers'], ['cljs.core', 'cljs.core.async.impl.protocols']);
 goog.addDependency("../cljs/core/async/impl/timers.js", ['cljs.core.async.impl.timers'], ['cljs.core.async.impl.channels', 'cljs.core.async.impl.dispatch', 'cljs.core', 'cljs.core.async.impl.protocols']);
 goog.addDependency("../cljs/core/async.js", ['cljs.core.async'], ['cljs.core.async.impl.channels', 'cljs.core.async.impl.dispatch', 'cljs.core', 'cljs.core.async.impl.buffers', 'cljs.core.async.impl.protocols', 'cljs.core.async.impl.ioc_helpers', 'cljs.core.async.impl.timers']);
-goog.addDependency("../cljs/pprint.js", ['cljs.pprint'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer', 'clojure.string']);
 goog.addDependency("../figwheel/client/utils.js", ['figwheel.client.utils'], ['goog.userAgent.product', 'goog.string', 'cljs.core', 'goog.object', 'goog.string.StringBuffer', 'cljs.pprint', 'goog.async.Deferred', 'clojure.string', 'cljs.reader']);
 goog.addDependency("../figwheel/client/file_reloading.js", ['figwheel.client.file_reloading'], ['goog.string', 'goog.net.jsloader', 'goog.Uri', 'cljs.core', 'goog.object', 'cljs.core.async', 'clojure.set', 'goog.html.legacyconversions', 'figwheel.client.utils', 'goog.async.Deferred', 'clojure.string']);
 goog.addDependency("../cljs/repl.js", ['cljs.repl'], ['cljs.core', 'cljs.spec.alpha']);

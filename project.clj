@@ -12,6 +12,7 @@
                  [org.clojars.magomimmo/shoreleave-remote-ring "0.3.1-SNAPSHOT"]
                  [org.clojars.magomimmo/shoreleave-remote "0.3.1-SNAPSHOT"]
                  [org.clojure/tools.reader "0.10.0"]
+                 [com.taoensso/tufte "1.1.2"] 
                  [instaparse "1.4.8"
                        :exclusions [org.clojure/clojure]]]
   :plugins [[lein-cljsbuild "1.1.3"]

@@ -1509,3 +1509,68 @@ notifying browser that file changed:  resources/public/js/cljs/looperscript/vect
 [0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
 [32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.715 seconds.[0m
 notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 4.669 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.644 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.759 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.721 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.36 seconds.[0m
+[36m----  Could not Analyze  src/cljs/looperscript/looperscript.cljs  ----[0m
+
+  [1mNo such namespace: asdfwef.wfawe, could not locate asdfwef/wfawe.cljs, asdfwef/wfawe.cljc, or JavaScript source providing "asdfwef.wfawe" [0m
+
+[36m----  Analysis Error : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.372 seconds.[0m
+[36m----  Could not Analyze  src/cljs/looperscript/looperscript.cljs  ----[0m
+
+  [1mNo such namespace: Ztaoensso.tufte, could not locate Ztaoensso/tufte.cljs, Ztaoensso/tufte.cljc, or JavaScript source providing "Ztaoensso.tufte" [0m
+
+[36m----  Analysis Error : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.825 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.898 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.701 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[31mFailed to compile "resources/public/js/looperscript.js" in 0.445 seconds.[0m
+[36m----  Could not Analyze  src/cljs/looperscript/looperscript.cljs   line:228  column:1  ----[0m
+
+  [1mWrong number of args (2) passed to: core/time[0m
+
+  [36m226[0m  [36m(defn queue-notes [][0m
+  [36m227[0m  [36m;(profile {} (p ::queue-notes[0m
+  [33m228[0m  [1m(time[0m
+  [0m   [0m  [33m^--- Wrong number of args (2) passed to: core/time[0m
+  [36m229[0m  [36m  (reset! last-queue-time (now))[0m
+  [36m230[0m  [36m  (let [end-time (+ (now) queue-time-extra queue-time-interval)][0m
+  [36m231[0m  [36m    (doseq [n-n-fn @current-next-note-fns][0m
+
+[36m----  Analysis Error : Please see src/cljs/looperscript/looperscript.cljs  ----[0m
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 0.582 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 2.577 seconds.[0m
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
+[0mCompiling "resources/public/js/looperscript.js" from ["src/cljs"]...[0m
+[32mSuccessfully compiled "resources/public/js/looperscript.js" in 1.045 seconds.[0m
+notifying browser that file changed:  resources/public/js/goog/deps.js
+notifying browser that file changed:  resources/public/js/cljs_deps.js
+notifying browser that file changed:  resources/public/js/cljs/looperscript/looperscript.js
