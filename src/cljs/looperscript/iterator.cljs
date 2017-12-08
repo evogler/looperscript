@@ -105,6 +105,10 @@
               (do (swap! modifiers conj (map dethunk (second x)))
                   (recur))
 
+              ;; XXX: possible problem - this removes :chord meta data
+              (sequential? x)
+              (into [(first x)] (map (partial apply-modifiers @modifiers) (rest x)))
+
               :else
               (apply-modifiers @modifiers x))))))))
 

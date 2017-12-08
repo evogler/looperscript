@@ -96,7 +96,7 @@
             transform-time (- (now) start-time)
             new-params (:params transformed-tree)
             parts (:parts transformed-tree)]
-        (log "Parse time: " parse-time "; Transorm time: " (- transform-time parse-time))
+        (log "Parse time: " parse-time "; Transform time: " (- transform-time parse-time))
         (reset! params new-params)
         parts))))
 
@@ -144,6 +144,8 @@
         (into (zipmap non-specified-aspects
                       (map #(iter/iterator (get aspect-defaults %)) non-specified-aspects))))))
 
+(def debz (atom nil))
+
 ;; next-note-fn called for each part, each time schedule-note wants another note from
 ;; that part. next-note-fn:
 ;; -creates iterators
@@ -153,6 +155,11 @@
 ;; -loops if a note has a positive :skip value
 ;; -adjusts for BPM!!!
 ;; TODO: rests!
+;; NOTE:adjusted-timepos seems kind of hacky to me.
+;; maybe I should differentiate part-time and real-time?
+;; also, this floating point error correction is lame
+;; TODO: check time first, if [:rest ] then don't call other iterators.
+
 (defn next-note-fn [part start-time]
   (let [iterators (make-iterators part)
         time-pos (atom (+ start-time
@@ -161,24 +168,30 @@
     (fn
       ([command] (if (= command :time-pos) @time-pos))
       ([] (loop []
-;; adjusted-timepos seems kind of hacky to me.
-;; maybe I should differentiate part-time and real-time?
-;; also, this floating point error correction is lame
             (let [adjusted-time-pos (+ 1e-7 (/ (- @time-pos start-time) (get-bpm)))
-;; TODO: check time first, if [:rest ] then don't call other iterators.
-                  res-v (for [[aspect iter] iterators]
-                          [aspect (iter adjusted-time-pos)])
-                  res (into {} res-v)
-                  res (-> res
-                          (assoc :start-time @time-pos)
-                          (assoc :overtones [1]) ;; XXX
-                          (update-in [:time] * (get-bpm))
-                          (update-in [:time+] * (get-bpm)))]
-              (if (>= 0 (res :skip))
-                (recur)
-                (do (swap! time-pos + (res :time))
-                    #_(log :end-of-nnfn res)
-                    res))))))))
+                  res-time ((:time iterators) adjusted-time-pos)
+                  res {:time res-time}]
+              (if (and (sequential? res-time) (= (first res-time) :rest))
+                ; If :rest,
+                (let [res (-> res
+                              (assoc :rest true)
+                              (assoc :start-time @time-pos)
+                              (update-in [:time] second)
+                              (update-in [:time] * (get-bpm)))]
+                  (do (swap! time-pos + (res :time))
+                      res))
+                (let [res-v (for [[aspect iter] (dissoc iterators :time)]
+                              [aspect (iter adjusted-time-pos)])
+                      res (into res res-v)
+                      res (-> res
+                              (assoc :start-time @time-pos)
+                              (assoc :overtones [1]) ;; XXX
+                              (update-in [:time] * (get-bpm))
+                              (update-in [:time+] * (get-bpm)))]
+                  (if (>= 0 (res :skip))
+                    (recur)
+                    (do (swap! time-pos + (res :time))
+                        res))))))))))
 
 (def sched-log (atom []))
 
@@ -233,8 +246,11 @@
     (doseq [n-n-fn @current-next-note-fns]
       (if (< (n-n-fn :time-pos) end-time)
         (loop []
-          (let [next-note (n-n-fn)]
-            (if (< 0 (:mute next-note))
+          (let [next-note (n-n-fn)
+                ;_ (log next-note)
+                ]
+            (if (and (< 0 (:mute next-note))
+                     (not (contains? next-note :rest)))
               (schedule-note next-note))
             (if (< (:start-time next-note) end-time)
               (recur))))))))))

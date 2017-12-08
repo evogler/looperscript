@@ -7,8 +7,12 @@ REFACTOR:
 QUESTIONS:
   -multiple aspects refering to same cycle? (probably means cache results of actual fn)
 UPCOMING STEPS:
-  (done, I think?)-on update, kill nodes that haven't started yet, but allow started ones to finish
-    -via: alter @sounding-notes to have a start-time value
+  -!! change (flatten) in vec-fns to preserve vectors that should be intact
+  -find a way to kill the whole thing if it runs for too long
+  -chord inversion practice function
+  -voice leading functions of some sort
+  -fix infinite loops on 0-length vectors
+  -fine-tune (update)'s note replacement timing
   -make update more thoughtful. different modes:
     -?DGAF: just start the part from (now)
     -quick (probably default): make one pass over a part's time to figure out
@@ -16,10 +20,10 @@ UPCOMING STEPS:
         This will be 100% correct if time doesn't have functions.
     -full: grind through next-note-fn's until they catch up
   -make -part completely turn off a part
+  -handle identical part names
   -fix parameterless functions to not require space before closing parens
-  -fix calling actual functions [e.g. ((cycle))]
-  -fix infinite loops on 0-length vectors
   -toggle setinterval length based on document.hasfocus
+  -memoization
   -proper params. as well as bpm, setting for latency.
   -standardize mode concept. (e.g.'s: tuning, hz)
     -push/pop modes?
@@ -28,11 +32,13 @@ UPCOMING STEPS:
   -parser versions
   -abstract node pipeline for playing notes
   -proper handling of bpm changes
+  -universal pulse mapping (e.g. to match a recording)
+  -code folding?
   -handle complex rhythms inside vector functions (including modifiers?)
   -reverse order of modifier application?
+  -REPL to test fns!
   -pass modifier state to each modifier-fn?
   -show errors somewhere! (& bug instaparse guy about bug)
-  -get random library & allow seeding
   -maybe make it easier to specify when functions are expecting rhythms (which may be nestd)
 LANGUAGE FEATURES:
   -modifiers that hook in in more ways? (controlling flow of input values, changing
@@ -47,12 +53,11 @@ LANGUAGE FEATURES:
     -triggers have ids and are shared across a bus
   -shared repo(?) for motives, fragments, and functions.
   -functions for defining abstract values over time (e.g. ramp, interp..)
-    -with
   -history of everything that's been played? functions to refer back to these?
   -time functions based on actual time (and/or date?)
   -parts with separate rhythm controlling steps
   -first-class nested rhythmic layers to allow functions in lower layers.
-  -chords (ala looper1's ",") (+ figure out logical questions)
+  -syntactical sugar for chords
   -arbitrary nos of multiple cycles to alter aspect (e.g. not just <p> and <tr>)
     -plus and times type layers, at the least.
   -random but avoid what the note something else is currently playing
@@ -85,7 +90,6 @@ SECTION-LEVEL LANGUAGE IDEAS:
       -maybe sections is length plus each part and where to start in the part?
       -default program behavior is just go forever if sections aren't defined?
 TECH STEPS:
-  -functioning REPL!
   -mp3 caching!
   -lzma.js for GET
   -check out more of web audio, especially LFO
@@ -94,6 +98,7 @@ TECH STEPS:
   -user upload samples?
   -reuse nodes when applicable?
   -webGL
+  -web workers for background threads to not interfere with webaudio?
 INTERFACE:
   -tutorial mode!!!!!!
   -show current beat
@@ -120,3 +125,8 @@ FURTHER STEPS:
 
 
 DONE:
+-functioning REPL!
+-chords!
+-get random library & allow seeding
+-rests, at least somewhat
+-fix calling actual functions [e.g. ((cycle))]

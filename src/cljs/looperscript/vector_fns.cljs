@@ -10,7 +10,7 @@
 
 (defn eval-str [s]
   (eval (empty-state)
-     (read-string s)
+     (read-string (clojure.string/join " " ["(do " s ")"]))
      {:eval       js-eval
       :source-map true
       :context    :expr}
@@ -25,6 +25,10 @@
   ([a] (range (inc a)))
   ([a b] (range a (inc b)))
   ([a b c] (range a (+ b c) c)))
+
+;; TODO: more elaborate sweep. -increments. complex phase.
+(defn sweep-range [a b]
+  (into (vec (range a b)) (range b a -1)))
 
 (defn rand-range [floor ceil]
   (-> (rand)
@@ -120,6 +124,12 @@
         v-len (count v)]
     (fn [] (nth v (swap! pos #(mod (inc %) v-len))))))
 
+(defn combine [& args]
+  (fn []
+    (reduce +
+      (for [a args]
+        (if (fn? a) (a) a)))))
+
 ;; fill-time would be an interesting code-golf candidate
 (defn fill-time [t v]
   (let [previous-total (atom nil)
@@ -155,6 +165,11 @@
   (if (fn? x)
     (dethunk (x))
     x))
+
+(defn rest* [x]
+  (with-meta
+    [:rest x]
+    {:intact-for-sub-time :true}))
 
 (defn chord [& v]
   (with-meta
@@ -262,6 +277,20 @@
        sort
        (map second)))
 
+
+(defn inversion [scale inv degree]
+  (chord
+    (for [i inv]
+      (scale-nth scale (+ i degree)))))
+
+(defn chord-scale [scale inv floor degrees]
+    (for [d degrees]
+      (inversion scale inv (+ floor d))
+      ))
+
+;(println (chord-scale [0 2 4 7 9] [0 2 4 6] 5 (range 5)))
+
+
 (defn log* [& args]
   (apply log args)
   (last args))
@@ -348,7 +377,7 @@
 (defn define-variable [s x]
   (log "defined " s " as " x)
   (swap! variable-map assoc s x)
-  nil)
+  x)
 
 (defn get-variable [s]
   (get @variable-map s))
@@ -416,15 +445,21 @@
    :repeatedly repeatedly
    :xx repeatedly
    :range range*
+   :sweep-range sweep-range
    :cycle cycle*
+   :combine combine
+   :apply apply
    :fill fill-time
    :once once
    :pattern scale-pattern
    :scale-range scale-range
    :scale-range-sweep scale-range-sweep
    :transpose-scale transpose-scale
+   :chord-scale chord-scale
    :flatten flatten*
+   :rest rest*
    :chord chord
+   :& chord
    :chords chords
    :log log*
    :say say
