@@ -52,7 +52,7 @@
    :filter [2500]
    :pan [0]
    :offset [0]
-   :overtones [[1]]
+   :overtones (with-meta [1]  {:intact-for-sub-time :true})
    :rate [1]
    :time+ [0]
    :mute [1]
@@ -144,8 +144,6 @@
         (into (zipmap non-specified-aspects
                       (map #(iter/iterator (get aspect-defaults %)) non-specified-aspects))))))
 
-(def debz (atom nil))
-
 ;; next-note-fn called for each part, each time schedule-note wants another note from
 ;; that part. next-note-fn:
 ;; -creates iterators
@@ -185,7 +183,6 @@
                       res (into res res-v)
                       res (-> res
                               (assoc :start-time @time-pos)
-                              (assoc :overtones [1]) ;; XXX
                               (update-in [:time] * (get-bpm))
                               (update-in [:time+] * (get-bpm)))]
                   (if (>= 0 (res :skip))
@@ -231,7 +228,8 @@
               node (if (number? sound)
                      (if filter
                        (audio/play-filtered-tone sound start-time dur vol pan filter synth overtones)
-                       (audio/play-tone          sound start-time dur vol pan synth overtones))
+;;                       (audio/play-tone          sound start-time dur vol pan synth overtones)
+                        )
                      (audio/play-sound sound start-time vol rate))]
           (doseq [i (if (coll? node) node [node])]
             (add-note-to-sounding-notes {:node i :start-time start-time})))))))
@@ -264,6 +262,7 @@
 
 ;; TODO: kill notes
 ;; XXX: probably should rename if not refactor pretty seriously
+;; XXX: simplify to always get-parts in this function
 (defn update*
   ([] (update* (get-parts)))
   ([parts]

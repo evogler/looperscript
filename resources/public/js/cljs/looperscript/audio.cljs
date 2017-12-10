@@ -33,7 +33,7 @@
   (.decodeAudioData ctx (.-response req)
                     #(on-decode % fname)))
 
-(defn load-file [fname]
+(defn load-file* [fname]
   (let [req (js/XMLHttpRequest.)
         full-name (str sample-folder fname ".mp3")]
     (.open req "GET" full-name)
@@ -43,7 +43,7 @@
 
 (defn load-some-drums []
   (doseq [d drums]
-    (load-file d)))
+    (load-file* d)))
 
 (defn play-sound [fname start-time vol rate]
   (let [buf-s (.createBufferSource ctx)
@@ -56,17 +56,17 @@
     (.start buf-s start-time)
     buf-s))
 
-(defn play-tone [freq start-time dur vol pan synth overtones]
-  (let [osc (.createOscillator ctx)
-        gain (.createGain ctx)]
-    (aset osc "type" synth)
-    (aset (aget osc "frequency") "value" freq)
-    (aset (aget gain "gain") "value" (* 0.1 vol))
-    (.connect osc gain)
-    (.connect gain (aget ctx "destination"))
-    (.start osc start-time)
-    (.stop osc (+ start-time dur))
-    osc))
+;(defn play-tone [freq start-time dur vol pan synth overtones]
+;  (let [osc (.createOscillator ctx)
+;        gain (.createGain ctx)]
+;    (aset osc "type" synth)
+;    (aset (aget osc "frequency") "value" freq)
+;    (aset (aget gain "gain") "value" (* 0.1 vol))
+;    (.connect osc gain)
+;    (.connect gain (aget ctx "destination"))
+;    (.start osc start-time)
+;    (.stop osc (+ start-time dur))
+;    osc))
 
 
 (defn play-filtered-tone [freq start-time dur vol pan filt-freq synth overtones]

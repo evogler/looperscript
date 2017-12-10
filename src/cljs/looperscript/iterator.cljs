@@ -1,6 +1,9 @@
 (ns cljs.looperscript.iterator
-  (:require [cljs.looperscript.logging :refer [log log->]]
+  (:require [cljs.looperscript.logging :refer [log log-> break break-val]]
             [cljs.looperscript.globals :refer [current-time-hack]]))
+
+(defn intact? [v]
+  (contains? (meta v) :intact-for-sub-time))
 
 (defn pop!* [stack]
   (let [res (last @stack)]
@@ -12,8 +15,10 @@
     (swap! stack conj x)))
 
 (defn vec-push! [stack v]
-  (doseq [i (reverse v)]
-    (push! stack i)))
+  (if (intact? v)
+    (push! stack v)
+    (doseq [i (reverse v)]
+      (push! stack i))))
 
 (defn dethunk [x]
   (loop [r x]
@@ -27,16 +32,16 @@
 (defn get-next-stack-val
   ([stack current-time] (get-next-stack-val stack true current-time))
   ([stack preserve-carots? current-time]
-     (let [x (pop!* stack)
-           preserve? (and (get (meta x) :intact-for-sub-time) preserve-carots?)
-           x (if-not preserve? (dethunk x) x)]
-       (if (and (or (seq? x) (vector? x))
-                (not preserve?)
-                (not (keyword? (first x))))
-         (do (doseq [i (reverse x)]
-               (push! stack i))
-             (get-next-stack-val stack current-time))
-         x))))
+    (let [x (pop!* stack)
+         preserve? (and (intact? x) preserve-carots?)
+         x (if-not preserve? (dethunk x) x)]
+     (if (and (or (seq? x) (vector? x))
+              (not preserve?)
+              (not (keyword? (first x))))
+       (do (doseq [i (reverse x)]
+             (push! stack i))
+           (get-next-stack-val stack current-time))
+       x))))
 
 (defn modifier? [x]
   (and (vector? x) (= (first x) :modifier)))
@@ -86,9 +91,12 @@
            modifiers (atom [])]
        (fn [current-time] ;& args]
          (loop []
-           (if (empty? @stack)
-             (do (reset! modifiers [])
-                 (vec-push! stack v)))
+           (loop [empties 0]
+             (if (> empties 100) ((throw (js/Error. "Error: empty aspect"))))
+             (when (empty? @stack)
+               (reset! modifiers [])
+               (vec-push! stack v)
+               (recur (inc empties))))
            (reset! current-time-hack current-time)
            (let [x (get-next-stack-val stack preserve-carots? current-time)]
              (cond
@@ -105,9 +113,8 @@
               (do (swap! modifiers conj (map dethunk (second x)))
                   (recur))
 
-              ;; XXX: possible problem - this removes :chord meta data
               (sequential? x)
-              (into [(first x)] (map (partial apply-modifiers @modifiers) (rest x)))
+              (into (with-meta [(first x)] (meta x)) (map (partial apply-modifiers @modifiers) (rest x)))
 
               :else
               (apply-modifiers @modifiers x))))))))
@@ -117,14 +124,16 @@
         time-iterator (iterator time-v)
         get-next-v #(let [next-v (v-iterator)]
                       (cond
-                       (and (vector? next-v) (not (keyword? (first next-v))))
-                       (iterator next-v false)
+                        (and (vector? next-v)
+                            (not (keyword? (first next-v)))
+                            (not (intact? next-v)))
+                        (iterator next-v false)
 
-                       (fn? next-v)
-                       (iterator (next-v) false)
+                        (fn? next-v)
+                        (iterator (next-v) false)
 
-                       :else
-                       next-v))
+                        :else
+next-v))
         current-val (atom (get-next-v))
         current-val-expiration-time (atom (time-iterator))]
     (fn [note-time]

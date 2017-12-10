@@ -8,9 +8,10 @@ QUESTIONS:
   -multiple aspects refering to same cycle? (probably means cache results of actual fn)
 UPCOMING STEPS:
   -!! change (flatten) in vec-fns to preserve vectors that should be intact
+  -write tests (!!!)
   -find a way to kill the whole thing if it runs for too long
-  -chord inversion practice function
   -voice leading functions of some sort
+  -arrays for overtones!
   -fix infinite loops on 0-length vectors
   -fine-tune (update)'s note replacement timing
   -make update more thoughtful. different modes:
@@ -106,13 +107,14 @@ INTERFACE:
   -advanced unpause: resume previous sounds
   -options panel?
   -keypress commands for things like mute
+  -query currently playing functions / get current results of random fns
 FURTHER STEPS:
   -user samples / more samples
   -step through loop by user input
   -tap tempo? tap tempo to indicate form of mp3?
   -play along with mp3?
   -(possibly separate noteon & noteoff for better performance during tempo changes?)
-  -further synth controls
+  -further synth controls - minispec for describing synth properties
   -templating for interface
   -visual interfaces (esp. on/off grid)
   -big-button phone interfaces
@@ -130,3 +132,4 @@ DONE:
 -get random library & allow seeding
 -rests, at least somewhat
 -fix calling actual functions [e.g. ((cycle))]
+-chord inversion practice function

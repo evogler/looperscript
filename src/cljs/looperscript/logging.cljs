@@ -9,3 +9,10 @@
 (defn log-> [& args]
   (do (apply log args)
       (first args)))
+
+(def break-val (atom nil))
+
+(defn break [x]
+  ;(reset! break-val x)
+  (println "HI YOU GUYS" x)
+  (throw (js/Error. (str "break-val: " x))))

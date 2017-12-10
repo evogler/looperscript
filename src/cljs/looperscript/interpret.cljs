@@ -40,8 +40,9 @@
                 (recur (conj accum n) (rest rem))))))
       (with-meta (meta v))))
 
-(defn mark-for-splice [col]
-  (with-meta (vec col) {:splice true}))
+;; XXX: apparently this isn't used?:
+;(defn mark-for-splice [col]
+;  (with-meta (vec col) {:splice true}))
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; looper functions ;;
@@ -92,7 +93,8 @@
   (let [[a b] v
         r (vec (rest v))
         r2 (vec (drop 2 v))
-        delve #(splice (map maybe-process-vec %))]
+;        delve #(splice (map maybe-process-vec %))
+        ]
     (cond
      ;; ![rand ...
      (= a "!")

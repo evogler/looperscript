@@ -39,7 +39,9 @@
   ([b] (rand-int (inc b)))
   ([a b] (+ a (rand-int (inc (- b a))))))
 
-(def rand-nth* rand-nth)
+(defn rand-nth* [x]
+  (print x (meta x))
+  (rand-nth x))
 
 (def take* take)
 
@@ -187,7 +189,8 @@
   "Octave displace each note in chord by up to one octave"
   ;XXX: should be n octaves
   [:modifier-fn
-   (fn [c]
+    (fn [x] (+ x (rand-nth [-12 0 12])))
+   #_(fn [c]
      (into [:chord]
        (map #(+ (rand-nth [-12 0 12]) %)
         (rest c))))])

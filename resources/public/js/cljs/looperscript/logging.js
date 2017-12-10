@@ -3,23 +3,23 @@ goog.provide('cljs.looperscript.logging');
 goog.require('cljs.core');
 goog.require('domina');
 cljs.looperscript.logging.log = (function cljs$looperscript$logging$log(var_args){
-var args__8594__auto__ = [];
-var len__8587__auto___15598 = arguments.length;
-var i__8588__auto___15599 = (0);
+var args__28885__auto__ = [];
+var len__28878__auto___61660 = arguments.length;
+var i__28879__auto___61661 = (0);
 while(true){
-if((i__8588__auto___15599 < len__8587__auto___15598)){
-args__8594__auto__.push((arguments[i__8588__auto___15599]));
+if((i__28879__auto___61661 < len__28878__auto___61660)){
+args__28885__auto__.push((arguments[i__28879__auto___61661]));
 
-var G__15600 = (i__8588__auto___15599 + (1));
-i__8588__auto___15599 = G__15600;
+var G__61662 = (i__28879__auto___61661 + (1));
+i__28879__auto___61661 = G__61662;
 continue;
 } else {
 }
 break;
 }
 
-var argseq__8595__auto__ = ((((0) < args__8594__auto__.length))?(new cljs.core.IndexedSeq(args__8594__auto__.slice((0)),(0),null)):null);
-return cljs.looperscript.logging.log.cljs$core$IFn$_invoke$arity$variadic(argseq__8595__auto__);
+var argseq__28886__auto__ = ((((0) < args__28885__auto__.length))?(new cljs.core.IndexedSeq(args__28885__auto__.slice((0)),(0),null)):null);
+return cljs.looperscript.logging.log.cljs$core$IFn$_invoke$arity$variadic(argseq__28886__auto__);
 });
 
 cljs.looperscript.logging.log.cljs$core$IFn$_invoke$arity$variadic = (function (args){
@@ -31,28 +31,28 @@ return console.log(s);
 
 cljs.looperscript.logging.log.cljs$lang$maxFixedArity = (0);
 
-cljs.looperscript.logging.log.cljs$lang$applyTo = (function (seq15597){
-return cljs.looperscript.logging.log.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq15597));
+cljs.looperscript.logging.log.cljs$lang$applyTo = (function (seq61659){
+return cljs.looperscript.logging.log.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq61659));
 });
 
 cljs.looperscript.logging.log__GT_ = (function cljs$looperscript$logging$log__GT_(var_args){
-var args__8594__auto__ = [];
-var len__8587__auto___15602 = arguments.length;
-var i__8588__auto___15603 = (0);
+var args__28885__auto__ = [];
+var len__28878__auto___61664 = arguments.length;
+var i__28879__auto___61665 = (0);
 while(true){
-if((i__8588__auto___15603 < len__8587__auto___15602)){
-args__8594__auto__.push((arguments[i__8588__auto___15603]));
+if((i__28879__auto___61665 < len__28878__auto___61664)){
+args__28885__auto__.push((arguments[i__28879__auto___61665]));
 
-var G__15604 = (i__8588__auto___15603 + (1));
-i__8588__auto___15603 = G__15604;
+var G__61666 = (i__28879__auto___61665 + (1));
+i__28879__auto___61665 = G__61666;
 continue;
 } else {
 }
 break;
 }
 
-var argseq__8595__auto__ = ((((0) < args__8594__auto__.length))?(new cljs.core.IndexedSeq(args__8594__auto__.slice((0)),(0),null)):null);
-return cljs.looperscript.logging.log__GT_.cljs$core$IFn$_invoke$arity$variadic(argseq__8595__auto__);
+var argseq__28886__auto__ = ((((0) < args__28885__auto__.length))?(new cljs.core.IndexedSeq(args__28885__auto__.slice((0)),(0),null)):null);
+return cljs.looperscript.logging.log__GT_.cljs$core$IFn$_invoke$arity$variadic(argseq__28886__auto__);
 });
 
 cljs.looperscript.logging.log__GT_.cljs$core$IFn$_invoke$arity$variadic = (function (args){
@@ -63,9 +63,15 @@ return cljs.core.first.call(null,args);
 
 cljs.looperscript.logging.log__GT_.cljs$lang$maxFixedArity = (0);
 
-cljs.looperscript.logging.log__GT_.cljs$lang$applyTo = (function (seq15601){
-return cljs.looperscript.logging.log__GT_.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq15601));
+cljs.looperscript.logging.log__GT_.cljs$lang$applyTo = (function (seq61663){
+return cljs.looperscript.logging.log__GT_.cljs$core$IFn$_invoke$arity$variadic(cljs.core.seq.call(null,seq61663));
 });
 
+cljs.looperscript.logging.break_val = cljs.core.atom.call(null,null);
+cljs.looperscript.logging.break$ = (function cljs$looperscript$logging$break(x){
+cljs.core.println.call(null,"HI YOU GUYS",x);
 
-//# sourceMappingURL=logging.js.map
+throw (new Error(["break-val: ",cljs.core.str.cljs$core$IFn$_invoke$arity$1(x)].join('')));
+});
+
+//# sourceMappingURL=logging.js.map?rel=1512854385529
