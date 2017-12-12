@@ -29,16 +29,16 @@
   (-> (/ (Math/log r) (Math/log 2))
       (* 12)))
 
-(defn splice [v]
-  (-> (loop [accum [] rem v]
-        (if (empty? rem) accum
-            (let [n (first rem)]
-              (if (vector? n)
-                (if (-> n meta :splice)
-                  (recur (into accum (splice n)) (rest rem))
-                  (recur (conj accum (splice n)) (rest rem)))
-                (recur (conj accum n) (rest rem))))))
-      (with-meta (meta v))))
+;(defn splice [v]
+;  (-> (loop [accum [] rem v]
+;        (if (empty? rem) accum
+;            (let [n (first rem)]
+;              (if (vector? n)
+;                (if (-> n meta :splice)
+;                  (recur (into accum (splice n)) (rest rem))
+;                  (recur (conj accum (splice n)) (rest rem)))
+;                (recur (conj accum n) (rest rem))))))
+;      (with-meta (meta v))))
 
 ;; XXX: apparently this isn't used?:
 ;(defn mark-for-splice [col]
@@ -66,7 +66,8 @@
         r (vec (rest v))
         r2 (vec (drop 2 v))
         [afn bfn] (map #(get vec-fns %) [a b])
-        delve #(splice (map (fn [x] (maybe-process-vec x invade-carots?)) %))]
+;        delve #(splice (map (fn [x] (maybe-process-vec x invade-carots?)) %))]
+        delve #(map (fn [x] (maybe-process-vec x invade-carots?)) %)]
     ;;^ and invade : process (rest v)
     ;;^ and don't invade : process (rest v) & add meta
     ;;normal : process
@@ -173,7 +174,7 @@
   (->> parse-tree
        (insta/transform
         {:number string->number
-         :data #(-> %& splice)
+         :data list
          :ratio (fn [n d] (ratio->note (/ n d)))
          :fraction (fn [n d] [:fraction (/ n d)])
          :bpm (fn [x] [:bpm (/ 60 (cond
@@ -211,5 +212,3 @@
                (fn [m x] (into m x))
                {} args))})
        (walk-map-applying-fn-to-vals process-vec)))
-
-(def quick-test 12345)

@@ -40,7 +40,6 @@
   ([a b] (+ a (rand-int (inc (- b a))))))
 
 (defn rand-nth* [x]
-  (print x (meta x))
   (rand-nth x))
 
 (def take* take)
@@ -288,11 +287,7 @@
 
 (defn chord-scale [scale inv floor degrees]
     (for [d degrees]
-      (inversion scale inv (+ floor d))
-      ))
-
-;(println (chord-scale [0 2 4 7 9] [0 2 4 6] 5 (range 5)))
-
+      (inversion scale inv (+ floor d))))
 
 (defn log* [& args]
   (apply log args)
