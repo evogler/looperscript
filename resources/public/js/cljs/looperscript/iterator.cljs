@@ -44,10 +44,10 @@
        x))))
 
 (defn modifier? [x]
-  (and (vector? x) (= (first x) :modifier)))
+  (and (sequential? x) (= (first x) :modifier)))
 
 (defn modifier-fn? [x]
-  (and (vector? x) (= (first x) :modifier-fn)))
+  (and (sequential? x) (= (first x) :modifier-fn)))
 
 ;; namespace for modifiers?
 ;; modifiers should have binary switch options, e.g. typing justify twice shouldn't justify

@@ -21,6 +21,16 @@
         right: 0;
     }
 
+    #UI_area {
+        margin: 0;
+        display: none;
+        position: absolute;
+        background: white;
+        top: 38px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
     .floating {
         float: left;
         position: absolute;
@@ -33,19 +43,25 @@
 </head>
 
 <body>
-  <button id="play">play</button>
-  <button id="update">update</button>
-  <button id="pause">pause</button>
-  <button id="stop">stop</button>
-  <button id="link">link</button>
-  <button id="load">load</button>
+  <div id="buttons" style="display:block">
+    <button id="play">play</button>
+    <button id="update">update</button>
+    <button id="pause">pause</button>
+    <button id="stop">stop</button>
+___
+    <button id="link">link</button>
+    <button id="load">load</button>
+___
+    <button id="UI">UI</button>
+    <button id="script">script</button>
 
-
-
+  </div>
   <!-- <textarea class="text-area" id="looper-text"></textarea><br /> -->
-
+<div id="script_area">
   <pre id="editor"></pre>
-
+</div>
+<div id="UI_area">
+</div>
   <!-- <br /> -->
 <!--  <textarea class="text-area" id="console"></textarea> -->
 

@@ -81,10 +81,10 @@
               overtones (:overtones n)
 
               node (if (number? sound)
-                     (if filter
+;;                     (if filter
                        (audio/play-filtered-tone sound start-time dur vol pan filter synth overtones)
 ;;                       (audio/play-tone          sound start-time dur vol pan synth overtones)
-                        )
+;;                        )
                      (audio/play-sound sound start-time vol rate))]
           (doseq [i (if (coll? node) node [node])]
             (add-note-to-sounding-notes {:node i :start-time start-time})))))))

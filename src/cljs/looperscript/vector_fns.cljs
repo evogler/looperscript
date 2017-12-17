@@ -21,6 +21,17 @@
 
 (defn shuffle* [v] shuffle)
 
+(defn flatten* [& args]
+  (flatten args))
+
+(defn dethunk [x]
+  (if (fn? x)
+    (dethunk (x))
+    x))
+
+(defn call1 [f & args]
+  (apply f args))
+
 (defn range*
   ([a] (range (inc a)))
   ([a b] (range a (inc b)))
@@ -112,6 +123,17 @@
                                           rand-nth)]
                          (if (= new-pos @pos) (recur) new-pos))))))))
 
+(def memo-rand
+  (memoize
+    (fn [id ceil n]
+      (rand-int ceil))))
+
+(defn memo-rand-nth [id v]
+  (let [pos (atom 0)
+        size (count v)]
+    (fn []
+      (nth v (memo-rand id size (swap! pos inc))))))
+
 (defn in [t v]
   (let [v (flatten [v])
         factor (/ t (reduce + v))]
@@ -123,7 +145,7 @@
 (defn cycle* [v]
   (let [pos (atom -1)
         v-len (count v)]
-    (fn [] (nth v (swap! pos #(mod (inc %) v-len))))))
+    (fn [] (dethunk (nth v (swap! pos #(mod (inc %) v-len)))))))
 
 (defn combine [& args]
   (fn []
@@ -158,14 +180,6 @@
         (when (not @called?)
           (reset! called? true)
           x)))))
-
-(defn flatten* [& args]
-  (flatten args))
-
-(defn dethunk [x]
-  (if (fn? x)
-    (dethunk (x))
-    x))
 
 (defn rest* [x]
   (with-meta
@@ -289,6 +303,9 @@
     (for [d degrees]
       (inversion scale inv (+ floor d))))
 
+(defn pcs [v]
+  (sort (vec (set (map #(mod % 12) v)))))
+
 (defn log* [& args]
   (apply log args)
   (last args))
@@ -374,7 +391,9 @@
 
 (defn define-variable [s x]
   (log "defined " s " as " x)
+  (log :PRE @variable-map "\n")
   (swap! variable-map assoc s x)
+  (log :POST @variable-map "\n")
   x)
 
 (defn get-variable [s]
@@ -401,6 +420,18 @@
     (.seedrandom js/Math args))
   nil)
 
+(defn tuning [scale]
+  [:modifier-fn
+    (let [octave-size (- (last scale) (first scale))
+          scale-len (dec (count scale))]
+      (fn [p]
+        (let [p (Math/floor p)
+              degree (mod p scale-len)
+              octave (Math/floor (/ p scale-len))
+              ]
+          (+ (nth scale degree) (* octave-size octave))
+        )))])
+
 (defn plus [& args]
   (apply + args))
 
@@ -422,6 +453,9 @@
 (defn floor [n]
   (Math/floor n))
 
+(defn intact [v]
+  (with-meta v {:intact-for-sub-time :true}))
+
 (def vec-fns
   {:shuffle shuffle
    :mild-shuffle mild-shuffle
@@ -431,6 +465,7 @@
    :rand-range rand-range
    :rand-exp-range rand-exp-range
    :rand-hold rand-hold
+   :memo-rand-nth memo-rand-nth
    :weight rand-weighted
    :weight1 rand-weighted-either-or
    :weight2 rand-weighted-zip
@@ -447,6 +482,7 @@
    :cycle cycle*
    :combine combine
    :apply apply
+   :partial partial
    :fill fill-time
    :once once
    :pattern scale-pattern
@@ -469,6 +505,7 @@
    :interleave interleave
    :dethunk dethunk
    :call dethunk
+   :call1 call1
    :sort sort
    :over over-mod
    :grow grow
@@ -490,10 +527,13 @@
    :eval eval-str
    :odc odc
    :odc1 odc1
+   :pcs pcs
    :current-beat current-beat
    :prog1 chord-progression1
    :prog2 chord-progression2
    :nothing nothing
+   :tuning tuning
+   :intact intact
 
 ;;   :round round
 ;;   :round-up round-up

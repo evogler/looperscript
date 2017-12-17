@@ -2,8 +2,7 @@
   (:require
     [cljs.looperscript.interpret :as parse]
     [cljs.looperscript.logging :refer [log log->]]
-    [instaparse.core :as insta]
-    ))
+    [instaparse.core :as insta]))
 
 (defn get-looper-text []
   (-> (.getValue js/editor)
@@ -17,5 +16,8 @@
       (let [transformed-tree (parse/looper-transform parse-tree)
             new-params (:params transformed-tree)
             parts (:parts transformed-tree)
-            parts (assoc parts :params new-params)]
+            parts (assoc parts :params new-params)
+            ]
+        (println :TT transformed-tree)
+        (println :PAR parts)
         parts))))

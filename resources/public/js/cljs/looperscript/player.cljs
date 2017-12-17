@@ -1,11 +1,14 @@
 (ns cljs.looperscript.player
   (:require
     [instaparse.core :as insta]
+    [cljs.looperscript.audio :refer [load-some-drums]]
     [cljs.looperscript.logging :refer [log log->]]
     [cljs.looperscript.next-note-fn :as nnfn]
     [cljs.looperscript.get-parts :as get-parts]
     [cljs.looperscript.start-time :refer [get-current-start-time reset-clock! now]]
     [cljs.looperscript.scheduler :as sched]))
+
+(load-some-drums)
 
 (defonce playing (atom false))
 

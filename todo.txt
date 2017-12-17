@@ -1,18 +1,18 @@
 REFACTOR:
   -modules:
-    -tree-traverser
-    -note-scheduler
     -looperscript ui stuff
     -Q: where to put event hook for live syntax / graphics?
 QUESTIONS:
   -multiple aspects refering to same cycle? (probably means cache results of actual fn)
 UPCOMING STEPS:
+  -fix: init vectors should get called
+  -overtones should be cleaned up (e.g. flatten vec filter number?) before they
+    reach play-tone
   -!! change (flatten) in vec-fns to preserve vectors that should be intact
   -write tests (!!!)
-  -find a way to kill the whole thing if it runs for too long
   -voice leading functions of some sort
-  -arrays for overtones!
-  -fix infinite loops on 0-length vectors
+  -fix/unify arrays for chords, overtones, etc
+    -with clean way for cljs functions to output arrays
   -fine-tune (update)'s note replacement timing
   -make update more thoughtful. different modes:
     -?DGAF: just start the part from (now)
@@ -24,7 +24,7 @@ UPCOMING STEPS:
   -handle identical part names
   -fix parameterless functions to not require space before closing parens
   -toggle setinterval length based on document.hasfocus
-  -memoization
+  -memoization fns
   -proper params. as well as bpm, setting for latency.
   -standardize mode concept. (e.g.'s: tuning, hz)
     -push/pop modes?
@@ -42,6 +42,7 @@ UPCOMING STEPS:
   -show errors somewhere! (& bug instaparse guy about bug)
   -maybe make it easier to specify when functions are expecting rhythms (which may be nestd)
 LANGUAGE FEATURES:
+  -branch a part into multiple parts temporarily
   -modifiers that hook in in more ways? (controlling flow of input values, changing
    time after accumulation, creating loops?...)
   -try-repeatedly (try x times or until pred is matched (or score is maximized))
@@ -133,3 +134,4 @@ DONE:
 -rests, at least somewhat
 -fix calling actual functions [e.g. ((cycle))]
 -chord inversion practice function
+-fix infinite loops on 0-length vectors
