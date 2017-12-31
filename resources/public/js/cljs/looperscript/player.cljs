@@ -12,6 +12,8 @@
 
 (defonce playing (atom false))
 
+(def play-delay-time 2.5)
+
 (defn stop []
   (reset! playing false)
   (sched/kill-playing-interval)
@@ -23,13 +25,15 @@
 
 (defn update* [parts]
   (let [params (:params parts)
-        parts (dissoc parts :params)]
+        init (:init parts)
+        parts (-> parts (dissoc :params) (dissoc :init))]
      (if (insta/failure? parts)
        (log (str (vec parts)))
        (let [new-nnfns
               (vec (for [part (vals parts)]
                 (nnfn/next-note-fn part (get-current-start-time) params)))]
          ;;  each next-note-fn catch up to current time
+         (println :INIT init)
          (doseq [nnfn new-nnfns]
            (loop []
              (if (and (deref sched/last-queue-time)
@@ -45,7 +49,7 @@
 
 (defn play []
   (let []
-    (if (nil? (get-current-start-time)) (reset-clock! (+ (now) 0.5)))
+    (if (nil? (get-current-start-time)) (reset-clock! (+ (now) play-delay-time)))
     (update* (get-parts/get-parts)) ; parts)
     (sched/kill-playing-interval)
     (sched/set-playing-interval sched/queue-notes)

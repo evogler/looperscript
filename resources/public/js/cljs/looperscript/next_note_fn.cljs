@@ -20,9 +20,6 @@
    :skip [1]})
 (defonce params (atom {}))
 
-;(defn get-bpm []
-;  (if-let [bpm (:bpm @params)] bpm 1))
-
 ;; partitions multi-aspects into separate iterators, so that timed-iterators can be
 ;; applied where necessary
 (defn separate-multi-aspects [part]
@@ -78,20 +75,16 @@
 (defn next-note-fn [part start-time params]
   (let [iterators (make-iterators part)
         bpm (:bpm params)
-        _ (println "YOOO" bpm)
         time-pos (atom (+ start-time
                           (* bpm ;(get-bpm)
                              (first (get part [:offset] [0])))))]
     (fn
       ([command] (if (= command :time-pos) @time-pos))
       ([] (loop []
-            (let [adjusted-time-pos (+ 1e-7 (/ (- @time-pos start-time) bpm
-                ;;#_(get-bpm)
-                ))
+            (let [adjusted-time-pos (+ 1e-7 (/ (- @time-pos start-time) bpm))
                   res-time ((:time iterators) adjusted-time-pos)
                   res {:time res-time}]
               (if (and (sequential? res-time) (= (first res-time) :rest))
-                ; If :rest,
                 (let [res (-> res
                               (assoc :rest true)
                               (assoc :start-time @time-pos)

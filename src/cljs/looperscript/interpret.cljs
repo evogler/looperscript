@@ -205,7 +205,12 @@
                              (reduce (fn [m p]
                                        (assoc m (:name p) p))
                                      {} args)})
-         :init (fn [& args] {:init (vec args)})
+         :init (fn [& args]
+           (println :init args)
+           {:init ;( ;; WORKING ON INSTERTING THIS MAYBE:
+           ; (walk-map-applying-fn-to-vals process-vec)
+           (vec args);)
+           })
          :mod-code (comp vector keyword)
          :s (fn [& args]
               (reduce

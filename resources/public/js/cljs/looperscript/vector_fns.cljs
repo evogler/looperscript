@@ -415,9 +415,9 @@
           res)))))
 
 (defn set-rand-seed [& args]
-  (if (empty? args)
-    (.seedrandom js/Math)
-    (.seedrandom js/Math args))
+  (let [seed (if args (first args) (rand-int* 10000 99999))]
+    (log "seed: " seed)
+    (.seedrandom js/Math seed))
   nil)
 
 (defn tuning [scale]
@@ -523,7 +523,7 @@
    :sin sin
    :cos cos
    :floor floor
-   :time time*
+   :time* time*
    :eval eval-str
    :odc odc
    :odc1 odc1

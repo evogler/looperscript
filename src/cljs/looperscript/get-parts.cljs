@@ -17,7 +17,5 @@
             new-params (:params transformed-tree)
             parts (:parts transformed-tree)
             parts (assoc parts :params new-params)
-            ]
-        (println :TT transformed-tree)
-        (println :PAR parts)
+            parts (assoc parts :init (:init transformed-tree))]
         parts))))

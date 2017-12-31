@@ -17,12 +17,9 @@ var transformed_tree = cljs.looperscript.interpret.looper_transform.call(null,pa
 var new_params = new cljs.core.Keyword(null,"params","params",710516235).cljs$core$IFn$_invoke$arity$1(transformed_tree);
 var parts = new cljs.core.Keyword(null,"parts","parts",849007691).cljs$core$IFn$_invoke$arity$1(transformed_tree);
 var parts__$1 = cljs.core.assoc.call(null,parts,new cljs.core.Keyword(null,"params","params",710516235),new_params);
-cljs.core.println.call(null,new cljs.core.Keyword(null,"TT","TT",563424953),transformed_tree);
-
-cljs.core.println.call(null,new cljs.core.Keyword(null,"PAR","PAR",-738904043),parts__$1);
-
-return parts__$1;
+var parts__$2 = cljs.core.assoc.call(null,parts__$1,new cljs.core.Keyword(null,"init","init",-1875481434),new cljs.core.Keyword(null,"init","init",-1875481434).cljs$core$IFn$_invoke$arity$1(transformed_tree));
+return parts__$2;
 }
 });
 
-//# sourceMappingURL=get_parts.js.map?rel=1513452337323
+//# sourceMappingURL=get_parts.js.map?rel=1514752957425

@@ -7,13 +7,11 @@
     ))
 
 (def ui-location (atom nil))
-
-(def widgets (atom {}))
-
-(def widget-vals (atom {}))
-
 (defn set-ui-location [div]
   (reset! ui-location div))
+
+(def widgets (atom {}))
+(def widget-vals (atom {}))
 
 (defn ui-append [x] (dom/append! @ui-location x))
 
@@ -33,12 +31,18 @@
               "min=\"0\" max=\"10000\" value=\"2000\" "
               "class=\"slider\">")]
       (ui-append s)
-      (let [dom-location (dom/by-id id)
-            _ (println :DOMLOC dom-location)]
+
+      (let [dom-location (dom/by-id id)]
         (ev/listen! dom-location :change
           (fn [e]
-            (println :EVENT_CALLED)
-              (let [value (dom/value dom-location)]
-                (js/alert value))))))))
+            (let [value (dom/value dom-location)]
+              (js/alert value))))))))
 
-(add-widget {:type :slider :min 0 :max 10 :default 2 :id "awesome"})
+(defn do-one []
+  (add-widget {:type :slider
+               :min 0
+               :max 10
+               :default 2
+               :id "awesome"}))
+
+(def test-val 12345678)               

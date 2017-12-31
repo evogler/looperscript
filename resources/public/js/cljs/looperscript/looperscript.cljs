@@ -10,6 +10,7 @@
             [cljs.looperscript.get-parts :as get-parts]))
 
 (ui/set-ui-location (dom/by-id "UI_area"))
+(ui/do-one)
 
 (relisten! "play" player/play)
 (relisten! "pause" player/stop)
